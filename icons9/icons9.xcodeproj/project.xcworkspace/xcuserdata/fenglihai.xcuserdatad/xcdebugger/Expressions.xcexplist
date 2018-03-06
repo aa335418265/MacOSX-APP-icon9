@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[CNGridView performDragOperation:]:CNGridView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMIconManager allGroups]:BMIconManager.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController numberOfRowsInTableView:]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.groups">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMIconGroupModel copyFilesFromPaths:callback:]:BMIconGroupModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController gridView:itemAtIndex:inSection:]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController init]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridViewItem drawRect:]:CNGridViewItem.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.itemImage">
+            </PersistentString>
+            <PersistentString
+               value = "scaleImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController viewDidLoad]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMIconGroupModel allObjects]:BMIconGroupModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController initUI]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.gridView">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController initData]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+            <PersistentString
+               value = "self.groups">
+            </PersistentString>
+            <PersistentString
+               value = "enumerator.fileAttributes">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController tableViewSelectionDidChange:]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items.count">
+            </PersistentString>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
