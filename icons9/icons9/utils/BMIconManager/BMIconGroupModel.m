@@ -8,6 +8,7 @@
 
 #import "BMIconGroupModel.h"
 #import <AppKit/AppKit.h>
+#import <SVGKit/SVGKit.h>
 
 @implementation BMIconGroupModel
 

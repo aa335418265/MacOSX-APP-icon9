@@ -33,6 +33,7 @@
 		DB577FB4204FA78E003F9164 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB577FB1204FA78E003F9164 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DB577FB5204FA78E003F9164 /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB577FB2204FA78E003F9164 /* SVGKit.framework */; };
 		DB577FB6204FA78E003F9164 /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DB577FB2204FA78E003F9164 /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DB577FBA204FAFDB003F9164 /* SKSVGObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577FB8204FAFDB003F9164 /* SKSVGObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,6 +96,8 @@
 		DB577656204E8F0D003F9164 /* BMIconGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMIconGroupModel.m; sourceTree = "<group>"; };
 		DB577FB1204FA78E003F9164 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
 		DB577FB2204FA78E003F9164 /* SVGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SVGKit.framework; sourceTree = "<group>"; };
+		DB577FB8204FAFDB003F9164 /* SKSVGObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSVGObject.m; sourceTree = "<group>"; };
+		DB577FB9204FAFDB003F9164 /* SKSVGObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSVGObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +257,7 @@
 		DB57764D204E89C6003F9164 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				DB577FB7204FAFD2003F9164 /* SKSVGObject */,
 				DB57764E204E89E9003F9164 /* BMIconManager */,
 			);
 			path = utils;
@@ -270,6 +274,15 @@
 				DB577656204E8F0D003F9164 /* BMIconGroupModel.m */,
 			);
 			path = BMIconManager;
+			sourceTree = "<group>";
+		};
+		DB577FB7204FAFD2003F9164 /* SKSVGObject */ = {
+			isa = PBXGroup;
+			children = (
+				DB577FB8204FAFDB003F9164 /* SKSVGObject.m */,
+				DB577FB9204FAFDB003F9164 /* SKSVGObject.h */,
+			);
+			path = SKSVGObject;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -356,6 +369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB577FBA204FAFDB003F9164 /* SKSVGObject.m in Sources */,
 				DB57764C204DA046003F9164 /* BMFileModel.m in Sources */,
 				DB57763F204D9F85003F9164 /* CNGridViewItemLayout.m in Sources */,
 				DB577654204E8D29003F9164 /* BMIconModel.m in Sources */,

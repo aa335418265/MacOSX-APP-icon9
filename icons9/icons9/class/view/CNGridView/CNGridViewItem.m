@@ -167,12 +167,11 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 #pragma mark - ViewDrawing
 
+
+
 - (void)drawRect:(NSRect)rect {
 	NSRect dirtyRect = self.bounds;
-//    [self setWantsLayer:YES];
-//    self.layer.backgroundColor = [NSColor redColor].CGColor;
-	// decide which layout we have to use
-	/// contentRect is the rect respecting the value of layout.contentInset
+
 	NSRect contentRect = NSMakeRect(dirtyRect.origin.x + self.currentLayout.contentInset,
 	                                dirtyRect.origin.y + self.currentLayout.contentInset,
 	                                dirtyRect.size.width - self.currentLayout.contentInset * 2,
@@ -196,8 +195,8 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     CGFloat textHeight = 24;
     CGFloat imageContentInset = 10;
     CGSize scaleImageSize = CGSizeMake(contentRect.size.width - 2 * imageContentInset, contentRect.size.height - 2 * imageContentInset - textHeight);
-    NSImage *scaleImage = [self resizeImage:self.itemImage targetSize:scaleImageSize ];
     
+    NSImage *scaleImage = [self resizeImage:self.itemImage targetSize:scaleImageSize ];
     
     
 	NSRect srcRect = NSZeroRect;
