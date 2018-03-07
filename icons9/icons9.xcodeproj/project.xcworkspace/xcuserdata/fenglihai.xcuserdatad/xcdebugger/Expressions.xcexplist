@@ -32,5 +32,16 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "-[CNGridViewItem initProperties]:CNGridViewItem.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.bounds">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMIconGroupModel copyFilesFromPaths:]:BMIconGroupModel.m">
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

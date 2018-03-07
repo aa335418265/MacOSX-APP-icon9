@@ -455,7 +455,9 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	                             ((index - (index % columns)) / columns) * self.itemSize.height + _contentInset,
 	                             self.itemSize.width,
 	                             self.itemSize.height);
-
+    if(itemRect.size.width < 100){
+        NSLog(@"---");
+    }
 	return itemRect;
 }
 

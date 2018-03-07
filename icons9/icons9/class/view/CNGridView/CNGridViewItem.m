@@ -196,7 +196,12 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     CGFloat imageContentInset = 10;
     CGSize scaleImageSize = CGSizeMake(contentRect.size.width - 2 * imageContentInset, contentRect.size.height - 2 * imageContentInset - textHeight);
     
+    
+    
     NSImage *scaleImage = [self resizeImage:self.itemImage targetSize:scaleImageSize ];
+    if (scaleImage == nil) {
+        return ;
+    }
     
     
 	NSRect srcRect = NSZeroRect;
@@ -297,6 +302,9 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     scale = targetSize.height / maxEdage;
     
     NSRect targetFrame = NSMakeRect(0, 0, imageSize.width * scale, imageSize.height * scale);
+    if (targetFrame.size.width <0 || targetFrame.size.height < 0) {
+        return nil;
+    }
     NSImage* targetImage = nil;
     NSImageRep *sourceImageRep =
     [sourceImage bestRepresentationForRect:targetFrame
