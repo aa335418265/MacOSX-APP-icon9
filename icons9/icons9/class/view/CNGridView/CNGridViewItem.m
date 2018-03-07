@@ -224,7 +224,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
         CGSize textSize = [self getStringSize:self.itemTitle maxWidth:W - textInset maxHeight:textHeight attributes:self.currentLayout.itemTitleTextAttributes];
         
 		textRect = NSMakeRect((dirtyRect.size.width - textSize.width) / 2.0 + 2,
-		                      imageRect.size.height + imageRect.origin.y + imageContentInset,
+		                      dirtyRect.size.height - 2 * self.currentLayout.contentInset - textSize.height - 4,
 		                      textSize.width,
 		                      textSize.height);
 		[self.itemTitle drawInRect:textRect withAttributes:self.currentLayout.itemTitleTextAttributes];

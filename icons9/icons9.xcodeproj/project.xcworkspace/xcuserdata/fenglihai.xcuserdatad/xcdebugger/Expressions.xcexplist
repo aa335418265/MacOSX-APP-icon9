@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "__30-[BMMainViewController initUI]_block_invoke:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "+[BMIconModel svgImagePath:size:tintColor:]:BMIconModel.m">
          <PersistentStrings>
             <PersistentString
@@ -15,15 +23,12 @@
       </ContextState>
       <ContextState
          contextName = "+[BMIconModel modelWithPath:]:BMIconModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController gridView:itemAtIndex:inSection:]:BMMainViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "svgImage.NSImage&#10;">
-            </PersistentString>
-            <PersistentString
-               value = "svgImage.CIImage">
-            </PersistentString>
-            <PersistentString
-               value = "fastImageView.image.NSImage">
+               value = " self.items">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

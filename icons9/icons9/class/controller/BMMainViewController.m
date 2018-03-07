@@ -69,11 +69,17 @@ static NSString *kItemSizeSliderPositionKey;
         self.itemSizeSlider.integerValue = [defaults integerForKey:kItemSizeSliderPositionKey];
     }
     self.gridView.dropInBlock = ^(NSArray<NSString *> *files) {
-        BMIconGroupModel * group = [[[BMIconManager sharedInstance] allGroups] firstObject];
+        
+        NSInteger selectedRow =  [self.tableView selectedRow];
+
+        BMIconGroupModel * group = [[[BMIconManager sharedInstance] allGroups] objectAtIndex:selectedRow];
         NSArray *copyIcons = [group copyFilesFromPaths:files];
-        [self.items addObjectsFromArray:copyIcons];
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.items.count, files.count)];
-        [self.gridView insertItemsAtIndexes:indexSet animated:YES];
+        if (copyIcons.count > 0) {
+            [self.items addObjectsFromArray:copyIcons];
+            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.items.count, files.count)];
+            [self.gridView insertItemsAtIndexes:indexSet animated:YES];
+        }
+
         
     };
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
@@ -255,24 +261,26 @@ static NSString *kItemSizeSliderPositionKey;
     return label;
 
 }
-#pragma mark - 私有方法
 
-- (void)openColorPanel{
-    
-    NSColorPanel *colorpanel = [NSColorPanel sharedColorPanel];
-    
-    colorpanel.mode = NSColorPanelModeCrayon; //调出时，默认色盘
-    
-    [colorpanel setAction:@selector(changeColor:)];
-    [colorpanel setTarget:self];
-    [colorpanel orderFront:nil];
-}
 
+
+#pragma mark - 颜色面板回调事件
 //颜色选择action事件
 - (void)changeColor:(id)sender {
     NSColorPanel *colorPanel = sender ;
     NSColor *color = colorPanel.color;
     self.gridView.backgroundColor = color;
+}
+
+
+#pragma mark - 私有方法
+- (void)openColorPanel{
+    
+    NSColorPanel *colorpanel = [NSColorPanel sharedColorPanel];
+    colorpanel.mode = NSColorPanelModeCrayon; //调出时，默认色盘
+    [colorpanel setAction:@selector(changeColor:)];
+    [colorpanel setTarget:self];
+    [colorpanel orderFront:nil];
 }
 
 @end

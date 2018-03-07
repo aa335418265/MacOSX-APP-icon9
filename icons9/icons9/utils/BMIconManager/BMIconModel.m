@@ -26,17 +26,33 @@
     model.name = [path lastPathComponent];
     if ([model.exension isEqualToString:@"svg"]) {
          SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
+        //改变颜色
+        [BMIconModel changeFillColorRecursively:[svgImage CALayerTree] color:[NSColor redColor]];
         CIImage *ciImage = svgImage.CIImage ;
         NSImage *nsImage = [[NSImage alloc] initWithCGImage:ciImage.CGImage size:CGSizeMake(1024, 1024)];
+        
         model.image = nsImage;
-        
-        
     }else{
         model.image = [[NSImage alloc] initWithContentsOfFile:path] ;
     }
     
 
     return model;
+}
+
++ (void)changeFillColorRecursively:(CALayer *)targetLayer color:(NSColor *)color {
+    
+
+    for (CALayer *layer in targetLayer.sublayers) {
+        if ([layer isKindOfClass:[CAShapeLayer class]]) {
+            CAShapeLayer *shapeLayer = (CAShapeLayer *)layer;
+            shapeLayer.strokeColor = color.CGColor;
+            shapeLayer.fillColor = color.CGColor;
+        }
+        if ([layer isKindOfClass:[CALayer class]]) {
+            [self changeFillColorRecursively:layer color:color];
+        }
+    }
 }
 
 
