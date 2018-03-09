@@ -1286,24 +1286,36 @@ NSString *kPrivateDragUTI = @"com.itx.cocoadraganddrop";
 	NSPoint location = [theEvent locationInWindow];
 	NSUInteger index = [self indexForItemAtLocation:location];
 	if (index != NSNotFound) {
-		[self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
-        
-        
+
         NSArray <CNGridViewItem *> *items = [self selectedItems];
-        NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:items.count];
+        BOOL canDrag = NO;
         for (CNGridViewItem *gridViewItem in items) {
-            //准备拖拽
-            NSPasteboardItem *pbItem = [NSPasteboardItem new];
-            [pbItem setDataProvider:self forTypes:@[NSFilenamesPboardType, kPrivateDragUTI]];
-            NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
-            NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
-            [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
-            [dragItems addObject:dragItem];
+            if (gridViewItem.index == index) {
+                canDrag = YES;
+                break;
+            }
         }
+        if (canDrag) {
+            NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:items.count];
+            for (CNGridViewItem *gridViewItem in items) {
+                //准备拖拽
+                NSPasteboardItem *pbItem = [NSPasteboardItem new];
+                [pbItem setDataProvider:self forTypes:@[NSFilenamesPboardType, kPrivateDragUTI]];
+                NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
+                NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
+                [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
+                [dragItems addObject:dragItem];
+            }
+            
+            NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];
+            draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
+            draggingSession.draggingFormation = NSDraggingFormationNone;
+        }else{
+            [self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
+        }
+
         
-        NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];
-        draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
-        draggingSession.draggingFormation = NSDraggingFormationNone;
+
 //
 	}else{
 		[self deselectAllItems];
