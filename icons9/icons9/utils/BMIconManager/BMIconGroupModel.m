@@ -13,25 +13,33 @@
 @implementation BMIconGroupModel
 
 
-- (NSArray <BMIconModel *> *)allObjects {
+
+- (NSArray <BMIconModel *> *)objectsWithType:(BMImageType)type {
+    
     // 创建文件管理器
     NSFileManager *fileMgr = [NSFileManager defaultManager];
-    
-    
     //遍历文件
     NSArray *contents = [fileMgr contentsOfDirectoryAtPath:self.groupPath error:nil];
-    NSMutableArray *allImages = [NSMutableArray array];
+    NSMutableArray *images = [NSMutableArray array];
     
     for (NSString *fileName in contents) {
-        if ([[fileName pathExtension] isEqualToString:@"svg"] ||
-            [[fileName pathExtension] isEqualToString:@"png"] ||
-            [[fileName pathExtension] isEqualToString:@"jpg"]) {
+        if (([[fileName pathExtension] isEqualToString:@"svg"] && (type & BMImageTypeSVG)) ||
+            ([[fileName pathExtension] isEqualToString:@"png"] && (type & BMImageTypePNG)) ||
+            ([[fileName pathExtension] isEqualToString:@"jpg"] && (type & BMImageTypeJPG))) {
+            
             NSString *fullPath = [self.groupPath stringByAppendingPathComponent:fileName];
-            [allImages addObject:[BMIconModel modelWithPath:fullPath]];
+            [images addObject:[BMIconModel modelWithPath:fullPath]];
         }
+        
+        
+
     }
-    
-    return allImages;
+    return images;
+}
+
+
+- (NSArray <BMIconModel *> *)allObjects {
+    return [self objectsWithType:BMImageTypeAll];
 }
 
 - (NSArray <BMIconModel *> *)copyFilesFromPaths:(NSArray <NSString *> *)paths  {

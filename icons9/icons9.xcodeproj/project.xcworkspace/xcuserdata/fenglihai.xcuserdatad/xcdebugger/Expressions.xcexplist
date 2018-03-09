@@ -22,9 +22,6 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "+[BMIconModel modelWithPath:]:BMIconModel.m">
-      </ContextState>
-      <ContextState
          contextName = "-[BMMainViewController gridView:itemAtIndex:inSection:]:BMMainViewController.m">
          <PersistentStrings>
             <PersistentString
@@ -41,7 +38,30 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[CNGridView mouseMoved:]:CNGridView.m">
+      </ContextState>
+      <ContextState
          contextName = "-[BMIconGroupModel copyFilesFromPaths:]:BMIconGroupModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController dicPickButtonAction:]:BMMainViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridView mouseDown:]:CNGridView.m">
+      </ContextState>
+      <ContextState
+         contextName = "+[BMIconModel modelWithPath:]:BMIconModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController didPopButtonAction:]:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "popBtn.indexOfSelectedItem">
+            </PersistentString>
+            <PersistentString
+               value = "popBtn.tag">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

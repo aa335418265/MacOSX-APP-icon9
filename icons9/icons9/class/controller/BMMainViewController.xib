@@ -153,16 +153,6 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                 </scrollView>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XMz-wz-U1A">
-                                    <rect key="frame" x="5" y="5" width="45" height="18"/>
-                                    <buttonCell key="cell" type="check" title="全选" bezelStyle="regularSquare" imagePosition="left" controlSize="small" inset="2" id="NwS-qi-Eez">
-                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="smallSystem"/>
-                                    </buttonCell>
-                                    <connections>
-                                        <action selector="selectAllItemsButtonAction:" target="-2" id="nSq-2K-6Dv"/>
-                                    </connections>
-                                </button>
                                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V7J-B0-FV4">
                                     <rect key="frame" x="209" y="5" width="55" height="22"/>
                                     <popUpButtonCell key="cell" type="push" title="All" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="DFd-wI-jwS" id="g80-go-izC">
@@ -173,9 +163,13 @@
                                                 <menuItem title="All" state="on" id="DFd-wI-jwS"/>
                                                 <menuItem title="svg" id="MQe-ed-twQ"/>
                                                 <menuItem title="png" id="Sa7-XP-v1P"/>
+                                                <menuItem title="jpg" id="N0d-7d-0sx"/>
                                             </items>
                                         </menu>
                                     </popUpButtonCell>
+                                    <connections>
+                                        <action selector="didPopButtonAction:" target="-2" id="E7g-Or-iSJ"/>
+                                    </connections>
                                 </popUpButton>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bxl-As-1da">
                                     <rect key="frame" x="155" y="2" width="54" height="28"/>
@@ -193,13 +187,11 @@
                                 <constraint firstAttribute="trailing" secondItem="eb7-Wj-VPa" secondAttribute="trailing" constant="8" id="CaX-j7-tIW"/>
                                 <constraint firstAttribute="bottom" secondItem="eb7-Wj-VPa" secondAttribute="bottom" constant="8" id="Nfi-eM-fGU"/>
                                 <constraint firstItem="eb7-Wj-VPa" firstAttribute="top" secondItem="ydg-pb-O6Y" secondAttribute="bottom" constant="8" id="PoL-Um-RtR"/>
-                                <constraint firstItem="eb7-Wj-VPa" firstAttribute="bottom" secondItem="XMz-wz-U1A" secondAttribute="bottom" id="WCg-CQ-BQT"/>
                                 <constraint firstItem="eb7-Wj-VPa" firstAttribute="leading" secondItem="V7J-B0-FV4" secondAttribute="trailing" constant="12" id="Z6s-qs-meM"/>
                                 <constraint firstItem="V7J-B0-FV4" firstAttribute="leading" secondItem="Bxl-As-1da" secondAttribute="trailing" constant="8" id="aVZ-sn-MrC"/>
                                 <constraint firstItem="V7J-B0-FV4" firstAttribute="bottom" secondItem="Bxl-As-1da" secondAttribute="bottom" id="b4v-0f-UEQ"/>
                                 <constraint firstItem="ydg-pb-O6Y" firstAttribute="top" secondItem="CuS-F2-eqB" secondAttribute="top" id="oCe-74-J44"/>
                                 <constraint firstItem="ydg-pb-O6Y" firstAttribute="leading" secondItem="CuS-F2-eqB" secondAttribute="leading" id="oiS-hF-chM"/>
-                                <constraint firstItem="XMz-wz-U1A" firstAttribute="leading" secondItem="CuS-F2-eqB" secondAttribute="leading" constant="8" id="rP1-4s-sPh"/>
                                 <constraint firstAttribute="trailing" secondItem="ydg-pb-O6Y" secondAttribute="trailing" id="y66-h4-XkO"/>
                             </constraints>
                         </customView>

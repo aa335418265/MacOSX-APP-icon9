@@ -124,6 +124,50 @@ static NSString *kItemSizeSliderPositionKey;
 
 #pragma mark - 按钮事件
 
+
+
+- (IBAction)didPopButtonAction:(id)sender {
+    NSPopUpButton *popBtn = (NSPopUpButton *)sender;
+    
+    if (popBtn.tag == popBtn.indexOfSelectedItem) {
+        return;
+    }
+    popBtn.tag = popBtn.indexOfSelectedItem;
+    
+    NSLog(@"index=%@, %@",@(popBtn.indexOfSelectedItem), popBtn.itemTitles[popBtn.indexOfSelectedItem]);
+    BMImageType imageType = BMImageTypeNone;
+    switch (popBtn.indexOfSelectedItem) {
+        case 0:
+             imageType = imageType | BMImageTypeAll;
+            break;
+        case 1:
+            imageType = imageType | BMImageTypeSVG;
+            break;
+        case 2:
+            imageType = imageType | BMImageTypePNG;
+            break;
+        case 3:
+            imageType = imageType | BMImageTypeJPG;
+            break;
+        default:
+            break;
+    }
+    
+    
+
+        //先删除
+        [self.items removeAllObjects];
+        [self.gridView reloadDataAnimated:YES];
+        //后更新
+        BMIconGroupModel *group = self.groups[self.currentSelectedRow];
+        NSArray *objects = [[group objectsWithType:imageType] copy];
+        if (objects.count > 0) {
+            [self.items addObjectsFromArray:objects];
+            [self.gridView reloadDataAnimated:YES];
+        }
+    
+}
+
 - (IBAction)addFilesButtonAction:(id)sender {
     
 
@@ -155,10 +199,7 @@ static NSString *kItemSizeSliderPositionKey;
 
 #pragma mark - 通知事件
 
-- (IBAction)selectAllItemsButtonAction:(id)sender {
-    NSLog(@"全选");
 
-}
      
  - (void)detectedNotification:(NSNotification *)notif {
      //    CNLog(@"notification: %@", notif);
