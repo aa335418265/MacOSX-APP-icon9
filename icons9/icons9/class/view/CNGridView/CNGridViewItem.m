@@ -354,10 +354,5 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 #pragma mark - NSPasteboardItemDataProvider
 
-- (void)pasteboard:(nullable NSPasteboard *)pasteboard item:(NSPasteboardItem *)item provideDataForType:(NSString *)type {
-//    [pasteboard clearContents];
-//    [pasteboard wrie]
-    [pasteboard writeObjects:@[self.itemImage]];
-    NSLog(@"provideDataForType:%@",type);
-}
+
 @end

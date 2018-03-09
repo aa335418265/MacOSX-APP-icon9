@@ -3,14 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "__30-[BMMainViewController initUI]_block_invoke:BMMainViewController.m">
-         <PersistentStrings>
-            <PersistentString
-               value = "self.items">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "+[BMIconModel svgImagePath:size:tintColor:]:BMIconModel.m">
          <PersistentStrings>
             <PersistentString
@@ -22,35 +14,29 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[BMMainViewController gridView:itemAtIndex:inSection:]:BMMainViewController.m">
+         contextName = "+[BMIconModel modelWithPath:]:BMIconModel.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridViewItem pasteboard:item:provideDataForType:]:CNGridViewItem.m">
          <PersistentStrings>
             <PersistentString
-               value = " self.items">
+               value = "self.itemImage">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CNGridViewItem initProperties]:CNGridViewItem.m">
+         contextName = "-[CNGridView pasteboard:item:provideDataForType:]:CNGridView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridView performDragOperation:]:CNGridView.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.bounds">
+               value = "[pboard types]">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "-[CNGridView mouseMoved:]:CNGridView.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[BMIconGroupModel copyFilesFromPaths:]:BMIconGroupModel.m">
-      </ContextState>
-      <ContextState
-         contextName = "-[BMMainViewController dicPickButtonAction:]:BMMainViewController.m">
       </ContextState>
       <ContextState
          contextName = "-[CNGridView mouseDown:]:CNGridView.m">
-      </ContextState>
-      <ContextState
-         contextName = "+[BMIconModel modelWithPath:]:BMIconModel.m">
       </ContextState>
       <ContextState
          contextName = "-[BMMainViewController didPopButtonAction:]:BMMainViewController.m">
@@ -64,12 +50,48 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[CNGridViewItem pasteboard:item:provideDataForType:]:CNGridViewItem.m">
+         contextName = "-[BMMainViewController gridView:itemAtIndex:inSection:]:BMMainViewController.m">
          <PersistentStrings>
             <PersistentString
-               value = "self.itemImage">
+               value = " self.items">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridView draggingEntered:]:CNGridView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "pboard types">
+            </PersistentString>
+            <PersistentString
+               value = " [pboard types]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridViewItem initProperties]:CNGridViewItem.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.bounds">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[BMMainViewController dicPickButtonAction:]:BMMainViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "__30-[BMMainViewController initUI]_block_invoke:BMMainViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.items">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[CNGridView mouseMoved:]:CNGridView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[BMIconGroupModel copyFilesFromPaths:]:BMIconGroupModel.m">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

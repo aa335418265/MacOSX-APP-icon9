@@ -100,7 +100,7 @@ APPKIT_EXTERN NSString* const kCNDefaultItemIdentifier;
 
 
 #pragma mark - CNGridViewItem
-@interface CNGridViewItem : CNGridViewItemBase  <NSPasteboardItemDataProvider>
+@interface CNGridViewItem : CNGridViewItemBase
 
 #pragma mark - Initialization
 /** @name Initialization */

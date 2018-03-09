@@ -187,72 +187,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 
 
-#pragma mark - NSDraggingDestination 接收方
 
-//拖放进入目标区
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
-    NSLog(@"拖放进入目标区");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSCursor dragCopyCursor] set];
-    });
-    
-    [self setNeedsDisplay:YES];
-    
-    NSDragOperation sourceDragMask = [sender draggingSourceOperationMask];
-    NSPasteboard *pboard = [sender draggingPasteboard];
-    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
-        if (sourceDragMask & NSDragOperationLink) {
-            return NSDragOperationCopy;//可被拷贝
-        }
-    }
-    return NSDragOperationNone;
-}
-
-
-//拖放预处理,一般是根据拖放类型type，决定是否接受拖放。
-- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender {
-    
-    BOOL canInit = [NSImage canInitWithPasteboard: [sender draggingPasteboard]];
-    //例如是否可以初始化为图片
-    return canInit;
-}
-
-
-//允许接收拖放，开始接收处理拖放数据
-- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender {
-    NSLog(@"执行拖放处理");
-    NSPasteboard *pboard = [sender draggingPasteboard];
-    //文件包含Pboard 类型
-    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
-        NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
-        NSInteger numberOfFiles = [files count];
-        if(numberOfFiles>0)
-        {
-            if (self.dropInBlock) {
-                self.dropInBlock(files);
-            }
-            return YES;
-        }
-        
-    }
-    return YES;
-    
-}
-
-//拖放退出目标区,拖放的图像会弹回到拖放源
-- (void)draggingExited:(nullable id <NSDraggingInfo>)sender {
-    NSLog(@"拖放退出");
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSCursor arrowCursor] set];
-    });
-    
-}
-
-
-- (void)draggingEnded:(nullable id <NSDraggingInfo>)sender {
-    NSLog(@"拖放结束");
-    
-}
 
 
 
@@ -1252,6 +1187,21 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 - (BOOL)acceptsFirstMouse:(NSEvent *)event{
     return YES;
 }
+
+//拖出
+- (void)pasteboard:(nullable NSPasteboard *)pasteboard item:(NSPasteboardItem *)item provideDataForType:(NSString *)type {
+    [pasteboard clearContents];
+    NSArray <CNGridViewItem *> *gridViewItems = [self selectedItems];
+    NSMutableArray *writeObjects = [NSMutableArray arrayWithCapacity:gridViewItems.count];
+    for (CNGridViewItem *gridViewItem  in gridViewItems) {
+        [writeObjects addObject:[NSURL fileURLWithPath:gridViewItem.itemImagePath]];
+        NSLog(@"provideDataForType:%@",type);
+    }
+     [pasteboard writeObjects:writeObjects];
+    
+    
+}
+
 //发送方：定义允许的拖放操作
 - (NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context {
     switch (context) {
@@ -1288,9 +1238,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
             for (CNGridViewItem *gridViewItem in items) {
                 //准备拖拽
                 NSPasteboardItem *pbItem = [NSPasteboardItem new];
-                [pbItem setDataProvider:gridViewItem forTypes:[NSArray arrayWithObjects:NSPasteboardTypeTIFF,NSPasteboardTypePNG, nil]];
+                __weak typeof(self) weakSelf = self;
+                [pbItem setDataProvider:weakSelf forTypes:[NSArray arrayWithObjects:@"public.file-url", nil]];
                 
                 NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
+                
                 NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
                 [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
                 [dragItems addObject:dragItem];
@@ -1359,6 +1311,79 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		}
 	}
     [super keyDown:theEvent];
+}
+
+#pragma mark - NSDraggingDestination 接收方
+
+//拖放进入目标区
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+    NSLog(@"拖放进入目标区");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSCursor dragCopyCursor] set];
+    });
+    
+    [self setNeedsDisplay:YES];
+    
+    NSDragOperation sourceDragMask = [sender draggingSourceOperationMask];
+    NSPasteboard *pboard = [sender draggingPasteboard];
+    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+        if (sourceDragMask & NSDragOperationLink) {
+            return NSDragOperationCopy;//可被拷贝
+        }
+    }
+    return NSDragOperationNone;
+}
+
+
+//拖放预处理,一般是根据拖放类型type，决定是否接受拖放。
+- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender {
+    
+    if ( [sender draggingSource] != self ) {
+        BOOL canInit = [NSImage canInitWithPasteboard: [sender draggingPasteboard]];
+        //例如是否可以初始化为图片
+        return canInit;
+    }
+    return NO;
+    
+
+}
+
+
+//允许接收拖放，开始接收处理拖放数据
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender {
+    NSLog(@"执行拖放处理");
+    NSPasteboard *pboard = [sender draggingPasteboard];
+    //文件包含Pboard 类型
+    if ( [[pboard types] containsObject:NSFilenamesPboardType] ) {
+        NSArray *files = [pboard propertyListForType:NSFilenamesPboardType];
+        NSInteger numberOfFiles = [files count];
+        if(numberOfFiles>0)
+        {
+            if (self.dropInBlock) {
+                self.dropInBlock(files);
+            }
+            return YES;
+        }
+        
+    }
+    return YES;
+    
+}
+
+//拖放退出目标区,拖放的图像会弹回到拖放源
+- (void)draggingExited:(nullable id <NSDraggingInfo>)sender {
+    NSLog(@"拖放退出");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSCursor arrowCursor] set];
+    });
+    
+}
+
+
+- (void)draggingEnded:(nullable id <NSDraggingInfo>)sender {
+    NSLog(@"拖放结束");
+    NSPasteboard *pasteboard = [sender draggingPasteboard];
+    [pasteboard clearContents];
 }
 
 #pragma mark - CNGridView Delegate Calls
