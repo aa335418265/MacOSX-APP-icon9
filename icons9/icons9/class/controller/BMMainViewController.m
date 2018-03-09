@@ -170,18 +170,24 @@ static NSString *kItemSizeSliderPositionKey;
 
 - (IBAction)addFilesButtonAction:(id)sender {
     
+    NSAlert *alert = [[NSAlert alloc]init];
+    //可以设置产品的icon
+    alert.icon = [NSImage imageNamed:@"(Lion_Head)_SFont.CN.png"];
+    //添加两个按钮吧
+    [alert addButtonWithTitle:@"OK"];
 
-    NSOpenPanel *panel = [NSOpenPanel openPanel];
-    [panel setCanCreateDirectories:YES];
-    [panel setCanChooseFiles:YES];//是否能选择文件file
-    [panel setCanChooseDirectories:YES];//是否能打开文件夹
-    [panel setAllowsMultipleSelection:YES];//是否允许多选file
-    NSInteger finded = [panel runModal]; //获取panel的响应
-    if (finded == NSFileHandlingPanelOKButton) {
-        for (NSURL *url in [panel URLs]) {
-            NSLog(@"文件：%@", url);
+    //正文
+    alert.messageText = @"提示";
+    //描述文字
+    alert.informativeText = @"暂不允许新建分组";
+    //弹窗类型 默认类型 NSAlertStyleWarning
+    [alert setAlertStyle:NSAlertStyleWarning];
+    //回调Block
+    [alert beginSheetModalForWindow:[self.view window] completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSAlertFirstButtonReturn ) {
+            NSLog(@"this is OK Button tap");
         }
-    }
+    }];
     
 
 }
@@ -224,6 +230,7 @@ static NSString *kItemSizeSliderPositionKey;
     BMIconModel *iconModel = self.items[index];
     item.itemTitle = iconModel.name;
     item.itemImage = iconModel.image;
+    item.itemImagePath = iconModel.path;
     return item;
 }
 

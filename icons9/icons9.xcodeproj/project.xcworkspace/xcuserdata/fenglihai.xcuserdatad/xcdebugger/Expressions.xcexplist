@@ -63,5 +63,13 @@
             </PersistentString>
          </PersistentStrings>
       </ContextState>
+      <ContextState
+         contextName = "-[CNGridViewItem pasteboard:item:provideDataForType:]:CNGridViewItem.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.itemImage">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
    </ContextStates>
 </VariablesViewState>

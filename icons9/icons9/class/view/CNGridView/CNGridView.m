@@ -81,7 +81,6 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 #pragma mark CNGridView
 
-NSString *kPrivateDragUTI = @"com.itx.cocoadraganddrop";
 
 @interface CNGridView () <NSDraggingSource, NSDraggingDestination, NSPasteboardItemDataProvider>
 {
@@ -1267,17 +1266,6 @@ NSString *kPrivateDragUTI = @"com.itx.cocoadraganddrop";
 
 
 
-- (void)pasteboard:(NSPasteboard *)sender item:(NSPasteboardItem *)item provideDataForType:(NSString *)type
-{
-    
-    if ( [type compare: NSPasteboardTypeTIFF] == NSOrderedSame ) {
-        
-        NSArray <CNGridViewItem *> *items = [self selectedItems];
-        for (CNGridViewItem *gridViewItem in items) {
-            [sender setData:[gridViewItem.itemImage TIFFRepresentation] forType:type];
-        }
-    }
-}
 
 - (void)mouseDown:(NSEvent *)theEvent {
 	if (!self.allowsSelection)
@@ -1300,7 +1288,8 @@ NSString *kPrivateDragUTI = @"com.itx.cocoadraganddrop";
             for (CNGridViewItem *gridViewItem in items) {
                 //准备拖拽
                 NSPasteboardItem *pbItem = [NSPasteboardItem new];
-                [pbItem setDataProvider:self forTypes:@[NSFilenamesPboardType, kPrivateDragUTI]];
+                [pbItem setDataProvider:gridViewItem forTypes:[NSArray arrayWithObjects:NSPasteboardTypeTIFF,NSPasteboardTypePNG, nil]];
+                
                 NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
                 NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
                 [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
