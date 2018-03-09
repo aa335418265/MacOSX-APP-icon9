@@ -254,6 +254,7 @@ static NSString *kItemSizeSliderPositionKey;
 
 //选中
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
+    [self.gridView deselectAllItems];
     NSInteger selectedRow = [self.tableView selectedRow];
     if (selectedRow >= 0 && selectedRow != self.currentSelectedRow) {
         //先删除
