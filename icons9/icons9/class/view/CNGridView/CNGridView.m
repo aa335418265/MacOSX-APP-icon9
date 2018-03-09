@@ -81,6 +81,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 #pragma mark CNGridView
 
+NSString *kPrivateDragUTI = @"com.itx.cocoadraganddrop";
 
 @interface CNGridView () <NSDraggingSource, NSDraggingDestination, NSPasteboardItemDataProvider>
 {
@@ -249,16 +250,12 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 }
 
 
-
-//发送方：定义允许的拖放操作
-- (NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context {
-    return NSDragOperationCopy;
-}
-
 - (void)draggingEnded:(nullable id <NSDraggingInfo>)sender {
     NSLog(@"拖放结束");
     
 }
+
+
 
 
 
@@ -875,7 +872,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 			}
 
 			else if (gridViewItem.selected) {
-				[self deselectAllItems];
+//				[self deselectAllItems];
 				[self selectItem:gridViewItem];
 			}
 		}
@@ -1253,17 +1250,62 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	}
 }
 
+- (BOOL)acceptsFirstMouse:(NSEvent *)event{
+    return YES;
+}
+//发送方：定义允许的拖放操作
+- (NSDragOperation)draggingSession:(NSDraggingSession *)session sourceOperationMaskForDraggingContext:(NSDraggingContext)context {
+    switch (context) {
+        case NSDraggingContextOutsideApplication:
+            return NSDragOperationCopy;
+        case NSDraggingContextWithinApplication:
+        default:
+            return NSDragOperationCopy;
+            break;
+    }
+}
+
+
+
+- (void)pasteboard:(NSPasteboard *)sender item:(NSPasteboardItem *)item provideDataForType:(NSString *)type
+{
+    
+    if ( [type compare: NSPasteboardTypeTIFF] == NSOrderedSame ) {
+        
+        NSArray <CNGridViewItem *> *items = [self selectedItems];
+        for (CNGridViewItem *gridViewItem in items) {
+            [sender setData:[gridViewItem.itemImage TIFFRepresentation] forType:type];
+        }
+    }
+}
+
 - (void)mouseDown:(NSEvent *)theEvent {
 	if (!self.allowsSelection)
 		return;
 
 	NSPoint location = [theEvent locationInWindow];
 	NSUInteger index = [self indexForItemAtLocation:location];
-
 	if (index != NSNotFound) {
 		[self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
-	}
-	else {
+        
+        
+        NSArray <CNGridViewItem *> *items = [self selectedItems];
+        NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:items.count];
+        for (CNGridViewItem *gridViewItem in items) {
+            //准备拖拽
+            NSPasteboardItem *pbItem = [NSPasteboardItem new];
+            [pbItem setDataProvider:self forTypes:@[NSFilenamesPboardType, kPrivateDragUTI]];
+            NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
+            NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
+            [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
+            [dragItems addObject:dragItem];
+        }
+        
+        NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];
+        draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
+        draggingSession.draggingFormation = NSDraggingFormationNone;
+//
+	}else{
 		[self deselectAllItems];
 	}
 }
@@ -1425,6 +1467,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	}
 	return NSNotFound;
 }
+
 
 - (CNGridViewItem *)gridView:(CNGridView *)gridView itemAtIndex:(NSInteger)index inSection:(NSInteger)section {
 	if ([self.dataSource respondsToSelector:_cmd]) {

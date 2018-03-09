@@ -15,7 +15,6 @@
 
 //#import "BMFileModel.h"
 
-NSString *kPrivateDragUTI = @"com.itx.cocoadraganddrop";
 
 static NSString *kItemSizeSliderPositionKey;
 
