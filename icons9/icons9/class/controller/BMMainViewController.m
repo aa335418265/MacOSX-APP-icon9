@@ -316,8 +316,8 @@ static NSString *kItemSizeSliderPositionKey;
 //颜色选择action事件
 - (void)changeColor:(id)sender {
     NSColorPanel *colorPanel = sender ;
-    NSColor *color = colorPanel.color;
-    self.gridView.backgroundColor = color;
+   
+    self.gridView.backgroundColor = colorPanel.color;;
 }
 
 
@@ -325,7 +325,7 @@ static NSString *kItemSizeSliderPositionKey;
 - (void)openColorPanel{
     
     NSColorPanel *colorpanel = [NSColorPanel sharedColorPanel];
-    colorpanel.mode = NSColorPanelModeCrayon; //调出时，默认色盘
+    colorpanel.mode = NSColorPanelModeRGB; //调出时，默认色盘
     [colorpanel setAction:@selector(changeColor:)];
     [colorpanel setTarget:self];
     [colorpanel orderFront:nil];
