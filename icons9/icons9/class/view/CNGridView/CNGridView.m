@@ -165,10 +165,8 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	_itemSize = [CNGridViewItem defaultItemSize];
 	_gridViewTitle = nil;
 	_scrollElasticity = YES;
-//    _allowsMultipleSelection = NO;
-//    _allowsMultipleSelectionWithDrag = NO;
 	_useSelectionRing = YES;
-	_useHover = YES;
+
 
     
 
@@ -1094,36 +1092,28 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 #pragma mark - 鼠标 左键 按下
 
 - (void)mouseDown:(NSEvent *)theEvent {
-    
-    
 
-    
-    
-
-    
     NSPoint location = [theEvent locationInWindow];
     self.mouseDownPoint = location;
     NSUInteger index = [self indexForItemAtLocation:location];
-    
+    //已经选中的item 索引集合
     NSIndexSet *selectedIndexes =  [self selectedIndexes];
+    //假设：已经选中的item 索引集合 包含了 现在按下区域所指向的item 索引，那么不做任何处理。
     if (![selectedIndexes containsIndex:index]) {
         //移除所有选中items
         [self deselectAllItems];
         if (index != NSNotFound) {
+            //选中item
             [self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
-            
         }else{
             [self deselectAllItems];
         }
     }
     
-
 }
 
 
 - (void)mouseMoved:(NSEvent *)theEvent {
-	if (!self.useHover)
-		return;
 
 	NSUInteger hoverItemIndex = [self indexForItemAtLocation:theEvent.locationInWindow];
 	if (hoverItemIndex != NSNotFound || hoverItemIndex != lastHoveredIndex) {

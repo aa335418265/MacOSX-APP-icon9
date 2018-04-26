@@ -140,10 +140,6 @@ typedef BOOL (^CNGridViewSelectItem)(CNGridViewItem *item);
  */
 @property (nonatomic, assign) BOOL useSelectionRing;
 
-/**
- ...
- */
-@property (nonatomic, assign) BOOL useHover;
 
 /**
  `NSMenu` to use when an item or the selected items are right clicked
