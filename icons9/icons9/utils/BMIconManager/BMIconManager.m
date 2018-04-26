@@ -15,16 +15,20 @@
 @end
 @implementation BMIconManager
 
+
+
 + (instancetype)sharedInstance {
     static BMIconManager *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[BMIconManager alloc] init];
+        [sharedInstance createDefaultGroup];
     });
     return sharedInstance;
 }
 
 - (BOOL)createGroupWithName:(NSString *)name {
+
     return FALSE;
 }
 
@@ -54,7 +58,13 @@
     return allGroups;
 }
 
-
+- (void)createDefaultGroup {
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *defaultPath = [self.homePath stringByAppendingPathComponent:@"default"];
+    if ([fileMgr fileExistsAtPath:defaultPath] == false) {
+        [fileMgr createDirectoryAtPath:defaultPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+}
 
 #pragma mark - Getter and Setter
 

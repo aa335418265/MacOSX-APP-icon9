@@ -19,6 +19,7 @@
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+
     self.mainViewController = [[BMMainViewController alloc] initWithNibName:@"BMMainViewController" bundle:nil];
     [self.window.contentView addSubview:self.mainViewController.view];
     self.mainViewController.view.frame = self.window.contentView.bounds;

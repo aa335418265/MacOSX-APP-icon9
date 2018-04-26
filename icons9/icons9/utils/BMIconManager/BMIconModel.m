@@ -56,27 +56,5 @@
 }
 
 
-//+ (NSImage *)svgImagePath:(NSString *)path size:(CGSize)size tintColor:(NSColor *)tintColor {
-//    SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
-//    
-//    svgImage.size = size;
-//    CGRect rect = CGRectMake(0, 0, svgImage.size.width, svgImage.size.height);
-//    CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(svgImage.CIImage.CGImage);
-//    BOOL opaque = alphaInfo == kCGImageAlphaNoneSkipLast
-//    || alphaInfo == kCGImageAlphaNoneSkipFirst
-//    || alphaInfo == kCGImageAlphaNone;
-//    
-//    
-//    
-//    CGContextRef context = svgImage.newCGContextAutosizedToFit;
-//    CGContextTranslateCTM(context, 0, svgImage.size.height);
-//    CGContextScaleCTM(context, 1.0, -1.0);
-//    CGContextSetBlendMode(context, kCGBlendModeNormal);
-//    CGContextClipToMask(context, rect, svgImage.CIImage.CGImage);
-//    CGContextSetFillColorWithColor(context, tintColor.CGColor);
-//    CGContextFillRect(context, rect);
-//    [svgImage renderInContext:context];
-//    return svgImage.NSImage;
-//}
 
 @end
