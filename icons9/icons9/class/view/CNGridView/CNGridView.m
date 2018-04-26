@@ -98,10 +98,12 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	NSInteger numberOfItems;
 	CGPoint selectionFrameInitialPoint;
 	BOOL isInitialCall;
-	BOOL mouseHasDragged;
 
 	CGFloat _contentInset;
 }
+
+@property (nonatomic, assign) BOOL mouseHasDraged;  ///< 鼠标已经拖拽选中item
+@property (nonatomic, assign) CGPoint mouseDownPoint; ///< 鼠标按下坐标
 @end
 
 
@@ -155,7 +157,6 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	selectionFrameInitialPoint = CGPointZero;
 	clickTimer = nil;
 	isInitialCall = YES;
-	mouseHasDragged = NO;
 	selectionFrameView = nil;
 
 
@@ -168,6 +169,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 //    _allowsMultipleSelectionWithDrag = NO;
 	_useSelectionRing = YES;
 	_useHover = YES;
+
     
 
 
@@ -1092,49 +1094,30 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 #pragma mark - 鼠标 左键 按下
 
 - (void)mouseDown:(NSEvent *)theEvent {
-    //移除所有选中items
-    [self deselectAllItems];
+    
+    
+
+    
+    
+
     
     NSPoint location = [theEvent locationInWindow];
+    self.mouseDownPoint = location;
     NSUInteger index = [self indexForItemAtLocation:location];
-    if (index != NSNotFound) {
-        [self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
-//        NSArray <CNGridViewItem *> *items = [self selectedItems];
-//        BOOL canDrag = NO;
-//        for (CNGridViewItem *gridViewItem in items) {
-//            if (gridViewItem.index == index) {
-//                canDrag = YES;
-//                break;
-//            }
-//        }
-//        if (canDrag) {
-//            NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:items.count];
-//            for (CNGridViewItem *gridViewItem in items) {
-//                //准备拖拽
-//                NSPasteboardItem *pbItem = [NSPasteboardItem new];
-//                __weak typeof(self) weakSelf = self;
-//                [pbItem setDataProvider:weakSelf forTypes:[NSArray arrayWithObjects:@"public.file-url", nil]];
-//
-//                NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
-//
-//                NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
-//                [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
-//                [dragItems addObject:dragItem];
-//            }
-//
-//            NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];
-//            draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
-//            draggingSession.draggingFormation = NSDraggingFormationNone;
-//        }else{
-//            [self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
-//        }
-//
-        
-        
-        //
-    }else{
+    
+    NSIndexSet *selectedIndexes =  [self selectedIndexes];
+    if (![selectedIndexes containsIndex:index]) {
+        //移除所有选中items
         [self deselectAllItems];
+        if (index != NSNotFound) {
+            [self selectItemAtIndex:index usingModifierFlags:theEvent.modifierFlags];
+            
+        }else{
+            [self deselectAllItems];
+        }
     }
+    
+
 }
 
 
@@ -1158,18 +1141,25 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 - (void)mouseDragged:(NSEvent *)theEvent {
 
-	mouseHasDragged = YES;
 	[NSCursor closedHandCursor];
-
+    
     NSPoint location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
-    [self drawSelectionFrameForMousePointerAtLocation:location];
-    [self selectItemsCoveredBySelectionFrame:selectionFrameView.frame usingModifierFlags:theEvent.modifierFlags];
+
+    NSUInteger index = [self indexForItemAtLocation:self.mouseDownPoint];
+    NSIndexSet *selectedIndexes = [self selectedIndexes];
+    if ([selectedIndexes containsIndex:index]) {
+        [self beginDragging:theEvent];
+    }else{
+        [self drawSelectionFrameForMousePointerAtLocation:location];
+        [self selectItemsCoveredBySelectionFrame:selectionFrameView.frame usingModifierFlags:theEvent.modifierFlags];
+    }
+
+
+
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
 	[NSCursor arrowCursor];
-
-    mouseHasDragged = NO;
     // remove selection frame
     [[selectionFrameView animator] setAlphaValue:0];
     [selectionFrameView removeFromSuperview];
@@ -1270,6 +1260,30 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 - (void)keyDown:(NSEvent *)theEvent {
     NSLog(@"键盘事件code=%d",[theEvent keyCode]);
     [super keyDown:theEvent];
+}
+
+#pragma mark - 私有方法
+
+
+- (void)beginDragging:(NSEvent *)theEvent {
+    
+    NSArray <CNGridViewItem *> *items = [self selectedItems];
+    NSMutableArray *dragItems = [NSMutableArray arrayWithCapacity:items.count];
+    for (CNGridViewItem *gridViewItem in items) {
+        //准备拖拽
+        NSPasteboardItem *pbItem = [NSPasteboardItem new];
+        __weak typeof(self) weakSelf = self;
+        [pbItem setDataProvider:weakSelf forTypes:[NSArray arrayWithObjects:@"public.file-url", nil]];
+        
+        NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
+        
+        NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
+        [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
+        [dragItems addObject:dragItem];
+    }
+    NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];
+    draggingSession.animatesToStartingPositionsOnCancelOrFail = YES;
+    draggingSession.draggingFormation = NSDraggingFormationNone;
 }
 
 #pragma mark - NSDraggingDestination 接收方
