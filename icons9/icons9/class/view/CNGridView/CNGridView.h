@@ -133,34 +133,7 @@ typedef BOOL (^CNGridViewSelectItem)(CNGridViewItem *item);
 
 
 #pragma mark - Managing Selections and Hovering
-/** @name Managing Selections */
 
-/**
- Property for setting whether the grid view allows item selection or not.
-
- The default value is `YES`.
- */
-@property (nonatomic, assign) BOOL allowsSelection;
-
-/**
- Property that indicates whether the grid view should allow multiple item selection or not.
-
- If you have this property set to `YES` with actually many selected items, all these items will be unselect on setting `allowsMultipleSelection` to `NO`.
-
-YES The grid view allows multiple item selection.
-NO  The grid view don't allow multiple item selection.
- */
-@property (nonatomic, assign) BOOL allowsMultipleSelection;
-
-/**
- Property indicates if the mouse drag operation can be used to select multiple items.
-
- If you have this property set to `YES` you must also set `allowsMultipleSelection`
-
-YES The grid view allows multiple item selection with mouse drag.
-NO  The grid view don't allow multiple item selection with mouse drag.
- */
-@property (nonatomic, assign) BOOL allowsMultipleSelectionWithDrag;
 
 /**
  ...

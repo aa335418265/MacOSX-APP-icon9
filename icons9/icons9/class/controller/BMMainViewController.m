@@ -84,8 +84,8 @@ static NSString *kItemSizeSliderPositionKey;
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
     self.gridView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"BackgroundDust"]];
     self.gridView.scrollElasticity = YES;//滚动弹性
-    self.gridView.allowsMultipleSelection = YES;//允许多选
-    self.gridView.allowsMultipleSelectionWithDrag = YES;//允许拖拽选
+//    self.gridView.allowsMultipleSelection = YES;//允许多选
+//    self.gridView.allowsMultipleSelectionWithDrag = YES;//允许拖拽选
     self.gridView.backgroundColor = [NSColor whiteColor];
     [self.gridView reloadData];
     NSLog(@"%@", self.gridView);
