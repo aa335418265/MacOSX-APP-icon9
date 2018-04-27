@@ -8,11 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @interface BMIconModel : NSObject
-@property (nonatomic, strong) NSString *name;       //文件名
-@property (nonatomic, strong) NSImage *image;       //图片
-@property (nonatomic, strong) NSString *path;     //路径
-@property (nonatomic, strong) NSString *exension; //扩展名呢
+@property (nonatomic,readonly, strong) NSString *name;       //文件名
+@property (nonatomic,readonly, strong) NSImage *image;       //图片
+@property (nonatomic,readonly, strong) NSString *path;       //路径
+
+@property (nonatomic,readonly, assign) BMImageType type;     //图片类型
 
 + (instancetype)modelWithPath:(NSString *)path;
++ (BMImageType)getImageType:(NSString *)path;
+
 @end

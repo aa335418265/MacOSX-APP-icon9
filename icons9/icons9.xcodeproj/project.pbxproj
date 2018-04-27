@@ -52,6 +52,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3668495D2092CFBA00D9640F /* BMGlobal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMGlobal.h; sourceTree = "<group>"; };
+		3668495E2092D0A900D9640F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		DB57752E204AA0C4003F9164 /* icons9.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = icons9.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB577535204AA0C4003F9164 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DB57753A204AA0C4003F9164 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,6 +115,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3668495F2092D10F00D9640F /* global */ = {
+			isa = PBXGroup;
+			children = (
+				3668495D2092CFBA00D9640F /* BMGlobal.h */,
+			);
+			name = global;
+			sourceTree = "<group>";
+		};
 		DB577525204AA0C4003F9164 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +145,7 @@
 		DB577530204AA0C4003F9164 /* icons9 */ = {
 			isa = PBXGroup;
 			children = (
+				3668495F2092D10F00D9640F /* global */,
 				DB57764D204E89C6003F9164 /* utils */,
 				DB577619204D9F85003F9164 /* app */,
 				DB57761C204D9F85003F9164 /* class */,
@@ -143,6 +154,7 @@
 				DB57753A204AA0C4003F9164 /* Assets.xcassets */,
 				DB57753F204AA0C4003F9164 /* Info.plist */,
 				DB577534204AA0C4003F9164 /* Supporting Files */,
+				3668495E2092D0A900D9640F /* PrefixHeader.pch */,
 			);
 			path = icons9;
 			sourceTree = "<group>";
@@ -488,6 +500,9 @@
 					"$(PROJECT_DIR)/icons9",
 					"$(PROJECT_DIR)",
 				);
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/icons9/PrefixHeader.pch";
 				INFOPLIST_FILE = icons9/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -507,6 +522,9 @@
 					"$(PROJECT_DIR)/icons9",
 					"$(PROJECT_DIR)",
 				);
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/icons9/PrefixHeader.pch";
 				INFOPLIST_FILE = icons9/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;

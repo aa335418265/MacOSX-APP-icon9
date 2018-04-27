@@ -1,0 +1,17 @@
+
+//
+//  PrefixHeader.pch
+//  icons9
+//
+//  Created by fenglh on 2018/4/27.
+//  Copyright © 2018年 冯立海. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+#import <Foundation/Foundation.h>
+
+#import "BMGlobal.h"
+
+
+#endif /* PrefixHeader_pch */

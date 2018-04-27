@@ -293,9 +293,12 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     
     
     
-    
+    CGSize imageSize = sourceImage.size;
     NSImageRep *imageRep = [sourceImage.representations firstObject];
-    CGSize imageSize = CGSizeMake(imageRep.pixelsWide, imageRep.pixelsHigh);
+    if (imageRep ) {
+       imageSize = CGSizeMake(imageRep.pixelsWide, imageRep.pixelsHigh);
+    }
+    
     
     CGFloat maxEdage = imageSize.width > imageSize.height ?  imageSize.width : imageSize.height;
     CGFloat scale = 1;

@@ -23,10 +23,7 @@
     NSMutableArray *images = [NSMutableArray array];
     
     for (NSString *fileName in contents) {
-        if (([[fileName pathExtension] isEqualToString:@"svg"] && (type & BMImageTypeSVG)) ||
-            ([[fileName pathExtension] isEqualToString:@"png"] && (type & BMImageTypePNG)) ||
-            ([[fileName pathExtension] isEqualToString:@"jpg"] && (type & BMImageTypeJPG))) {
-            
+        if ([BMIconModel getImageType:fileName] & type) {
             NSString *fullPath = [self.groupPath stringByAppendingPathComponent:fileName];
             [images addObject:[BMIconModel modelWithPath:fullPath]];
         }

@@ -60,8 +60,8 @@ static NSString *kItemSizeSliderPositionKey;
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
     self.hoverLayout = [CNGridViewItemLayout defaultLayout];
     self.selectionLayout = [CNGridViewItemLayout defaultLayout];
-    self.hoverLayout.backgroundColor = [[NSColor grayColor] colorWithAlphaComponent:0.42];
-    self.selectionLayout.backgroundColor = [NSColor colorWithCalibratedRed:0.542 green:0.699 blue:0.807 alpha:0.420];
+    self.hoverLayout.backgroundColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.42];
+    self.selectionLayout.backgroundColor = [NSColor whiteColor];//选中背景颜色
     //初始化NSUserDefaults 数据
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults integerForKey:kItemSizeSliderPositionKey]) {
@@ -135,7 +135,7 @@ static NSString *kItemSizeSliderPositionKey;
     popBtn.tag = popBtn.indexOfSelectedItem;
     
     NSLog(@"index=%@, %@",@(popBtn.indexOfSelectedItem), popBtn.itemTitles[popBtn.indexOfSelectedItem]);
-    BMImageType imageType = BMImageTypeNone;
+    BMImageType imageType = BMImageTypeUnknown;
     switch (popBtn.indexOfSelectedItem) {
         case 0:
              imageType = imageType | BMImageTypeAll;

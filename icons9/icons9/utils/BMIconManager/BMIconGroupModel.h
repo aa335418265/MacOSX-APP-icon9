@@ -6,17 +6,10 @@
 //  Copyright © 2018年 冯立海. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+
 #import "BMIconModel.h"
 
 
-typedef NS_ENUM(NSUInteger, BMImageType) {
-    BMImageTypeNone = 0,
-    BMImageTypeSVG = 1 << 0,
-    BMImageTypePNG = 1 << 1,
-    BMImageTypeJPG = 1 << 2,
-    BMImageTypeAll = BMImageTypeSVG | BMImageTypePNG | BMImageTypeJPG,
-};
 
 
 @interface BMIconGroupModel : NSObject

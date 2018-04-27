@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12121" systemVersion="16C68" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -40,7 +40,7 @@
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
-                                                    <tableColumn width="301" minWidth="40" maxWidth="1000" id="xnP-go-7V0">
+                                                    <tableColumn identifier="" width="301" minWidth="40" maxWidth="1000" id="xnP-go-7V0">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -57,16 +57,19 @@
                                                                 <rect key="frame" x="1" y="1" width="301" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <subviews>
-                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xlv-t7-9Jh">
-                                                                        <rect key="frame" x="0.0" y="13" width="301" height="17"/>
-                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Xlv-t7-9Jh">
+                                                                        <rect key="frame" x="6" y="7" width="90" height="16"/>
                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="KOo-y2-Cpc">
-                                                                            <font key="font" metaFont="system"/>
+                                                                            <font key="font" metaFont="system" size="12"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
                                                                     </textField>
                                                                 </subviews>
+                                                                <constraints>
+                                                                    <constraint firstItem="Xlv-t7-9Jh" firstAttribute="leading" secondItem="pLZ-r3-KxM" secondAttribute="leading" constant="8" id="0KW-wn-pde"/>
+                                                                    <constraint firstItem="Xlv-t7-9Jh" firstAttribute="centerY" secondItem="pLZ-r3-KxM" secondAttribute="centerY" id="MZN-1O-a5q"/>
+                                                                </constraints>
                                                                 <connections>
                                                                     <outlet property="textField" destination="Xlv-t7-9Jh" id="NoQ-rH-2tV"/>
                                                                 </connections>
@@ -128,9 +131,9 @@
                                         <action selector="itemSizeSliderAction:" target="-2" id="tAO-9P-f5c"/>
                                     </connections>
                                 </slider>
-                                <scrollView wantsLayer="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="ydg-pb-O6Y">
+                                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" findBarPosition="belowContent" translatesAutoresizingMaskIntoConstraints="NO" id="ydg-pb-O6Y">
                                     <rect key="frame" x="0.0" y="33" width="431" height="323"/>
-                                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xVc-f4-T8x">
+                                    <clipView key="contentView" copiesOnScroll="NO" id="xVc-f4-T8x">
                                         <rect key="frame" x="0.0" y="0.0" width="431" height="323"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
@@ -144,12 +147,12 @@
                                             </view>
                                         </subviews>
                                     </clipView>
-                                    <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="ger-4a-zov">
-                                        <rect key="frame" x="0.0" y="307" width="431" height="16"/>
+                                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="ger-4a-zov">
+                                        <rect key="frame" x="-100" y="-100" width="431" height="15"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
-                                    <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="PiF-Be-U2K">
-                                        <rect key="frame" x="415" y="0.0" width="16" height="323"/>
+                                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="PiF-Be-U2K">
+                                        <rect key="frame" x="416" y="0.0" width="15" height="323"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                 </scrollView>

@@ -45,7 +45,7 @@ static CGFloat kDefaultItemBorderRadius;
 @implementation CNGridViewItemLayout
 
 + (void)initialize {
-	kDefaultSelectionRingLineWidth = 3.0f;
+	kDefaultSelectionRingLineWidth = 1.0f;
 	kDefaultContentInset = 3.0f;
 	kDefaultItemBorderRadius = 5.0f;
 }
@@ -53,9 +53,10 @@ static CGFloat kDefaultItemBorderRadius;
 - (id)init {
 	self = [super init];
 	if (self) {
-		_backgroundColor        = [NSColor itemBackgroundColor];
-		_selectionRingColor     = [NSColor itemSelectionRingColor];
-		_selectionRingLineWidth = kDefaultSelectionRingLineWidth;
+//        _backgroundColor        = [NSColor itemBackgroundColor];
+        _backgroundColor        = [NSColor whiteColor]; //item背景颜色
+		_selectionRingColor     = [NSColor itemSelectionRingColor];//选中外环的颜色
+		_selectionRingLineWidth = kDefaultSelectionRingLineWidth;//外环宽度
 		_contentInset           = kDefaultContentInset;
 		_itemBorderRadius       = kDefaultItemBorderRadius;
 		_visibleContentMask     = (CNGridViewItemVisibleContentImage | CNGridViewItemVisibleContentTitle);
