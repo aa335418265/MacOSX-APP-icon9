@@ -26,10 +26,13 @@ static NSString *kItemSizeSliderPositionKey;
 @property (strong) NSMutableArray <BMIconGroupModel *>*groups;
 @property (weak) IBOutlet NSTableView *tableView;
 
-@property (assign) NSInteger currentSelectedRow;
+
 @property (strong) CNGridViewItemLayout *defaultLayout; //默认样式
 @property (strong) CNGridViewItemLayout *hoverLayout;   //鼠标悬停样式
-@property (strong) CNGridViewItemLayout *selectionLayout;   //选中样式
+@property (strong) CNGridViewItemLayout *selectedLayout;   //选中样式
+
+@property (nonatomic, assign) BMImageType selectedFilteredImageType; ///< 选中已过滤的图片类型
+@property (nonatomic, assign) NSInteger selectedGroupIndex; //选中的组别
 
 @end
 
@@ -51,17 +54,15 @@ static NSString *kItemSizeSliderPositionKey;
 
 
 
-
-
 - (void)initUI {
     
 
     self.defaultLayout = [CNGridViewItemLayout defaultLayout];
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
     self.hoverLayout = [CNGridViewItemLayout defaultLayout];
-    self.selectionLayout = [CNGridViewItemLayout defaultLayout];
+    self.selectedLayout = [CNGridViewItemLayout defaultLayout];
     self.hoverLayout.backgroundColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.42];
-    self.selectionLayout.backgroundColor = [NSColor whiteColor];//选中背景颜色
+    self.selectedLayout.backgroundColor = [NSColor whiteColor];//选中背景颜色
     //初始化NSUserDefaults 数据
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults integerForKey:kItemSizeSliderPositionKey]) {
@@ -84,8 +85,6 @@ static NSString *kItemSizeSliderPositionKey;
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
     self.gridView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"BackgroundDust"]];
     self.gridView.scrollElasticity = YES;//滚动弹性
-//    self.gridView.allowsMultipleSelection = YES;//允许多选
-//    self.gridView.allowsMultipleSelectionWithDrag = YES;//允许拖拽选
     self.gridView.backgroundColor = [NSColor whiteColor];
     [self.gridView reloadData];
     NSLog(@"%@", self.gridView);
@@ -110,62 +109,62 @@ static NSString *kItemSizeSliderPositionKey;
     
     self.items = [NSMutableArray array];
     self.groups = [NSMutableArray array];
-    self.currentSelectedRow = 0;    //默认当前选中row
+    self.selectedGroupIndex = 0;    //默认当前选中group
+    self.selectedFilteredImageType = BMImageTypeAll;//当前选中要已过滤的图片类型,即要显示的类型
 
     NSArray *groups = [[[BMIconManager sharedInstance] allGroups] copy];
     [self.groups addObjectsFromArray:groups];
-    BMIconGroupModel * group = [self.groups firstObject];
+    BMIconGroupModel * group = [self.groups objectAtIndex:self.selectedGroupIndex];
     if (group && groups.count > 0) {
-        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.currentSelectedRow] byExtendingSelection:YES];
-        self.items =[NSMutableArray arrayWithArray:[[group allObjects] copy]];
+        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
+        self.items =[NSMutableArray arrayWithArray:[[group objectsWithType:self.selectedFilteredImageType] copy]];
     }
 }
 
 
 #pragma mark - 按钮事件
 
-
-
-- (IBAction)didPopButtonAction:(id)sender {
-    NSPopUpButton *popBtn = (NSPopUpButton *)sender;
-    
-    if (popBtn.tag == popBtn.indexOfSelectedItem) {
-        return;
-    }
-    popBtn.tag = popBtn.indexOfSelectedItem;
-    
-    NSLog(@"index=%@, %@",@(popBtn.indexOfSelectedItem), popBtn.itemTitles[popBtn.indexOfSelectedItem]);
+- (BMImageType)imageTypeWithIndexOfSelectedItem:(NSInteger)index {
     BMImageType imageType = BMImageTypeUnknown;
-    switch (popBtn.indexOfSelectedItem) {
+    switch (index) {
         case 0:
-             imageType = imageType | BMImageTypeAll;
+            imageType =  BMImageTypeAll;
             break;
         case 1:
-            imageType = imageType | BMImageTypeSVG;
+            imageType =  BMImageTypeSVG;
             break;
         case 2:
-            imageType = imageType | BMImageTypePNG;
+            imageType =  BMImageTypePNG;
             break;
         case 3:
-            imageType = imageType | BMImageTypeJPG;
+            imageType = BMImageTypeJPG;
             break;
         default:
             break;
     }
-    
-    
+    return imageType;
+}
 
-        //先删除
-        [self.items removeAllObjects];
-        [self.gridView reloadDataAnimated:YES];
-        //后更新
-        BMIconGroupModel *group = self.groups[self.currentSelectedRow];
-        NSArray *objects = [[group objectsWithType:imageType] copy];
-        if (objects.count > 0) {
-            [self.items addObjectsFromArray:objects];
-            [self.gridView reloadDataAnimated:YES];
-        }
+- (IBAction)didPopButtonAction:(id)sender {
     
+    NSPopUpButton *popBtn = (NSPopUpButton *)sender;
+    BMImageType imageType = [self imageTypeWithIndexOfSelectedItem:popBtn.indexOfSelectedItem];
+    if (self.selectedFilteredImageType == imageType) {
+        return;
+    }
+    
+    self.selectedFilteredImageType = imageType;
+    //先删除
+    [self.items removeAllObjects];
+    [self.gridView reloadDataAnimated:YES];
+    //后更新
+    BMIconGroupModel *group = self.groups[self.selectedGroupIndex];
+    NSArray *objects = [[group objectsWithType:imageType] copy];
+    if (objects.count > 0) {
+        [self.items addObjectsFromArray:objects];
+        [self.gridView reloadDataAnimated:YES];
+    }
+
 }
 
 - (IBAction)addFilesButtonAction:(id)sender {
@@ -226,7 +225,7 @@ static NSString *kItemSizeSliderPositionKey;
         item = [[CNGridViewItem alloc] initWithLayout:self.defaultLayout reuseIdentifier:reuseIdentifier];
     }
     item.hoverLayout = self.hoverLayout;
-    item.selectionLayout = self.selectionLayout;
+    item.selectionLayout = self.selectedLayout;
     BMIconModel *iconModel = self.items[index];
     item.itemTitle = iconModel.name;
     item.itemImage = iconModel.image;
@@ -261,22 +260,25 @@ static NSString *kItemSizeSliderPositionKey;
 
 //选中
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
+    
     [self.gridView deselectAllItems];
     NSInteger selectedRow = [self.tableView selectedRow];
-    if (selectedRow >= 0 && selectedRow != self.currentSelectedRow) {
-        //先删除
-        [self.items removeAllObjects];
-        [self.gridView reloadDataAnimated:YES];
-        //后更新
-        BMIconGroupModel *group = self.groups[selectedRow];
-        NSArray *objects = [[group allObjects] copy];
-        if (objects.count > 0) {
-            [self.items addObjectsFromArray:objects];
-            [self.gridView reloadDataAnimated:YES];
-        }
-
+    if (selectedRow < 0 ||  selectedRow == self.selectedGroupIndex) {
+        return;
     }
-    self.currentSelectedRow = selectedRow;
+    
+    //先删除
+    [self.items removeAllObjects];
+    [self.gridView reloadDataAnimated:YES];
+    //后更新
+    BMIconGroupModel *group = self.groups[selectedRow];
+    NSArray *objects = [[group allObjects] copy];
+    if (objects.count > 0) {
+        [self.items addObjectsFromArray:objects];
+        [self.gridView reloadDataAnimated:YES];
+    }
+    self.selectedGroupIndex = selectedRow;
+    
 
 
 
