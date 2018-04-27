@@ -1178,7 +1178,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
     NSArray <CNGridViewItem *> *gridViewItems = [self selectedItems];
     NSMutableArray *writeObjects = [NSMutableArray arrayWithCapacity:gridViewItems.count];
     for (CNGridViewItem *gridViewItem  in gridViewItems) {
-        [writeObjects addObject:[NSURL fileURLWithPath:gridViewItem.itemImagePath]];
+        [writeObjects addObject:[NSURL fileURLWithPath:gridViewItem.imageModel.path]];
         NSLog(@"provideDataForType:%@",type);
     }
      [pasteboard writeObjects:writeObjects];
@@ -1268,7 +1268,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
         NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
         
         NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
-        [dragItem setDraggingFrame:draggingRect contents:gridViewItem.itemImage];
+        [dragItem setDraggingFrame:draggingRect contents:gridViewItem.showingImage];
         [dragItems addObject:dragItem];
     }
     NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];

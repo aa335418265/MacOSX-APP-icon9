@@ -53,6 +53,8 @@ static NSString *kItemSizeSliderPositionKey;
 }
 
 
+#pragma mark - 设置UI
+
 
 - (void)initUI {
     
@@ -124,26 +126,6 @@ static NSString *kItemSizeSliderPositionKey;
 
 #pragma mark - 按钮事件
 
-- (BMImageType)imageTypeWithIndexOfSelectedItem:(NSInteger)index {
-    BMImageType imageType = BMImageTypeUnknown;
-    switch (index) {
-        case 0:
-            imageType =  BMImageTypeAll;
-            break;
-        case 1:
-            imageType =  BMImageTypeSVG;
-            break;
-        case 2:
-            imageType =  BMImageTypePNG;
-            break;
-        case 3:
-            imageType = BMImageTypeJPG;
-            break;
-        default:
-            break;
-    }
-    return imageType;
-}
 
 - (IBAction)didPopButtonAction:(id)sender {
     
@@ -174,7 +156,6 @@ static NSString *kItemSizeSliderPositionKey;
     alert.icon = [NSImage imageNamed:@"(Lion_Head)_SFont.CN.png"];
     //添加两个按钮吧
     [alert addButtonWithTitle:@"OK"];
-
     //正文
     alert.messageText = @"提示";
     //描述文字
@@ -226,10 +207,7 @@ static NSString *kItemSizeSliderPositionKey;
     }
     item.hoverLayout = self.hoverLayout;
     item.selectionLayout = self.selectedLayout;
-    BMIconModel *iconModel = self.items[index];
-    item.itemTitle = iconModel.name;
-    item.itemImage = iconModel.image;
-    item.itemImagePath = iconModel.path;
+    item.imageModel = self.items[index];
     return item;
 }
 
@@ -279,11 +257,8 @@ static NSString *kItemSizeSliderPositionKey;
     }
     self.selectedGroupIndex = selectedRow;
     
-
-
-
-    
 }
+
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return self.groups.count;
@@ -302,14 +277,9 @@ static NSString *kItemSizeSliderPositionKey;
         label.bordered = NO;
         label.editable = NO;
         label.alignment = NSTextAlignmentLeft;
-        
-
     }
     label.stringValue = self.groups[row].groupName;
-    
-    
     return label;
-
 }
 
 
@@ -332,5 +302,27 @@ static NSString *kItemSizeSliderPositionKey;
     [colorpanel setTarget:self];
     [colorpanel orderFront:nil];
 }
+
+- (BMImageType)imageTypeWithIndexOfSelectedItem:(NSInteger)index {
+    BMImageType imageType = BMImageTypeUnknown;
+    switch (index) {
+        case 0:
+            imageType =  BMImageTypeAll;
+            break;
+        case 1:
+            imageType =  BMImageTypeSVG;
+            break;
+        case 2:
+            imageType =  BMImageTypePNG;
+            break;
+        case 3:
+            imageType = BMImageTypeJPG;
+            break;
+        default:
+            break;
+    }
+    return imageType;
+}
+
 
 @end

@@ -7,15 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <SVGKit/SVGKit.h>
 
 
 @interface BMIconModel : NSObject
 @property (nonatomic,readonly, strong) NSString *name;       //文件名
-@property (nonatomic,readonly, strong) NSImage *image;       //图片
 @property (nonatomic,readonly, strong) NSString *path;       //路径
-
 @property (nonatomic,readonly, assign) BMImageType type;     //图片类型
+
+@property (nonatomic,readonly, strong) NSImage *image;
+@property (nonatomic,readonly, strong) SVGKImage *svgImge;  //当type = BMImageTypeSVG 时
+
 
 + (instancetype)modelWithPath:(NSString *)path;
 + (BMImageType)getImageType:(NSString *)path;

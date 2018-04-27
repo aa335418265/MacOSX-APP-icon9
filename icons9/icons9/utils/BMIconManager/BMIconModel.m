@@ -8,15 +8,16 @@
 
 #import "BMIconModel.h"
 #import <AppKit/AppKit.h>
-#import "SKSVGObject.h"
-#import <SVGKit/SVGKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface BMIconModel ()
 @property (nonatomic,readwrite, strong) NSString *name;       //文件名
-@property (nonatomic,readwrite, strong) NSImage *image;       //图片
 @property (nonatomic,readwrite, strong) NSString *path;       //路径
 @property (nonatomic,readwrite, assign) BMImageType type;     //图片类型
+
+@property (nonatomic,readwrite, strong) NSImage *image;
+@property (nonatomic,readwrite, strong) SVGKImage *svgImge;  //当type = BMImageTypeSVG 时
 @end
 
 
@@ -29,30 +30,20 @@
     if (!exists) {
         return nil;
     }
+    BMImageType type = [self getImageType:path];
+    
     BMIconModel *model = [[BMIconModel alloc] init];
     model.path = path;
     model.name = [path lastPathComponent];
-    model.type = [self getImageType:path];
-    
-    
-    if (model.type == BMImageTypeSVG ) {
-         SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
-        svgImage.size = CGSizeMake(1024, 1024);//svg 存在自身带有固定尺寸，如果不被自身固定尺寸限制，而要期望的尺寸那么设置size
-        if (svgImage.hasSize) {
-            NSLog(@"%@包含大小:width=%f, height=%f", model.name,svgImage.size.width, svgImage.size.height);
-        }
-        //改变颜色
-        [BMIconModel changeFillColorRecursively:[svgImage CALayerTree] color:[NSColor redColor]];
-        CIImage *ciImage = svgImage.CIImage ;
-        NSImage *nsImage = [[NSImage alloc] initWithCGImage:ciImage.CGImage size:CGSizeMake(1024, 1024)];
-
-        
-        model.image = nsImage;
+    model.type = type;
+    if (type == BMImageTypeSVG) {
+        SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
+        model.svgImge = svgImage;
+        svgImage.size = CGSizeMake(1024, 1024);
+        model.image = svgImage.NSImage;
     }else{
         model.image = [[NSImage alloc] initWithContentsOfFile:path] ;
     }
-    
-
     return model;
 }
 

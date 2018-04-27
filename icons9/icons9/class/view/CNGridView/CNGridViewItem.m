@@ -31,18 +31,23 @@
 #import "CNGridViewItem.h"
 #import "NSColor+CNGridViewPalette.h"
 #import "CNGridViewItemLayout.h"
+#import "SKSVGObject.h"
+#import <SVGKit/SVGKit.h>
 
 
 #if !__has_feature(objc_arc)
 #error "Please use ARC for compiling this file."
 #endif
 
+#define MiniSquareSize(size) (size.width < size.height ? CGSizeMake(size.width, size.width) : CGSizeMake(size.height, size.height))
 
 NSString *const kCNDefaultItemIdentifier = @"CNGridViewItem";
+
 
 /// Notifications
 extern NSString *CNGridViewSelectAllItemsNotification;
 extern NSString *CNGridViewDeSelectAllItemsNotification;
+
 
 @implementation CNGridViewItemBase
 
@@ -61,6 +66,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 	self = [super init];
 	if (self) {
 		[self initProperties];
+        
 	}
 	return self;
 }
@@ -86,14 +92,11 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 	self.reuseIdentifier = kCNDefaultItemIdentifier;
 	self.index = CNItemIndexUndefined;
 
-    //    /// Selection and Hovering
-    //    _selected = NO;
-    //    _selectable = YES;
-    //    _hovered = NO;
 
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	[nc addObserver:self selector:@selector(selectAll:) name:CNGridViewSelectAllItemsNotification object:nil];
 	[nc addObserver:self selector:@selector(deSelectAll:) name:CNGridViewDeSelectAllItemsNotification object:nil];
+    
 }
 
 - (void)prepareForReuse {
@@ -120,6 +123,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 @interface CNGridViewItem ()
 @property (strong) CNGridViewItemLayout *currentLayout;
+@property (nonatomic,readwrite, strong) NSImage *showingImage; ///< 当前Item展示的image
 @end
 
 @implementation CNGridViewItem
@@ -141,16 +145,14 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 - (void)initProperties {
 	[super initProperties];
 
-	/// Item Default Content
-	_itemImage = nil;
-	_itemTitle = @"";
-	/// Grid View Item Layout
+	/// Grid View 布局
 	_defaultLayout = [CNGridViewItemLayout defaultLayout];
 	_hoverLayout = [CNGridViewItemLayout defaultLayout];
 	_selectionLayout = [CNGridViewItemLayout defaultLayout];
 	_currentLayout = _defaultLayout;
 	_useLayout = YES;
 }
+
 
 - (BOOL)isFlipped {
 	return YES;
@@ -160,9 +162,6 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
-
-	self.itemImage = nil;
-	self.itemTitle = @"";
 }
 
 #pragma mark - ViewDrawing
@@ -170,107 +169,112 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 
 - (void)drawRect:(NSRect)rect {
-	NSRect dirtyRect = self.bounds;
+    NSRect dirtyRect = self.bounds;
 
-	NSRect contentRect = NSMakeRect(dirtyRect.origin.x + self.currentLayout.contentInset,
-	                                dirtyRect.origin.y + self.currentLayout.contentInset,
-	                                dirtyRect.size.width - self.currentLayout.contentInset * 2,
-	                                dirtyRect.size.height - self.currentLayout.contentInset * 2);
+    //内容大小
+    NSRect contentRect = NSMakeRect(dirtyRect.origin.x + self.currentLayout.contentInset,
+                                    dirtyRect.origin.y + self.currentLayout.contentInset,
+                                    dirtyRect.size.width - self.currentLayout.contentInset * 2,
+                                    dirtyRect.size.height - self.currentLayout.contentInset * 2);
 
-	NSBezierPath *contentRectPath = [NSBezierPath bezierPathWithRoundedRect:contentRect
-	                                                                xRadius:self.currentLayout.itemBorderRadius
-	                                                                yRadius:self.currentLayout.itemBorderRadius];
-	[self.currentLayout.backgroundColor setFill];
-	[contentRectPath fill];
+    NSBezierPath *contentRectPath = [NSBezierPath bezierPathWithRoundedRect:contentRect
+                                                                    xRadius:self.currentLayout.itemBorderRadius
+                                                                    yRadius:self.currentLayout.itemBorderRadius];
+    [self.currentLayout.backgroundColor setFill];
+    [contentRectPath fill];
 
-	/// draw selection ring
-	if (self.selected) {
-		[self.currentLayout.selectionRingColor setStroke];
-		[contentRectPath setLineWidth:self.currentLayout.selectionRingLineWidth];
-		[contentRectPath stroke];
-	}
+    /// draw selection ring
+    if (self.selected) {
+        [self.currentLayout.selectionRingColor setStroke];
+        [contentRectPath setLineWidth:self.currentLayout.selectionRingLineWidth];
+        [contentRectPath stroke];
+    }
 
-    
     //文本高度
     CGFloat textHeight = 24;
     CGFloat imageContentInset = 10;
-    CGSize scaleImageSize = CGSizeMake(contentRect.size.width - 2 * imageContentInset, contentRect.size.height - 2 * imageContentInset - textHeight);
-    
-    
-    
-    NSImage *scaleImage = [self resizeImage:self.itemImage targetSize:scaleImageSize ];
-    if (scaleImage == nil) {
-        return ;
+    //图片大小
+    CGSize imageSize = CGSizeMake(contentRect.size.width - 2 * imageContentInset, contentRect.size.height - 2 * imageContentInset - textHeight);
+
+    NSImage *image =nil;
+    if (self.imageModel.type == BMImageTypeSVG) {
+        CGSize svgSize = MiniSquareSize(imageSize);//svg 存在自身带有固定尺寸，如果不被自身固定尺寸限制，而要期望的尺寸那么设置size
+        image = [self resizeImage:self.imageModel.image targetSize:svgSize];
+    }else{
+        image = [self resizeImage:self.imageModel.image targetSize:imageSize];//调整大小
     }
-    
-    
-	NSRect srcRect = NSZeroRect;
-	NSSize imgSize = scaleImage.size;
-	srcRect.size = imgSize;
-	NSRect imageRect = NSZeroRect;
-	NSRect textRect = NSZeroRect;
-	CGFloat contentInset = self.currentLayout.contentInset;
 
-	CGFloat imgW = imgSize.width;
-	CGFloat imgH = imgSize.height;
-	CGFloat W = NSWidth(contentRect);
-	CGFloat H = NSHeight(contentRect);
+    self.showingImage = image;
 
-	if ((self.currentLayout.visibleContentMask & (CNGridViewItemVisibleContentImage | CNGridViewItemVisibleContentTitle)) ==
-	    (CNGridViewItemVisibleContentImage | CNGridViewItemVisibleContentTitle)
-	    ) {
-		imageRect = NSMakeRect(dirtyRect.size.width /2 - imgW / 2 ,
-		                       self.currentLayout.contentInset + imageContentInset ,
-		                       imgW,
-		                       imgH);
-		[scaleImage drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
-        
+
+    NSRect srcRect = NSZeroRect;
+    NSSize imgSize = image.size;
+    srcRect.size = imgSize;
+    NSRect imageRect = NSZeroRect;
+    NSRect textRect = NSZeroRect;
+    CGFloat contentInset = self.currentLayout.contentInset;
+
+    CGFloat imgW = imgSize.width;
+    CGFloat imgH = imgSize.height;
+    CGFloat W = NSWidth(contentRect);
+    CGFloat H = NSHeight(contentRect);
+
+    if ((self.currentLayout.visibleContentMask & (CNGridViewItemVisibleContentImage | CNGridViewItemVisibleContentTitle)) ==
+        (CNGridViewItemVisibleContentImage | CNGridViewItemVisibleContentTitle)
+        ) {
+        imageRect = NSMakeRect(dirtyRect.size.width /2 - imgW / 2 ,
+                               self.currentLayout.contentInset + imageContentInset ,
+                               imgW,
+                               imgH);
+        [image drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
+
         CGFloat textInset = 16;
-        CGSize textSize = [self getStringSize:self.itemTitle maxWidth:W - textInset maxHeight:textHeight attributes:self.currentLayout.itemTitleTextAttributes];
-        
-		textRect = NSMakeRect((dirtyRect.size.width - textSize.width) / 2.0 + 2,
-		                      dirtyRect.size.height - 2 * self.currentLayout.contentInset - textSize.height - 4,
-		                      textSize.width,
-		                      textSize.height);
-		[self.itemTitle drawInRect:textRect withAttributes:self.currentLayout.itemTitleTextAttributes];
-	}
+        CGSize textSize = [self getStringSize:self.imageModel.name maxWidth:W - textInset maxHeight:textHeight attributes:self.currentLayout.itemTitleTextAttributes];
 
-	else if (self.currentLayout.visibleContentMask & CNGridViewItemVisibleContentImage) {
-		if (W >= imgW && H >= imgH) {
-			imageRect = NSMakeRect(((W - imgW) / 2) + contentInset,
-			                       ((H - imgH) / 2) + contentInset,
-			                       imgW,
-			                       imgH);
-		}
-		else if (0 < W && 0 < H && imgW > 0 && imgH > 0) {
-			CGFloat kView = H / W;
-			CGFloat kImg = imgH / imgW;
+        textRect = NSMakeRect((dirtyRect.size.width - textSize.width) / 2.0 + 2,
+                              dirtyRect.size.height - 2 * self.currentLayout.contentInset - textSize.height - 4,
+                              textSize.width,
+                              textSize.height);
+        [self.imageModel.name drawInRect:textRect withAttributes:self.currentLayout.itemTitleTextAttributes];
+    }
 
-			if (kView > kImg) {
-				// use W
-				CGFloat newH = W * kImg;
-				CGFloat y = floorf((H - newH) / 2);
-				imageRect.size.width = W;
-				imageRect.size.height = ceilf(newH);
-				imageRect.origin.x = 0;
-				imageRect.origin.y = y;
-			}
-			else {
-				// use H
+    else if (self.currentLayout.visibleContentMask & CNGridViewItemVisibleContentImage) {
+        if (W >= imgW && H >= imgH) {
+            imageRect = NSMakeRect(((W - imgW) / 2) + contentInset,
+                                   ((H - imgH) / 2) + contentInset,
+                                   imgW,
+                                   imgH);
+        }
+        else if (0 < W && 0 < H && imgW > 0 && imgH > 0) {
+            CGFloat kView = H / W;
+            CGFloat kImg = imgH / imgW;
 
-				CGFloat newW = H / kImg;
-				CGFloat x = floorf((W - newW) / 2);
-				imageRect.size.width = newW;
-				imageRect.size.height = H;
-				imageRect.origin.x = x;
-				imageRect.origin.y = 0;
-			}
-		}
-		[self.itemImage drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
-	}
+            if (kView > kImg) {
+                // use W
+                CGFloat newH = W * kImg;
+                CGFloat y = floorf((H - newH) / 2);
+                imageRect.size.width = W;
+                imageRect.size.height = ceilf(newH);
+                imageRect.origin.x = 0;
+                imageRect.origin.y = y;
+            }
+            else {
+                // use H
 
-	else if (self.currentLayout.visibleContentMask & CNGridViewItemVisibleContentTitle) {
-	}
+                CGFloat newW = H / kImg;
+                CGFloat x = floorf((W - newW) / 2);
+                imageRect.size.width = newW;
+                imageRect.size.height = H;
+                imageRect.origin.x = x;
+                imageRect.origin.y = 0;
+            }
+        }
+
+        [image drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
+    }
+
+    else if (self.currentLayout.visibleContentMask & CNGridViewItemVisibleContentTitle) {
+    }
 }
 
 
@@ -278,32 +282,32 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
     NSSize size = NSMakeSize(maxWidth, maxHeight);
     NSRect bounds;
-    
+
     // 2获得该文字的高度和宽度
     bounds = [string
               boundingRectWithSize: size
               options: NSStringDrawingUsesFontLeading
               attributes: attributes];
-    
+
     return bounds.size;
 }
 //图片缩放
 - (NSImage*) resizeImage:(NSImage*)sourceImage targetSize:(CGSize)targetSize
 {
-    
-    
-    
+
+
+
     CGSize imageSize = sourceImage.size;
-    NSImageRep *imageRep = [sourceImage.representations firstObject];
-    if (imageRep ) {
-       imageSize = CGSizeMake(imageRep.pixelsWide, imageRep.pixelsHigh);
-    }
-    
-    
+//    NSImageRep *imageRep = [sourceImage.representations firstObject];
+//    if (imageRep ) {
+//       imageSize = CGSizeMake(imageRep.pixelsWide, imageRep.pixelsHigh);
+//    }
+
+
     CGFloat maxEdage = imageSize.width > imageSize.height ?  imageSize.width : imageSize.height;
     CGFloat scale = 1;
     scale = targetSize.height / maxEdage;
-    
+
     NSRect targetFrame = NSMakeRect(0, 0, imageSize.width * scale, imageSize.height * scale);
     if (targetFrame.size.width <0 || targetFrame.size.height < 0) {
         return nil;
@@ -313,13 +317,13 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     [sourceImage bestRepresentationForRect:targetFrame
                                    context:nil
                                      hints:nil];
-    
+
     targetImage = [[NSImage alloc] initWithSize:targetFrame.size];
-    
+
     [targetImage lockFocus];
     [sourceImageRep drawInRect: targetFrame];
     [targetImage unlockFocus];
-    
+
     return targetImage;
 }
 

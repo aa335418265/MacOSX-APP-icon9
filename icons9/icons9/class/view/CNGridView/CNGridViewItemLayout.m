@@ -59,6 +59,7 @@ static CGFloat kDefaultItemBorderRadius;
 		_selectionRingLineWidth = kDefaultSelectionRingLineWidth;//外环宽度
 		_contentInset           = kDefaultContentInset;
 		_itemBorderRadius       = kDefaultItemBorderRadius;
+        //显示图片和标题
 		_visibleContentMask     = (CNGridViewItemVisibleContentImage | CNGridViewItemVisibleContentTitle);
 
 		/// title text font attributes
