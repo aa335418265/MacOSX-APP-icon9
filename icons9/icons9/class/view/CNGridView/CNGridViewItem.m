@@ -295,8 +295,6 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
         [image drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     }
 
-    else if (self.currentLayout.visibleContentMask & CNGridViewItemVisibleContentTitle) {
-    }
 }
 
 

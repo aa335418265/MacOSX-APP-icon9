@@ -15,6 +15,7 @@
 		36684988209414D100D9640F /* SVGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36684989209414EB00D9640F /* CocoaLumberjack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3668498B209450CB00D9640F /* apple2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3668498A209450CB00D9640F /* apple2.svg */; };
+		3668498F2094563200D9640F /* SVGViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3668498E2094563200D9640F /* SVGViewItem.m */; };
 		D6F4C7FE88F2714EC9F519C9 /* libPods-icons9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F558BBF91B271CF87838957A /* libPods-icons9.a */; };
 		DB577536204AA0C4003F9164 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577535204AA0C4003F9164 /* main.m */; };
 		DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB57753A204AA0C4003F9164 /* Assets.xcassets */; };
@@ -75,6 +76,8 @@
 		366849822094101200D9640F /* SVGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SVGKit.framework; sourceTree = "<group>"; };
 		366849852094109A00D9640F /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		3668498A209450CB00D9640F /* apple2.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = apple2.svg; sourceTree = "<group>"; };
+		3668498D2094563200D9640F /* SVGViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVGViewItem.h; sourceTree = "<group>"; };
+		3668498E2094563200D9640F /* SVGViewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SVGViewItem.m; sourceTree = "<group>"; };
 		C909A730617FE4581A59F389 /* Pods-icons9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icons9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-icons9/Pods-icons9.debug.xcconfig"; sourceTree = "<group>"; };
 		DB57752E204AA0C4003F9164 /* icons9.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = icons9.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB577535204AA0C4003F9164 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -171,6 +174,15 @@
 				366849822094101200D9640F /* SVGKit.framework */,
 			);
 			path = lib;
+			sourceTree = "<group>";
+		};
+		3668498C2094560B00D9640F /* SVGViewItem */ = {
+			isa = PBXGroup;
+			children = (
+				3668498D2094563200D9640F /* SVGViewItem.h */,
+				3668498E2094563200D9640F /* SVGViewItem.m */,
+			);
+			name = SVGViewItem;
 			sourceTree = "<group>";
 		};
 		DB577525204AA0C4003F9164 = {
@@ -272,6 +284,7 @@
 		DB577622204D9F85003F9164 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				3668498C2094560B00D9640F /* SVGViewItem */,
 				3668497A2094046400D9640F /* TableViewCell */,
 				DB577623204D9F85003F9164 /* CNGridView */,
 			);
@@ -489,6 +502,7 @@
 				DB577FBA204FAFDB003F9164 /* SKSVGObject.m in Sources */,
 				DB57764C204DA046003F9164 /* BMFileModel.m in Sources */,
 				DB57763F204D9F85003F9164 /* CNGridViewItemLayout.m in Sources */,
+				3668498F2094563200D9640F /* SVGViewItem.m in Sources */,
 				DB577654204E8D29003F9164 /* BMIconModel.m in Sources */,
 				DB57763B204D9F85003F9164 /* BMMainViewController.m in Sources */,
 				DB57763E204D9F85003F9164 /* CNGridViewItem.m in Sources */,
