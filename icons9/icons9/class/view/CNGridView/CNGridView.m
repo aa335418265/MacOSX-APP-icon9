@@ -84,10 +84,9 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 @interface CNGridView () <NSDraggingSource, NSDraggingDestination, NSPasteboardItemDataProvider>
 {
-	NSMutableDictionary *keyedVisibleItems;
-	NSMutableDictionary *reuseableItems;
+	
 	NSMutableDictionary *selectedItems;
-	NSMutableDictionary *selectedItemsBySelectionFrame;
+	
 	CNSelectionFrameView *selectionFrameView;
 	NSNotificationCenter *nc;
 	NSMutableArray *clickEvents;
@@ -97,11 +96,14 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	NSInteger lastSelectedItemIndex;
 	NSInteger numberOfItems;
 	CGPoint selectionFrameInitialPoint;
-	BOOL isInitialCall;
+
 
 	CGFloat _contentInset;
 }
-
+@property (nonatomic, strong) NSMutableDictionary *reuseableItems; ///< <#注释#>
+@property (nonatomic, strong) NSMutableDictionary *keyedVisibleItems; ///< <#注释#>
+@property (nonatomic, assign)     BOOL isInitialCall; ///< <#注释#>
+@property (nonatomic, strong) NSMutableDictionary *selectedItemsBySelectionFrame;  ///< <#注释#>
 @property (nonatomic, assign) BOOL mouseHasDraged;  ///< 鼠标已经拖拽选中item
 @property (nonatomic, assign) CGPoint mouseDownPoint; ///< 鼠标按下坐标
 @end
@@ -146,17 +148,17 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 }
 
 - (void)setupDefaults {
-	keyedVisibleItems = [[NSMutableDictionary alloc] init];
-	reuseableItems = [[NSMutableDictionary alloc] init];
+	self.keyedVisibleItems = [[NSMutableDictionary alloc] init];
+	self.reuseableItems = [[NSMutableDictionary alloc] init];
 	selectedItems = [[NSMutableDictionary alloc] init];
-	selectedItemsBySelectionFrame = [[NSMutableDictionary alloc] init];
+	self.selectedItemsBySelectionFrame = [[NSMutableDictionary alloc] init];
 	clickEvents = [NSMutableArray array];
 	nc = [NSNotificationCenter defaultCenter];
 	lastHoveredIndex = NSNotFound;
 	lastSelectedItemIndex = NSNotFound;
 	selectionFrameInitialPoint = CGPointZero;
 	clickTimer = nil;
-	isInitialCall = YES;
+	self.isInitialCall = YES;
 	selectionFrameView = nil;
 
 
@@ -233,13 +235,13 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 }
 
 - (void)updateVisibleRect {
-	[self updateReuseableItems];
+	[self updatereuseableItems];
 	[self updateVisibleItems];
 	[self arrangeGridViewItemsAnimated:NO];
 }
 
 - (void)refreshGridViewAnimated:(BOOL)animated initialCall:(BOOL)initialCall {
-	isInitialCall = initialCall;
+	self.isInitialCall = initialCall;
 
 	CGSize size = self.frame.size;
 	CGFloat newHeight = [self allOverRowsInGridView] * self.itemSize.height + _contentInset * 2;
@@ -255,29 +257,29 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	__weak typeof(self) wSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^{
 	    [wSelf _refreshInset];
-	    [wSelf updateReuseableItems];
+	    [wSelf updatereuseableItems];
 	    [wSelf updateVisibleItems];
 	    [wSelf arrangeGridViewItemsAnimated:animated];
 	});
 }
 
-- (void)updateReuseableItems {
+- (void)updatereuseableItems {
 	//Do not mark items as reusable unless there are no selected items in the grid as recycling items when doing range multiselect
 	if (self.selectedIndexes.count == 0) {
 		NSRange visibleItemRange = [self visibleItemRange];
 
-		[[keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(CNGridViewItem *item, NSUInteger idx, BOOL *stop) {
+		[[self.keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(CNGridViewItem *item, NSUInteger idx, BOOL *stop) {
 		    if (!NSLocationInRange(item.index, visibleItemRange) && [item isReuseable]) {
-		        [keyedVisibleItems removeObjectForKey:@(item.index)];
+		        [self.keyedVisibleItems removeObjectForKey:@(item.index)];
 		        [item removeFromSuperview];
 		        [item prepareForReuse];
 
-		        NSMutableSet *reuseQueue = reuseableItems[item.reuseIdentifier];
+		        NSMutableSet *reuseQueue = self.reuseableItems[item.reuseIdentifier];
 		        if (reuseQueue == nil) {
 					reuseQueue = [NSMutableSet set];
                 }
 		        [reuseQueue addObject:item];
-		        reuseableItems[item.reuseIdentifier] = reuseQueue;
+		        self.reuseableItems[item.reuseIdentifier] = reuseQueue;
 			}
 		}];
 	}
@@ -294,11 +296,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	    CNGridViewItem *item = [self gridView:self itemAtIndex:idx inSection:0];
 	    if (item) {
 	        item.index = idx;
-	        if (isInitialCall) {
+	        if (self.isInitialCall) {
 	            [item setAlphaValue:0.0];
 	            [item setFrame:[self rectForItemAtIndex:idx]];
 			}
-	        [keyedVisibleItems setObject:item forKey:@(item.index)];
+	        [self.keyedVisibleItems setObject:item forKey:@(item.index)];
 	        [self addSubview:item];
 		}
 	}];
@@ -306,7 +308,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 - (NSIndexSet *)indexesForVisibleItems {
 	__block NSMutableIndexSet *indexesForVisibleItems = [[NSMutableIndexSet alloc] init];
-	[keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
+	[self.keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
 	    [indexesForVisibleItems addIndex:item.index];
 	}];
 	return indexesForVisibleItems;
@@ -314,13 +316,13 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 - (void)arrangeGridViewItemsAnimated:(BOOL)animated {
 	// on initial call (aka application startup) we will fade all items (after loading it) in
-    if ([keyedVisibleItems count] > 0) {
-        if (isInitialCall) {
-            isInitialCall = NO;
+    if ([self.keyedVisibleItems count] > 0) {
+        if (self.isInitialCall) {
+            self.isInitialCall = NO;
             if (animated) {
                 [[NSAnimationContext currentContext] setDuration:0.35];
                 [NSAnimationContext runAnimationGroup: ^(NSAnimationContext *context) {
-                    [keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
+                    [self.keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
                         [[item animator] setAlphaValue:1.0];
                         NSRect newRect = [self rectForItemAtIndex:item.index];
                         [[item animator] setFrame:newRect];
@@ -328,7 +330,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
                 } completionHandler:nil];
             }
             else{
-                [keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
+                [self.keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
                     [item setAlphaValue:1.0];
                     NSRect newRect = [self rectForItemAtIndex:item.index];
                     [item setFrame:newRect];
@@ -339,14 +341,14 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
             if (animated) {
                 [[NSAnimationContext currentContext] setDuration:0.15];
                 [NSAnimationContext runAnimationGroup: ^(NSAnimationContext *context) {
-                    [keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
+                    [self.keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
                         NSRect newRect = [self rectForItemAtIndex:item.index];
                         [[item animator] setFrame:newRect];
                     }];
                 } completionHandler:nil];
             }
             else{
-                [keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
+                [self.keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
                     NSRect newRect = [self rectForItemAtIndex:item.index];
                     [item setFrame:newRect];
                 }];
@@ -432,11 +434,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 - (id)dequeueReusableItemWithIdentifier:(NSString *)identifier {
 	CNGridViewItem *reusableItem = nil;
-	NSMutableSet *reuseQueue = reuseableItems[identifier];
+	NSMutableSet *reuseQueue = self.reuseableItems[identifier];
 	if (reuseQueue != nil && [reuseQueue count] > 0) {
 		reusableItem = [reuseQueue anyObject];
 		[reuseQueue removeObject:reusableItem];
-		reuseableItems[identifier] = reuseQueue;
+		self.reuseableItems[identifier] = reuseQueue;
 		reusableItem.representedObject = nil;
 	}
 	return reusableItem;
@@ -450,22 +452,22 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 - (void)reloadDataAnimated:(BOOL)animated {
 	numberOfItems = [self gridView:self numberOfItemsInSection:0];
-	[keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
+	[self.keyedVisibleItems enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
 	    [(CNGridViewItemBase *)obj removeFromSuperview];
 	}];
-	[keyedVisibleItems removeAllObjects];
-	[reuseableItems removeAllObjects];
+	[self.keyedVisibleItems removeAllObjects];
+	[self.reuseableItems removeAllObjects];
 	[self refreshGridViewAnimated:animated initialCall:YES];
 }
 
 #pragma mark - animating KVO changes
 
 - (void)insertItemAtIndex:(NSInteger)index animated:(BOOL)animated {
-	NSUInteger count = keyedVisibleItems.count;
+	NSUInteger count = self.keyedVisibleItems.count;
 	if (count) {
 		NSMutableArray *affected = [NSMutableArray arrayWithCapacity:count];
 		// adjust the index
-		[[keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		[[self.keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
 		    CNGridViewItemBase *item = (CNGridViewItemBase *)obj;
 		    NSUInteger i = item.index;
 		    if (i >= index) {
@@ -487,8 +489,8 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 				NSInteger index = item.index;
 				NSInteger newIndex = index + 1;
 
-				[keyedVisibleItems removeObjectForKey:@(index)];
-				[keyedVisibleItems setObject:item forKey:@(newIndex)];
+				[self.keyedVisibleItems removeObjectForKey:@(index)];
+				[self.keyedVisibleItems setObject:item forKey:@(newIndex)];
 				item.index = newIndex;
 			}
 			if (animated) {
@@ -520,11 +522,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		return;
 	}
 
-	NSUInteger count = keyedVisibleItems.count;
+	NSUInteger count = self.keyedVisibleItems.count;
 	if (count) {
 		NSMutableArray *affected = [NSMutableArray arrayWithCapacity:count];
 		// adjust the index
-		[[keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		[[self.keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
 		    CNGridViewItemBase *item = (CNGridViewItemBase *)obj;
 		    NSUInteger i = item.index;
 		    if (i >= first) {
@@ -554,8 +556,8 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 				}];
 
 				NSInteger newIndex = index + ncount;
-				[keyedVisibleItems removeObjectForKey:@(index)];
-				[keyedVisibleItems setObject:item forKey:@(newIndex)];
+				[self.keyedVisibleItems removeObjectForKey:@(index)];
+				[self.keyedVisibleItems setObject:item forKey:@(newIndex)];
 				item.index = newIndex;
 			}
 			if (animated) {
@@ -588,11 +590,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		return;
 	}
 
-	NSUInteger count = keyedVisibleItems.count;
+	NSUInteger count = self.keyedVisibleItems.count;
 	if (count) {
 		NSMutableArray *affected = [NSMutableArray arrayWithCapacity:count];
 		// adjust the index
-		[[keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		[[self.keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
 		    CNGridViewItemBase *item = (CNGridViewItemBase *)obj;
 		    NSUInteger i = item.index;
 		    if ([indexes containsIndex:i]) {
@@ -612,7 +614,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		if (affected.count) {
 			for (CNGridViewItemBase *item in affected) {
 				NSInteger index = item.index;
-				[keyedVisibleItems removeObjectForKey:@(index)];
+				[self.keyedVisibleItems removeObjectForKey:@(index)];
 			}
 			if (animated) {
 				[[NSAnimationContext currentContext] setDuration:(animated ? 0.15 : 0.0)];
@@ -636,7 +638,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		}
 	}
 
-	isInitialCall = YES;
+	self.isInitialCall = YES;
 	[self refreshGridViewAnimated:animated initialCall:NO];
 }
 
@@ -646,11 +648,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		return;
 	}
 
-	NSUInteger count = keyedVisibleItems.count;
+	NSUInteger count = self.keyedVisibleItems.count;
 	if (count) {
 		NSMutableArray *affected = [NSMutableArray arrayWithCapacity:count];
 		// adjust the index
-		[[keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		[[self.keyedVisibleItems allValues] enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
 		    CNGridViewItemBase *item = (CNGridViewItemBase *)obj;
 		    NSUInteger i = item.index;
 		    if (i >= first) {
@@ -670,7 +672,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		if (affected.count) {
 			for (CNGridViewItemBase *item in affected) {
 				NSInteger index = item.index;
-				[keyedVisibleItems removeObjectForKey:@(index)];
+				[self.keyedVisibleItems removeObjectForKey:@(index)];
 			}
 			if (animated) {
 				[[NSAnimationContext currentContext] setDuration:(animated ? 0.15 : 0.0)];
@@ -690,11 +692,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 					[item removeFromSuperview];
 					[item prepareForReuse];
 					NSString *cellID = item.identifier;
-					NSMutableSet *reuseQueue = reuseableItems[cellID];
+					NSMutableSet *reuseQueue = self.reuseableItems[cellID];
 					if (reuseQueue == nil)
 						reuseQueue = [NSMutableSet set];
 					[reuseQueue addObject:item];
-                    reuseableItems[cellID] = reuseQueue;
+                    self.reuseableItems[cellID] = reuseQueue;
 				}
 			}
 		}
@@ -721,7 +723,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	[self gridView:self willHoverItemAtIndex:index inSection:0];
 
 	lastHoveredIndex = index;
-	CNGridViewItem *item = keyedVisibleItems[@(index)];
+	CNGridViewItem *item = self.keyedVisibleItems[@(index)];
 	item.hovered = YES;
 }
 
@@ -729,7 +731,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	// inform the delegate
 	[self gridView:self willUnhoverItemAtIndex:index inSection:0];
 
-	CNGridViewItem *item = keyedVisibleItems[@(index)];
+	CNGridViewItem *item = self.keyedVisibleItems[@(index)];
 	item.hovered = NO;
 }
 
@@ -740,11 +742,11 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	CNGridViewItem *gridViewItem = nil;
 
 	if (lastSelectedItemIndex != NSNotFound && lastSelectedItemIndex != selectedItemIndex) {
-		gridViewItem = keyedVisibleItems[@(lastSelectedItemIndex)];
+		gridViewItem = self.keyedVisibleItems[@(lastSelectedItemIndex)];
 		[self deSelectItem:gridViewItem];
 	}
 
-	gridViewItem = keyedVisibleItems[@(selectedItemIndex)];
+	gridViewItem = self.keyedVisibleItems[@(selectedItemIndex)];
 	if (gridViewItem) {
         if (!gridViewItem.selected && !(modifierFlags & NSShiftKeyMask) && !(modifierFlags & NSCommandKeyMask)) {
             //Select a single item and deselect all other items when the shift or command keys are NOT pressed.
@@ -787,7 +789,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
                 
                 //Select all the items that are not already selected
                 for (NSUInteger idx = low; idx < high; idx++) {
-                    gridViewItem = keyedVisibleItems[@(idx)];
+                    gridViewItem = self.keyedVisibleItems[@(idx)];
                     if (gridViewItem && !gridViewItem.selected) {
                         [self selectItem:gridViewItem];
                     }
@@ -991,7 +993,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	// the selection frame
 	[[self indexesForVisibleItems] enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
 	    CNGridViewItem *selectedItem = selectedItems[@(idx)];
-	    CNGridViewItem *selectionFrameItem = selectedItemsBySelectionFrame[@(idx)];
+	    CNGridViewItem *selectionFrameItem = self.selectedItemsBySelectionFrame[@(idx)];
 	    if (selectionFrameItem) {
 	        CNItemPoint itemPoint = [self locationForItemAtIndex:selectionFrameItem.index];
 
@@ -1000,19 +1002,19 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 	            (itemPoint.column > bottomRightItemPoint.column)    ||  // right edge out of range
 	            (itemPoint.row > bottomRightItemPoint.row)          ||  // bottom edge out of range
 	            (itemPoint.column < topLeftItemPoint.column)) {         // left edge out of range
-	                                                                    // ok. before we deselect this item, lets take a look into our `keyedVisibleItems`
+	                                                                    // ok. before we deselect this item, lets take a look into our `self.keyedVisibleItems`
 	                                                                    // if it there is selected too. If it so, keep it untouched!
 
 	            // so, the current item wasn't selected, we can restore its old state (to unselected)
 	            if (![selectionFrameItem isEqual:selectedItem]) {
 	                selectionFrameItem.selected = NO;
-	                [selectedItemsBySelectionFrame removeObjectForKey:@(selectionFrameItem.index)];
+	                [self.selectedItemsBySelectionFrame removeObjectForKey:@(selectionFrameItem.index)];
 				}
 
 	            // the current item already was selected, so reselect it.
 	            else {
 	                selectionFrameItem.selected = YES;
-	                selectedItemsBySelectionFrame[@(selectionFrameItem.index)] = selectionFrameItem;
+	                self.selectedItemsBySelectionFrame[@(selectionFrameItem.index)] = selectionFrameItem;
 				}
 			}
 		}
@@ -1034,9 +1036,9 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		for (NSUInteger col = topLeftItemPoint.column; col <= bottomRightItemPoint.column; col++) {
 			NSUInteger itemIndex = ((row - 1) * columnsInGridView + col) - 1;
 			CNGridViewItem *selectedItem = selectedItems[@(itemIndex)];
-			CNGridViewItem *itemToSelect = keyedVisibleItems[@(itemIndex)];
+			CNGridViewItem *itemToSelect = self.keyedVisibleItems[@(itemIndex)];
 			if (itemToSelect && validSelectionFrame) {
-				selectedItemsBySelectionFrame[@(itemToSelect.index)] = itemToSelect;
+				self.selectedItemsBySelectionFrame[@(itemToSelect.index)] = itemToSelect;
 				if (modifierFlags & NSCommandKeyMask) {
 					itemToSelect.selected = ([itemToSelect isEqual:selectedItem] ? NO : YES);
 				}
@@ -1051,7 +1053,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 #pragma mark - Managing the Content
 
 - (NSUInteger)numberOfVisibleItems {
-	return [keyedVisibleItems count];
+	return [self.keyedVisibleItems count];
 }
 
 #pragma mark - NSView
@@ -1156,7 +1158,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
     selectionFrameView = nil;
     
     // catch all newly selected items that was selected by selection frame
-    [selectedItemsBySelectionFrame enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
+    [self.selectedItemsBySelectionFrame enumerateKeysAndObjectsUsingBlock: ^(id key, CNGridViewItem *item, BOOL *stop) {
         if ([item selected] == YES) {
             [self selectItem:item];
         }
@@ -1164,7 +1166,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
             [self deSelectItem:item];
         }
     }];
-    [selectedItemsBySelectionFrame removeAllObjects];
+    [self.selectedItemsBySelectionFrame removeAllObjects];
     
 }
 
@@ -1214,7 +1216,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		if (!isClickInSelection) {
 			indexSet = [NSIndexSet indexSetWithIndex:index];
 			[self deselectAllItems];
-			CNGridViewItem *item = keyedVisibleItems[@(index)];
+			CNGridViewItem *item = self.keyedVisibleItems[@(index)];
 			[self selectItem:item];
 		}
 

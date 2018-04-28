@@ -12,6 +12,7 @@
 #import "CNGridViewItem.h"
 #import "CNGridView.h"
 #import "BMIconManager.h"
+#import "BMProjectCell.h"
 
 //#import "BMFileModel.h"
 
@@ -58,6 +59,7 @@ static NSString *kItemSizeSliderPositionKey;
 
 - (void)initUI {
     
+    self.tableView.rowHeight = 44;
 
     self.defaultLayout = [CNGridViewItemLayout defaultLayout];
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
@@ -266,20 +268,17 @@ static NSString *kItemSizeSliderPositionKey;
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     //根据ID取视图
-    NSTextField * label = [tableView makeViewWithIdentifier:@"cellId" owner:self];
 
-    if (label==nil) {
-        label = [[NSTextField alloc]initWithFrame:CGRectZero];
-        label.textColor = [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1];
-        label.font = [NSFont fontWithName:@"Arial" size:22];
-        label.backgroundColor = [NSColor clearColor];
-        label.identifier = @"cellId";
-        label.bordered = NO;
-        label.editable = NO;
-        label.alignment = NSTextAlignmentLeft;
+    
+    BMProjectCell *cell = [tableView makeViewWithIdentifier:@"cellId" owner:self];
+
+    if (cell==nil) {
+        
+
+        
     }
-    label.stringValue = self.groups[row].groupName;
-    return label;
+//    label.stringValue = self.groups[row].groupName;
+    return cell;
 }
 
 

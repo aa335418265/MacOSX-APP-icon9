@@ -27,13 +27,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="304" height="356"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Skz-cI-Azo">
+                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="46" horizontalPageScroll="10" verticalLineScroll="46" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Skz-cI-Azo">
                                     <rect key="frame" x="0.0" y="33" width="304" height="323"/>
                                     <clipView key="contentView" id="Faa-jZ-wvR">
                                         <rect key="frame" x="0.0" y="0.0" width="304" height="323"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="30" rowSizeStyle="automatic" viewBased="YES" id="uM3-HL-TUB">
+                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="44" rowSizeStyle="automatic" viewBased="YES" id="uM3-HL-TUB">
                                                 <rect key="frame" x="0.0" y="0.0" width="304" height="323"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -52,29 +52,6 @@
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        <prototypeCellViews>
-                                                            <tableCellView id="pLZ-r3-KxM">
-                                                                <rect key="frame" x="1" y="1" width="301" height="30"/>
-                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                <subviews>
-                                                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Xlv-t7-9Jh">
-                                                                        <rect key="frame" x="6" y="7" width="90" height="16"/>
-                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="KOo-y2-Cpc">
-                                                                            <font key="font" metaFont="system" size="12"/>
-                                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                        </textFieldCell>
-                                                                    </textField>
-                                                                </subviews>
-                                                                <constraints>
-                                                                    <constraint firstItem="Xlv-t7-9Jh" firstAttribute="leading" secondItem="pLZ-r3-KxM" secondAttribute="leading" constant="8" id="0KW-wn-pde"/>
-                                                                    <constraint firstItem="Xlv-t7-9Jh" firstAttribute="centerY" secondItem="pLZ-r3-KxM" secondAttribute="centerY" id="MZN-1O-a5q"/>
-                                                                </constraints>
-                                                                <connections>
-                                                                    <outlet property="textField" destination="Xlv-t7-9Jh" id="NoQ-rH-2tV"/>
-                                                                </connections>
-                                                            </tableCellView>
-                                                        </prototypeCellViews>
                                                     </tableColumn>
                                                 </tableColumns>
                                                 <connections>

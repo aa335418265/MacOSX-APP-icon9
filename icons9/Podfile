@@ -1,0 +1,13 @@
+source 'https://github.com/CocoaPods/Specs'
+
+
+platform :macos, '10.10'
+
+inhibit_all_warnings!
+target:icons9 do
+    pod 'Masonry', '1.0.2'              #约束
+
+end
+
+# pod install --verbose --no-repo-update
+# pod update --verbose --no-repo-update

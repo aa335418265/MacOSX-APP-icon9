@@ -10,7 +10,7 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 #import <Foundation/Foundation.h>
-
+#import <Masonry.h>
 #import "BMGlobal.h"
 
 
