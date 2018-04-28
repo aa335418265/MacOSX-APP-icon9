@@ -291,7 +291,7 @@ static NSString *kItemSizeSliderPositionKey;
     NSIndexSet *selectedIndexes = [self.gridView selectedIndexes];
     for (CNGridViewItem *viewItem in selectedItems) {
         [viewItem.imageModel changeSVGFillColor:colorPanel.color];
-        [viewItem drawRect:viewItem.frame];
+        [viewItem setNeedsDisplay:YES];
     }
     [self.gridView reloadItemsAtIndexes:selectedIndexes animated:NO];
 
