@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface BMProjectCell : NSTableCellView
+@interface BMProjectCell : NSView
 
 @end

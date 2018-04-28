@@ -270,7 +270,7 @@ static NSString *kItemSizeSliderPositionKey;
     //根据ID取视图
 
     
-    BMProjectCell *cell = [tableView makeViewWithIdentifier:@"cellId" owner:self];
+    BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
 
     if (cell==nil) {
         

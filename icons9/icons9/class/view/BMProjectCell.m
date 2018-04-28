@@ -13,9 +13,16 @@
 - (void)drawRect:(NSRect)dirtyRect {
     [super drawRect:dirtyRect];
     
-    // Drawing code here.
 }
 
+//+ (instancetype)view {
+//    BMProjectCell *cell = [[BMProjectCell alloc] init];
+//    NSImageView *imageView = [[NSImageView alloc] init];
+//    [imageView setImage:[NSImage imageNamed:@@property (nonatomic, assign) <#类型#> <#变量#>; ///< <#注释#>]]
+//}
 
 
+
+- (IBAction)label:(id)sender {
+}
 @end
