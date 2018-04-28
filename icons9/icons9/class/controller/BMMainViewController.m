@@ -13,7 +13,7 @@
 #import "CNGridView.h"
 #import "BMIconManager.h"
 #import "BMProjectCell.h"
-
+#import <SVGKit/SVGKit.h>
 //#import "BMFileModel.h"
 
 
@@ -274,11 +274,9 @@ static NSString *kItemSizeSliderPositionKey;
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
 
     if (cell==nil) {
-        
-
-        
+   
     }
-//    label.stringValue = self.groups[row].groupName;
+
     return cell;
 }
 
@@ -288,8 +286,15 @@ static NSString *kItemSizeSliderPositionKey;
 //颜色选择action事件
 - (void)changeColor:(id)sender {
     NSColorPanel *colorPanel = sender ;
-   
-    self.gridView.backgroundColor = colorPanel.color;;
+    NSLog(@"---");
+    NSArray *selectedItems = [self.gridView selectedItems];
+    NSIndexSet *selectedIndexes = [self.gridView selectedIndexes];
+    for (CNGridViewItem *viewItem in selectedItems) {
+        [viewItem.imageModel changeSVGFillColor:colorPanel.color];
+        [viewItem drawRect:viewItem.frame];
+    }
+    [self.gridView reloadItemsAtIndexes:selectedIndexes animated:NO];
+
 }
 
 

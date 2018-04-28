@@ -115,15 +115,9 @@ APPKIT_EXTERN NSString* const kCNDefaultItemIdentifier;
 
 
 #pragma mark - Item Default Content
-/** @name Item Default Content */
 
-
-//@property (strong) IBOutlet NSImage *itemImage;
-//@property (strong) IBOutlet NSString *itemTitle;
-//@property (strong) IBOutlet NSString *itemImagePath;
 
 @property (nonatomic, strong) BMIconModel *imageModel; ///< 图片模型
-
 @property (nonatomic,readonly, strong) NSImage *showingImage; ///< 当前Item展示的image
 
 

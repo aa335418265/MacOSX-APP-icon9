@@ -66,7 +66,6 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 	self = [super init];
 	if (self) {
 		[self initProperties];
-        
 	}
 	return self;
 }
@@ -99,7 +98,10 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     
 }
 
+
+
 - (void)prepareForReuse {
+    
 	self.index = CNItemIndexUndefined;
 	self.selected = NO;
 	self.selectable = YES;
@@ -124,6 +126,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 @interface CNGridViewItem ()
 @property (strong) CNGridViewItemLayout *currentLayout;
 @property (nonatomic,readwrite, strong) NSImage *showingImage; ///< 当前Item展示的image
+@property (nonatomic, strong) SVGKFastImageView *svgFastImageView;
 @end
 
 @implementation CNGridViewItem
@@ -144,15 +147,28 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 - (void)initProperties {
 	[super initProperties];
-
 	/// Grid View 布局
 	_defaultLayout = [CNGridViewItemLayout defaultLayout];
 	_hoverLayout = [CNGridViewItemLayout defaultLayout];
 	_selectionLayout = [CNGridViewItemLayout defaultLayout];
 	_currentLayout = _defaultLayout;
 	_useLayout = YES;
+//    [self initSVGKFastImageView];
 }
 
+- (void)initSVGKFastImageView {
+
+    [self addSubview:self.svgFastImageView];
+    
+}
+
+//- (SVGKFastImageView *)svgFastImageView {
+//    if (_svgFastImageView == nil) {
+//        _svgFastImageView = [[SVGKFastImageView alloc] initWithSVGKImage:[SVGKImage imageNamed:@"apple2.svg"] frame:CGRectMake(0, 0, 180, 180)];
+//
+//    }
+//    return _svgFastImageView;
+//}
 
 - (BOOL)isFlipped {
 	return YES;
@@ -167,6 +183,12 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 #pragma mark - ViewDrawing
 
 
+//- (void)setImageModel:(BMIconModel *)imageModel {
+//    _imageModel = imageModel;
+//    if (imageModel.type == BMImageTypeSVG) {
+//        self.svgFastImageView.image = imageModel.svgImge;
+//    }
+//}
 
 - (void)drawRect:(NSRect)rect {
     NSRect dirtyRect = self.bounds;

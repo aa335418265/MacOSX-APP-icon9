@@ -14,6 +14,7 @@
 		366849862094109A00D9640F /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 366849852094109A00D9640F /* Podfile */; };
 		36684988209414D100D9640F /* SVGKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		36684989209414EB00D9640F /* CocoaLumberjack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3668498B209450CB00D9640F /* apple2.svg in Resources */ = {isa = PBXBuildFile; fileRef = 3668498A209450CB00D9640F /* apple2.svg */; };
 		D6F4C7FE88F2714EC9F519C9 /* libPods-icons9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F558BBF91B271CF87838957A /* libPods-icons9.a */; };
 		DB577536204AA0C4003F9164 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577535204AA0C4003F9164 /* main.m */; };
 		DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB57753A204AA0C4003F9164 /* Assets.xcassets */; };
@@ -73,6 +74,7 @@
 		366849812094101200D9640F /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
 		366849822094101200D9640F /* SVGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SVGKit.framework; sourceTree = "<group>"; };
 		366849852094109A00D9640F /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		3668498A209450CB00D9640F /* apple2.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = apple2.svg; sourceTree = "<group>"; };
 		C909A730617FE4581A59F389 /* Pods-icons9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icons9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-icons9/Pods-icons9.debug.xcconfig"; sourceTree = "<group>"; };
 		DB57752E204AA0C4003F9164 /* icons9.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = icons9.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB577535204AA0C4003F9164 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 		DB577525204AA0C4003F9164 = {
 			isa = PBXGroup;
 			children = (
+				3668498A209450CB00D9640F /* apple2.svg */,
 				366849852094109A00D9640F /* Podfile */,
 				DB577530204AA0C4003F9164 /* icons9 */,
 				DB57752F204AA0C4003F9164 /* Products */,
@@ -412,6 +415,7 @@
 				3668497F209406E400D9640F /* icon_project@3x.png in Resources */,
 				DB577646204D9F85003F9164 /* (shell)_SFont.CN (3).svg in Resources */,
 				DB577649204D9F85003F9164 /* MainMenu.xib in Resources */,
+				3668498B209450CB00D9640F /* apple2.svg in Resources */,
 				DB577648204D9F85003F9164 /* (shell)_SFont.CN的副本 2.svg in Resources */,
 				DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */,
 				DB577642204D9F85003F9164 /* (Bird_pawprints)_SFont.CN.png in Resources */,

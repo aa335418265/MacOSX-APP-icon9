@@ -21,5 +21,5 @@
 
 + (instancetype)modelWithPath:(NSString *)path;
 + (BMImageType)getImageType:(NSString *)path;
-
+- (void)changeSVGFillColor:(NSColor *)color;
 @end

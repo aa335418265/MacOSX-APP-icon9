@@ -15,9 +15,9 @@
 @property (nonatomic,readwrite, strong) NSString *name;       //文件名
 @property (nonatomic,readwrite, strong) NSString *path;       //路径
 @property (nonatomic,readwrite, assign) BMImageType type;     //图片类型
-
-@property (nonatomic,readwrite, strong) NSImage *image;
 @property (nonatomic,readwrite, strong) SVGKImage *svgImge;  //当type = BMImageTypeSVG 时
+@property (nonatomic,readwrite, strong) NSImage *image;
+
 @end
 
 
@@ -40,7 +40,6 @@
         SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
         model.svgImge = svgImage;
         svgImage.size = CGSizeMake(1024, 1024);
-        model.image = svgImage.NSImage;
     }else{
         model.image = [[NSImage alloc] initWithContentsOfFile:path] ;
     }
@@ -61,18 +60,38 @@
     return BMImageTypeUnknown;
 }
 
-+ (void)changeFillColorRecursively:(CALayer *)targetLayer color:(NSColor *)color {
-    
 
+
+- (void)changeSVGFillColor:(NSColor *)color {
+    if (self.svgImge == nil || [self.svgImge hasCALayerTree] == NO || color == nil) {
+        return;
+    }
+
+    [self changeFillColorRecursively:[self.svgImge CALayerTree] color:color];
+}
+
+- (void) changeFillColorRecursively:(CALayer *)targetLayer color:(NSColor *)color {
+    if (targetLayer == nil || color == nil) {
+        return;
+    }
     for (CALayer *layer in targetLayer.sublayers) {
         if ([layer isKindOfClass:[CAShapeLayer class]]) {
             CAShapeLayer *shapeLayer = (CAShapeLayer *)layer;
             shapeLayer.strokeColor = color.CGColor;
             shapeLayer.fillColor = color.CGColor;
+            return;
         }
         if ([layer isKindOfClass:[CALayer class]]) {
             [self changeFillColorRecursively:layer color:color];
         }
+    }
+}
+
+- (NSImage *)image {
+    if (_type == BMImageTypeSVG) {
+        return self.svgImge.NSImage;
+    }else{
+        return _image;
     }
 }
 
