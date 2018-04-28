@@ -942,6 +942,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 		selectionFrameInitialPoint = location;
 		selectionFrameView = [CNSelectionFrameView new];
 		selectionFrameView.frame = NSMakeRect(location.x, location.y, 0, 0);
+        [self addSubview:selectionFrameView];
 		if (![self containsSubView:selectionFrameView])
 			[self addSubview:selectionFrameView];
 	}
@@ -958,12 +959,15 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 
 		CGFloat width = (location.x > selectionFrameInitialPoint.x ? location.x - selectionFrameInitialPoint.x : selectionFrameInitialPoint.x - posX);
 		width = (posX + width >= (columnsInGridView * self.itemSize.width) ? (columnsInGridView * self.itemSize.width) - posX - 1 : width);
+       
 
 		CGFloat height = (location.y > selectionFrameInitialPoint.y ? location.y - selectionFrameInitialPoint.y : selectionFrameInitialPoint.y - posY);
 		height = (posY + height > NSMaxY(clippedRect) ? NSMaxY(clippedRect) - posY : height);
 
 		NSRect selectionFrame = NSMakeRect(posX, posY, width, height);
 		selectionFrameView.frame = selectionFrame;
+
+         NSLog(@"x=%f,y=%f,width=%f,height=%f",selectionFrame.origin.x,selectionFrame.origin.y,selectionFrame.size.width,selectionFrame.size.height);
 	}
 }
 
@@ -1500,10 +1504,8 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
 - (void)drawRect:(NSRect)rect {
 	NSRect dirtyRect = NSMakeRect(0.5, 0.5, floorf(NSWidth(self.bounds)) - 1, floorf(NSHeight(self.bounds)) - 1);
 	NSBezierPath *selectionFrame = [NSBezierPath bezierPathWithRoundedRect:dirtyRect xRadius:0 yRadius:0];
-
-	[[[NSColor blackColor] colorWithAlphaComponent:0.15] setFill];
+    [[[NSColor blackColor] colorWithAlphaComponent:0.1] setFill];
 	[selectionFrame fill];
-
 	[[NSColor whiteColor] set];
 	[selectionFrame setLineWidth:1];
 	[selectionFrame stroke];

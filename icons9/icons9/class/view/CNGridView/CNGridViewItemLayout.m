@@ -53,7 +53,7 @@ static CGFloat kDefaultItemBorderRadius;
 - (id)init {
 	self = [super init];
 	if (self) {
-//        _backgroundColor        = [NSColor itemBackgroundColor];
+
         _backgroundColor        = [NSColor whiteColor]; //item背景颜色
 		_selectionRingColor     = [NSColor itemSelectionRingColor];//选中外环的颜色
 		_selectionRingLineWidth = kDefaultSelectionRingLineWidth;//外环宽度

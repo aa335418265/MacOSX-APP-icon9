@@ -62,11 +62,13 @@ static NSString *kItemSizeSliderPositionKey;
     self.tableView.rowHeight = 44;
 
     self.defaultLayout = [CNGridViewItemLayout defaultLayout];
+//    self.defaultLayout.visibleContentMask = CNGridViewItemVisibleContentImage; //默认值显示图片，不显示名称
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
     self.hoverLayout = [CNGridViewItemLayout defaultLayout];
     self.selectedLayout = [CNGridViewItemLayout defaultLayout];
+    self.selectedLayout.backgroundColor =  [[NSColor lightGrayColor] colorWithAlphaComponent:0.42];
     self.hoverLayout.backgroundColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.42];
-    self.selectedLayout.backgroundColor = [NSColor whiteColor];//选中背景颜色
+    
     //初始化NSUserDefaults 数据
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults integerForKey:kItemSizeSliderPositionKey]) {
@@ -87,9 +89,8 @@ static NSString *kItemSizeSliderPositionKey;
         
     };
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
-    self.gridView.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"BackgroundDust"]];
-    self.gridView.scrollElasticity = YES;//滚动弹性
     self.gridView.backgroundColor = [NSColor whiteColor];
+    self.gridView.gridViewTitle = @"素材管理";
     [self.gridView reloadData];
     NSLog(@"%@", self.gridView);
     
