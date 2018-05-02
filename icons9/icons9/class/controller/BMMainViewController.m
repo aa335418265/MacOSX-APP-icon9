@@ -184,7 +184,9 @@ static NSString *kItemSizeSliderPositionKey;
 - (IBAction)colorPannelButtonAction:(id)sender {
     [self openColorPanel];
 }
-     
+
+
+
 
 #pragma mark - 通知事件
 
