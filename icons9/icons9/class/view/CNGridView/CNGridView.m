@@ -1274,7 +1274,7 @@ CNItemPoint CNMakeItemPoint(NSUInteger aColumn, NSUInteger aRow) {
         NSDraggingItem *dragItem = [[NSDraggingItem alloc] initWithPasteboardWriter:pbItem];
         
         NSRect draggingRect = [self rectForItemAtIndex:gridViewItem.index];
-        [dragItem setDraggingFrame:draggingRect contents:gridViewItem.showingImage];
+        [dragItem setDraggingFrame:draggingRect contents:gridViewItem.imageModel.image];
         [dragItems addObject:dragItem];
     }
     NSDraggingSession *draggingSession = [self beginDraggingSessionWithItems:dragItems event:theEvent source:self];

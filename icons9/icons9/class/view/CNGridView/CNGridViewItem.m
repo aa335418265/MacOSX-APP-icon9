@@ -153,7 +153,6 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 	_selectionLayout = [CNGridViewItemLayout defaultLayout];
 	_currentLayout = _defaultLayout;
 	_useLayout = YES;
-//    [self initSVGKFastImageView];
 }
 
 - (void)initSVGKFastImageView {
@@ -162,13 +161,6 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     
 }
 
-//- (SVGKFastImageView *)svgFastImageView {
-//    if (_svgFastImageView == nil) {
-//        _svgFastImageView = [[SVGKFastImageView alloc] initWithSVGKImage:[SVGKImage imageNamed:@"apple2.svg"] frame:CGRectMake(0, 0, 180, 180)];
-//
-//    }
-//    return _svgFastImageView;
-//}
 
 - (BOOL)isFlipped {
 	return YES;
@@ -183,12 +175,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 #pragma mark - ViewDrawing
 
 
-//- (void)setImageModel:(BMIconModel *)imageModel {
-//    _imageModel = imageModel;
-//    if (imageModel.type == BMImageTypeSVG) {
-//        self.svgFastImageView.image = imageModel.svgImge;
-//    }
-//}
+
 
 - (void)drawRect:(NSRect)rect {
     NSRect dirtyRect = self.bounds;

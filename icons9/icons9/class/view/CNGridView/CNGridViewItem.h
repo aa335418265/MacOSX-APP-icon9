@@ -118,7 +118,7 @@ APPKIT_EXTERN NSString* const kCNDefaultItemIdentifier;
 
 
 @property (nonatomic, strong) BMIconModel *imageModel; ///< 图片模型
-@property (nonatomic,readonly, strong) NSImage *showingImage; ///< 当前Item展示的image
+
 
 
 #pragma mark - Grid View Item Layout

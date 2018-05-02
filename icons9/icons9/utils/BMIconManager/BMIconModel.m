@@ -22,6 +22,9 @@
 
 
 @implementation BMIconModel
+
+
+
 + (instancetype)modelWithPath:(NSString *)path {
     
 
@@ -93,6 +96,10 @@
     }else{
         return _image;
     }
+}
+
+- (SVGKImage *)svgImage {
+    return _svgImge;
 }
 
 
