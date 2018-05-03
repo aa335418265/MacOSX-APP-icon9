@@ -290,13 +290,10 @@ static NSString *kItemSizeSliderPositionKey;
     NSColorPanel *colorPanel = sender ;
     NSLog(@"---");
     NSArray *selectedItems = [self.gridView selectedItems];
-    NSIndexSet *selectedIndexes = [self.gridView selectedIndexes];
     for (CNGridViewItem *viewItem in selectedItems) {
         [viewItem.imageModel changeSVGFillColor:colorPanel.color];
         [viewItem setNeedsDisplay:YES];
     }
-    [self.gridView reloadItemsAtIndexes:selectedIndexes animated:NO];
-
 }
 
 

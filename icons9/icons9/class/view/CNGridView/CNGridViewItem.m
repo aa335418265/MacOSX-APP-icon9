@@ -180,7 +180,8 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 - (void)drawRect:(NSRect)rect {
 
-
+    CFAbsoluteTime startTime =CFAbsoluteTimeGetCurrent();
+    
     NSBezierPath *contentRectPath = [NSBezierPath bezierPathWithRoundedRect:[self contentRect] xRadius:self.currentLayout.itemBorderRadius yRadius:self.currentLayout.itemBorderRadius];
     [self.currentLayout.backgroundColor setFill];
     [contentRectPath fill];
@@ -264,6 +265,8 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
         [image drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     }
+    CFAbsoluteTime linkTime = (CFAbsoluteTimeGetCurrent() - startTime);
+    NSLog(@"item 绘制代码执行时间 %f ms", linkTime *1000.0);
 
 }
 
