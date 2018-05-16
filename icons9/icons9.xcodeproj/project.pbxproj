@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3668497D2094048B00D9640F /* BMProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3668497C2094048B00D9640F /* BMProjectCell.m */; };
-		3668497F209406E400D9640F /* icon_project@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3668497E209406E400D9640F /* icon_project@3x.png */; };
 		366849832094101200D9640F /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; };
 		366849842094101200D9640F /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; };
 		366849862094109A00D9640F /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 366849852094109A00D9640F /* Podfile */; };
@@ -27,13 +26,6 @@
 		DB57763F204D9F85003F9164 /* CNGridViewItemLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57762B204D9F85003F9164 /* CNGridViewItemLayout.m */; };
 		DB577640204D9F85003F9164 /* NSColor+CNGridViewPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57762D204D9F85003F9164 /* NSColor+CNGridViewPalette.m */; };
 		DB577641204D9F85003F9164 /* NSView+CNGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57762F204D9F85003F9164 /* NSView+CNGridView.m */; };
-		DB577642204D9F85003F9164 /* (Bird_pawprints)_SFont.CN.png in Resources */ = {isa = PBXBuildFile; fileRef = DB577631204D9F85003F9164 /* (Bird_pawprints)_SFont.CN.png */; };
-		DB577643204D9F85003F9164 /* (Lion_Head)_SFont.CN.png in Resources */ = {isa = PBXBuildFile; fileRef = DB577632204D9F85003F9164 /* (Lion_Head)_SFont.CN.png */; };
-		DB577644204D9F85003F9164 /* (shell)_SFont.CN (1).svg in Resources */ = {isa = PBXBuildFile; fileRef = DB577633204D9F85003F9164 /* (shell)_SFont.CN (1).svg */; };
-		DB577645204D9F85003F9164 /* (shell)_SFont.CN (2).svg in Resources */ = {isa = PBXBuildFile; fileRef = DB577634204D9F85003F9164 /* (shell)_SFont.CN (2).svg */; };
-		DB577646204D9F85003F9164 /* (shell)_SFont.CN (3).svg in Resources */ = {isa = PBXBuildFile; fileRef = DB577635204D9F85003F9164 /* (shell)_SFont.CN (3).svg */; };
-		DB577647204D9F85003F9164 /* (shell)_SFont.CN.svg in Resources */ = {isa = PBXBuildFile; fileRef = DB577636204D9F85003F9164 /* (shell)_SFont.CN.svg */; };
-		DB577648204D9F85003F9164 /* (shell)_SFont.CN的副本 2.svg in Resources */ = {isa = PBXBuildFile; fileRef = DB577637204D9F85003F9164 /* (shell)_SFont.CN的副本 2.svg */; };
 		DB577649204D9F85003F9164 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB577639204D9F85003F9164 /* MainMenu.xib */; };
 		DB57764C204DA046003F9164 /* BMFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57764B204DA046003F9164 /* BMFileModel.m */; };
 		DB577651204E8A2A003F9164 /* BMIconManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577650204E8A2A003F9164 /* BMIconManager.m */; };
@@ -71,7 +63,6 @@
 		3668495E2092D0A900D9640F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		3668497B2094048B00D9640F /* BMProjectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMProjectCell.h; sourceTree = "<group>"; };
 		3668497C2094048B00D9640F /* BMProjectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMProjectCell.m; sourceTree = "<group>"; };
-		3668497E209406E400D9640F /* icon_project@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_project@3x.png"; sourceTree = "<group>"; };
 		366849812094101200D9640F /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
 		366849822094101200D9640F /* SVGKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SVGKit.framework; sourceTree = "<group>"; };
 		366849852094109A00D9640F /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -105,13 +96,6 @@
 		DB57762D204D9F85003F9164 /* NSColor+CNGridViewPalette.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+CNGridViewPalette.m"; sourceTree = "<group>"; };
 		DB57762E204D9F85003F9164 /* NSView+CNGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+CNGridView.h"; sourceTree = "<group>"; };
 		DB57762F204D9F85003F9164 /* NSView+CNGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+CNGridView.m"; sourceTree = "<group>"; };
-		DB577631204D9F85003F9164 /* (Bird_pawprints)_SFont.CN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "(Bird_pawprints)_SFont.CN.png"; sourceTree = "<group>"; };
-		DB577632204D9F85003F9164 /* (Lion_Head)_SFont.CN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "(Lion_Head)_SFont.CN.png"; sourceTree = "<group>"; };
-		DB577633204D9F85003F9164 /* (shell)_SFont.CN (1).svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "(shell)_SFont.CN (1).svg"; sourceTree = "<group>"; };
-		DB577634204D9F85003F9164 /* (shell)_SFont.CN (2).svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "(shell)_SFont.CN (2).svg"; sourceTree = "<group>"; };
-		DB577635204D9F85003F9164 /* (shell)_SFont.CN (3).svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "(shell)_SFont.CN (3).svg"; sourceTree = "<group>"; };
-		DB577636204D9F85003F9164 /* (shell)_SFont.CN.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "(shell)_SFont.CN.svg"; sourceTree = "<group>"; };
-		DB577637204D9F85003F9164 /* (shell)_SFont.CN的副本 2.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "(shell)_SFont.CN的副本 2.svg"; sourceTree = "<group>"; };
 		DB577639204D9F85003F9164 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		DB57764A204DA046003F9164 /* BMFileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMFileModel.h; sourceTree = "<group>"; };
 		DB57764B204DA046003F9164 /* BMFileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMFileModel.m; sourceTree = "<group>"; };
@@ -313,14 +297,6 @@
 		DB577630204D9F85003F9164 /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				3668497E209406E400D9640F /* icon_project@3x.png */,
-				DB577631204D9F85003F9164 /* (Bird_pawprints)_SFont.CN.png */,
-				DB577632204D9F85003F9164 /* (Lion_Head)_SFont.CN.png */,
-				DB577633204D9F85003F9164 /* (shell)_SFont.CN (1).svg */,
-				DB577634204D9F85003F9164 /* (shell)_SFont.CN (2).svg */,
-				DB577635204D9F85003F9164 /* (shell)_SFont.CN (3).svg */,
-				DB577636204D9F85003F9164 /* (shell)_SFont.CN.svg */,
-				DB577637204D9F85003F9164 /* (shell)_SFont.CN的副本 2.svg */,
 				DB577639204D9F85003F9164 /* MainMenu.xib */,
 			);
 			path = resources;
@@ -425,19 +401,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3668497F209406E400D9640F /* icon_project@3x.png in Resources */,
-				DB577646204D9F85003F9164 /* (shell)_SFont.CN (3).svg in Resources */,
 				DB577649204D9F85003F9164 /* MainMenu.xib in Resources */,
 				3668498B209450CB00D9640F /* apple2.svg in Resources */,
-				DB577648204D9F85003F9164 /* (shell)_SFont.CN的副本 2.svg in Resources */,
 				DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */,
-				DB577642204D9F85003F9164 /* (Bird_pawprints)_SFont.CN.png in Resources */,
 				366849862094109A00D9640F /* Podfile in Resources */,
-				DB577647204D9F85003F9164 /* (shell)_SFont.CN.svg in Resources */,
 				DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */,
-				DB577643204D9F85003F9164 /* (Lion_Head)_SFont.CN.png in Resources */,
-				DB577645204D9F85003F9164 /* (shell)_SFont.CN (2).svg in Resources */,
-				DB577644204D9F85003F9164 /* (shell)_SFont.CN (1).svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

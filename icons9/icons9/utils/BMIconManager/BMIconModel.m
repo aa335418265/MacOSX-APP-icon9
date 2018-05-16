@@ -42,7 +42,7 @@
     if (type == BMImageTypeSVG) {
         SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
         model.svgImge = svgImage;
-        svgImage.size = CGSizeMake(1024, 1024);
+        model.image = svgImage.NSImage;
     }else{
         model.image = [[NSImage alloc] initWithContentsOfFile:path] ;
     }
@@ -82,6 +82,7 @@
             CAShapeLayer *shapeLayer = (CAShapeLayer *)layer;
             shapeLayer.strokeColor = color.CGColor;
             shapeLayer.fillColor = color.CGColor;
+            self.image = self.svgImage.NSImage;
             return;
         }
         if ([layer isKindOfClass:[CALayer class]]) {
@@ -90,13 +91,13 @@
     }
 }
 
-- (NSImage *)image {
-    if (_type == BMImageTypeSVG) {
-        return self.svgImge.NSImage;
-    }else{
-        return _image;
-    }
-}
+//- (NSImage *)image {
+//    if (_type == BMImageTypeSVG) {
+//        return self.svgImge.NSImage;
+//    }else{
+//        return _image;
+//    }
+//}
 
 - (SVGKImage *)svgImage {
     return _svgImge;

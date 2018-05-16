@@ -195,8 +195,8 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     //图片大小
     CGSize imageSize = [self imageContentSize];
 
-    NSImage *image =nil;
-    image = [self resizeImage:self.imageModel.image targetSize:imageSize];//调整大小
+
+    NSImage *image = [self resizeImage:self.imageModel.image targetSize:imageSize];//调整大小
 
 
 

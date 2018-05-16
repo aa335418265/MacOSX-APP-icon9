@@ -147,7 +147,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="150" id="iLR-Xk-ukn"/>
                                     </constraints>
-                                    <sliderCell key="cell" controlSize="small" continuous="YES" state="on" alignment="left" minValue="72" maxValue="256" doubleValue="256" tickMarkPosition="above" numberOfTickMarks="32" allowsTickMarkValuesOnly="YES" sliderType="linear" id="YzP-UC-FC5"/>
+                                    <sliderCell key="cell" controlSize="small" continuous="YES" state="on" alignment="left" minValue="100" maxValue="256" doubleValue="256" tickMarkPosition="above" numberOfTickMarks="32" allowsTickMarkValuesOnly="YES" sliderType="linear" id="YzP-UC-FC5"/>
                                     <connections>
                                         <action selector="itemSizeSliderAction:" target="-2" id="tAO-9P-f5c"/>
                                     </connections>

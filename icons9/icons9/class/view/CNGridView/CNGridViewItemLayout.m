@@ -54,7 +54,7 @@ static CGFloat kDefaultItemBorderRadius;
 	self = [super init];
 	if (self) {
 
-        _backgroundColor        = [NSColor whiteColor]; //item背景颜色
+        _backgroundColor        = [NSColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1]; //item背景颜色
 		_selectionRingColor     = [NSColor itemSelectionRingColor];//选中外环的颜色
 		_selectionRingLineWidth = kDefaultSelectionRingLineWidth;//外环宽度
 		_contentInset           = kDefaultContentInset;
@@ -71,7 +71,7 @@ static CGFloat kDefaultItemBorderRadius;
 		NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
 		[textStyle setAlignment:NSCenterTextAlignment];
 
-        _itemTitleTextAttributes = @{NSFontAttributeName: [NSFont fontWithName:@"Helvetica" size:12],
+        _itemTitleTextAttributes = @{NSFontAttributeName: [NSFont fontWithName:@"Helvetica" size:11],
                                      NSShadowAttributeName: textShadow,
                                      NSForegroundColorAttributeName: textColor,
                                      NSParagraphStyleAttributeName: textStyle};
