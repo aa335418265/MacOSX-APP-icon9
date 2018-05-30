@@ -76,9 +76,7 @@ static NSString *kItemSizeSliderPositionKey;
     }
     self.gridView.dropInBlock = ^(NSArray<NSString *> *files) {
         
-        NSInteger selectedRow =  [self.tableView selectedRow];
-
-        BMIconGroupModel * group = [[[BMIconManager sharedInstance] allGroups] objectAtIndex:selectedRow];
+        BMIconGroupModel * group = [[[BMIconManager sharedInstance] allGroups] objectAtIndex:self.selectedGroupIndex];
         NSArray *copyIcons = [group copyFilesFromPaths:files];
         if (copyIcons.count > 0) {
             [self.items addObjectsFromArray:copyIcons];
