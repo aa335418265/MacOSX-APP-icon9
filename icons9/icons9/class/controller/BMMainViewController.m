@@ -60,9 +60,7 @@ static NSString *kItemSizeSliderPositionKey;
 - (void)initUI {
     
     self.tableView.rowHeight = 44;
-
     self.defaultLayout = [CNGridViewItemLayout defaultLayout];
-//    self.defaultLayout.visibleContentMask = CNGridViewItemVisibleContentImage; //默认值显示图片，不显示名称
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
     self.hoverLayout = [CNGridViewItemLayout defaultLayout];
     self.selectedLayout = [CNGridViewItemLayout defaultLayout];
@@ -75,7 +73,6 @@ static NSString *kItemSizeSliderPositionKey;
         self.itemSizeSlider.integerValue = [defaults integerForKey:kItemSizeSliderPositionKey];
     }
     self.gridView.dropInBlock = ^(NSArray<NSString *> *files) {
-        
         BMIconGroupModel * group = [[[BMIconManager sharedInstance] allGroups] objectAtIndex:self.selectedGroupIndex];
         NSArray *copyIcons = [group copyFilesFromPaths:files];
         if (copyIcons.count > 0) {
@@ -83,8 +80,6 @@ static NSString *kItemSizeSliderPositionKey;
             NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.items.count, files.count)];
             [self.gridView insertItemsAtIndexes:indexSet animated:YES];
         }
-
-        
     };
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
     self.gridView.backgroundColor = [NSColor whiteColor];

@@ -12,6 +12,6 @@
 #import <Foundation/Foundation.h>
 #import <Masonry.h>
 #import "BMGlobal.h"
-
+#import "EXTScope.h"
 
 #endif /* PrefixHeader_pch */

@@ -15,6 +15,6 @@
 
 - (NSArray <BMIconGroupModel *> *)allGroups;
 - (BOOL)createGroupWithName:(NSString *)name;
-
+- (BOOL)checkUpdate;
 
 @end

@@ -9,6 +9,7 @@
 #import "BMIconManager.h"
 #import <AppKit/AppKit.h>
 
+
 @interface BMIconManager ()
 @property (nonatomic, strong) NSString *homePath;
 
@@ -31,6 +32,13 @@
 
     return FALSE;
 }
+
+
+- (BOOL)checkUpdate {
+    
+    return YES;
+}
+
 
 - (NSArray <BMIconGroupModel *> *)allGroups {
 
@@ -58,6 +66,9 @@
     return allGroups;
 }
 
+
+
+
 - (void)createDefaultGroup {
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     NSString *defaultPath = [self.homePath stringByAppendingPathComponent:@"default"];
@@ -67,6 +78,8 @@
 }
 
 #pragma mark - Getter and Setter
+
+
 
 - (NSString *)homePath {
     if (_homePath == nil) {
