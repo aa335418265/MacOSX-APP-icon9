@@ -16,4 +16,14 @@ typedef void(^BMAPIRequestCallback)(BMURLResponse *response);
 @interface BMAPIRequest : NSObject
 - (NSNumber *)generateRequestId;
 + (instancetype)sharedInstance;
+
+- (NSInteger)callGETWithParams:(NSDictionary *)params
+                       headers:(NSDictionary *)headers
+                           url:(NSString *)url
+                   queryString:(NSString *)queryString
+                       apiName:(NSString *)apiName
+                      progress:(void(^)(NSProgress * progress,NSInteger requestId))progress
+                       success:(BMAPIRequestCallback)success
+                       failure:(BMAPIRequestCallback)failure;
+
 @end

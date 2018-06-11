@@ -65,7 +65,6 @@ return [requestId integerValue];\
                        failure:(BMAPIRequestCallback)failure
 {
     
-    @weakify(self);
     NSString *urlString = [self urlString:url queryString:queryString];
     AFHTTPSessionManager *manager = [self sharedSessionManager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json", @"text/json" ,@"text/javascript",@"video/mp4", nil]; // 设置相应的 http header Content-Type
