@@ -105,6 +105,7 @@
 		368AE70B20CE7627005FF0E7 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTScope.m; sourceTree = "<group>"; };
 		368AE70C20CE7627005FF0E7 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
 		368AE70E20CE7653005FF0E7 /* BMEnumType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMEnumType.h; sourceTree = "<group>"; };
+		368AE70F20CF68C4005FF0E7 /* BMAPIRequestURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMAPIRequestURL.h; sourceTree = "<group>"; };
 		C909A730617FE4581A59F389 /* Pods-icons9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icons9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-icons9/Pods-icons9.debug.xcconfig"; sourceTree = "<group>"; };
 		DB57752E204AA0C4003F9164 /* icons9.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = icons9.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB577535204AA0C4003F9164 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -223,6 +224,7 @@
 				368AE6BD20CE6BC3005FF0E7 /* BMAPIRequest.h */,
 				368AE6BE20CE6BC3005FF0E7 /* BMAPIRequest.m */,
 				368AE6C020CE6C98005FF0E7 /* BMURLResponse */,
+				368AE70F20CF68C4005FF0E7 /* BMAPIRequestURL.h */,
 			);
 			name = BMAPIRequest;
 			sourceTree = "<group>";

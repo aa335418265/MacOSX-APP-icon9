@@ -123,7 +123,6 @@ return [requestId integerValue];\
     NSURLSessionTask *storedTask = self.httpRequestTaskTable[requestId];
     if (storedTask == nil) {
         NSLog(@"接口请求失败！但在接口请求过程中接口被取消掉了，所以忽略该请求!");
-        return;
     }else{
         [self.httpRequestTaskTable removeObjectForKey:requestId];
     }

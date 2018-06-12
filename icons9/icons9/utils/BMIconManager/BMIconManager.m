@@ -8,10 +8,13 @@
 
 #import "BMIconManager.h"
 #import <AppKit/AppKit.h>
+#import "BMAPIRequest.h"
+#import "BMAPIRequestURL.h"
 
 
 @interface BMIconManager ()
 @property (nonatomic, strong) NSString *homePath;
+@property (nonatomic, strong) NSString *baseUrl;
 
 @end
 @implementation BMIconManager
@@ -24,6 +27,7 @@
     dispatch_once(&onceToken, ^{
         sharedInstance = [[BMIconManager alloc] init];
         [sharedInstance createDefaultGroup];
+        [sharedInstance getProjects];
     });
     return sharedInstance;
 }
@@ -39,6 +43,19 @@
     return YES;
 }
 
+- (void)getProjects {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_PROJECTS];
+    
+    NSUInteger requestId = [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:^(NSProgress *progress, NSInteger requestId) {
+        NSLog(@"进度。。");
+    } success:^(BMURLResponse *response) {
+        NSLog(@"请求成功");
+    } failure:^(BMURLResponse *response) {
+        NSLog(@"请求失败");
+    }];
+    
+}
 
 - (NSArray <BMIconGroupModel *> *)allGroups {
 
@@ -79,6 +96,9 @@
 
 #pragma mark - Getter and Setter
 
+- (NSString *)baseUrl {
+    return kBMIsTestEnvironment ? BASE_URL_TEST : BASE_URL;
+}
 
 
 - (NSString *)homePath {

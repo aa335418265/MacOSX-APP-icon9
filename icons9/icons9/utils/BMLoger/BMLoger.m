@@ -11,6 +11,7 @@
 #import "NSMutableString+AXNetworkingMethods.h"
 #import "BMEnumType.h"
 #import "BMAPIRequest.h"
+#import "BMAPIRequestURL.h"
 
 
 @implementation BMLoger
