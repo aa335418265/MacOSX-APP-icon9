@@ -72,7 +72,24 @@ return [requestId integerValue];\
     
     NSMutableURLRequest *request = [manager.requestSerializer requestWithMethod:@"GET" URLString:urlString parameters:params error:NULL];
     [BMLoger logDebugInfoWithRequest:request apiName:apiName url:url requestParams:params httpMethod:@"GET"];
-    callHttpRequest(manager, GET, urlString, params, progress, success, failure);
+//    callHttpRequest(manager, GET, urlString, params, progress, success, failure);
+    
+    NSNumber *requestId = [self generateRequestId];
+    @weakify(self);
+    NSURLSessionTask *task = [manager GET:urlString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+        @strongify(self);
+        [self callAPIPogress:uploadProgress requestId:[requestId integerValue] progressCallback:progress];
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        @strongify(self);
+        [self callAPISuccess:task responseObject:responseObject requestId:requestId successCallback:success];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        @strongify(self);
+        [self callAPIFailure:task error:error requestId:requestId failureCallback:failure];
+    }];
+    task.originalRequest.requestParams = params;
+    self.httpRequestTaskTable[requestId] = task;
+    return [requestId integerValue];
+    
 
     
 }
@@ -180,6 +197,14 @@ return [requestId integerValue];\
 
 #pragma mark -  gettters and setters 
 
+- (NSMutableDictionary *)httpRequestTaskTable
+{
+    if (_httpRequestTaskTable == nil) {
+        _httpRequestTaskTable = [[NSMutableDictionary alloc] init];
+    }
+    return _httpRequestTaskTable;
+}
+
 - (AFHTTPSessionManager *)sharedSessionManager {
     
     static AFHTTPSessionManager *manager = nil;
@@ -187,7 +212,7 @@ return [requestId integerValue];\
     dispatch_once(&onceToken, ^{
         manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         manager.requestSerializer.timeoutInterval = 20;
     });
     return manager;

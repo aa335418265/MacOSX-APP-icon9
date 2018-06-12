@@ -51,6 +51,7 @@
         NSLog(@"进度。。");
     } success:^(BMURLResponse *response) {
         NSLog(@"请求成功");
+
     } failure:^(BMURLResponse *response) {
         NSLog(@"请求失败");
     }];

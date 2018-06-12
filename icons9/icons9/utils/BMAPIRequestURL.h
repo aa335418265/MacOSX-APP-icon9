@@ -11,8 +11,8 @@
 
 
 
-#define BASE_URL @"http://192.168.241.104:8088/v2/api-docs"
-#define BASE_URL_TEST @"http://192.168.241.104:8088/v2/api-docs"
+#define BASE_URL @"http://192.168.241.104:8088"
+#define BASE_URL_TEST @"http://192.168.241.104:8088"
 
 
 
