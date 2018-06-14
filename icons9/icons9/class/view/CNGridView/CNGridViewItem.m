@@ -266,7 +266,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
         [image drawInRect:imageRect fromRect:srcRect operation:NSCompositeSourceOver fraction:1.0 respectFlipped:YES hints:nil];
     }
     CFAbsoluteTime linkTime = (CFAbsoluteTimeGetCurrent() - startTime);
-    NSLog(@"item 绘制代码执行时间 %f ms", linkTime *1000.0);
+//    NSLog(@"item 绘制代码执行时间 %f ms", linkTime *1000.0);
 
 }
 
@@ -335,7 +335,7 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
     [targetImage unlockFocus];
     CFAbsoluteTime linkTime = (CFAbsoluteTimeGetCurrent() - startTime);
     
-    NSLog(@"图片缩放代码执行时间 %f ms", linkTime *1000.0);
+//    NSLog(@"图片缩放代码执行时间 %f ms", linkTime *1000.0);
     return targetImage;
 }
 

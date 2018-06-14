@@ -20,7 +20,8 @@
 
 - (NSArray <BMIconModel *> *)allObjects ;
 - (NSArray <BMIconModel *> *)objectsWithType:(BMImageType)type;
-
 - (NSArray <BMIconModel *> *)copyFilesFromPaths:(NSArray <NSString *> *)paths;
+
+
 
 @end

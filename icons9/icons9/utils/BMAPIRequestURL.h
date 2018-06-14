@@ -16,6 +16,8 @@
 
 
 
-#define URI_PROJECTS @"/mac/projects"
+#define URI_PROJECTS        @"/mac/projects"
+#define URI_ICONS           @"/mac/icons"
+#define URI_CHECK_UPDATE    @"/mac/checkUpdate"
 
 #endif /* BMAPIRequestURL_h */

@@ -47,19 +47,55 @@ static NSString *kItemSizeSliderPositionKey;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"初始化了");
-    [self initData];
+    [self initLocalData];
     [self initUI];
     [self addNotification];
-
+    
+    //更新项目组
+    [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMIconGroupModel *> *projects) {
+        if (success && projects.count >0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.groups removeAllObjects];
+                self.groups = [projects mutableCopy];
+                [self.tableView reloadData];
+            });
+        }
+    }];
+    
+    //检查iocn更新
+//    [[BMIconManager sharedInstance] checkProjectIconsUpdate:<#(NSString *)#> projectId:<#(NSString *)#>];
+    
 }
 
 
 #pragma mark - 设置UI
 
+- (void)initLocalData {
+    
+    self.items = [NSMutableArray array];
+    self.groups = [NSMutableArray array];
+    self.selectedGroupIndex = 0;    //默认当前选中group
+    self.selectedFilteredImageType = BMImageTypeAll;//当前选中要已过滤的图片类型,即要显示的类型
+    
+    NSArray *groups = [[[BMIconManager sharedInstance] allGroups] copy];
+    if (groups.count <=0) {
+        return;
+    }
+    [self.groups addObjectsFromArray:groups];
+    BMIconGroupModel * group = [self.groups objectAtIndex:self.selectedGroupIndex];
+    if (group && groups.count > 0) {
+        //选中
+        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
+        self.items =[NSMutableArray arrayWithArray:[[group objectsWithType:self.selectedFilteredImageType] copy]];
+    }
+}
+
 
 - (void)initUI {
     
     self.tableView.rowHeight = 44;
+
+    [self.tableView registerNib:[[NSNib alloc] initWithNibNamed:@"BMProjectCell" bundle:nil] forIdentifier:@"BMProjectCell"];
     self.defaultLayout = [CNGridViewItemLayout defaultLayout];
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
     self.hoverLayout = [CNGridViewItemLayout defaultLayout];
@@ -73,7 +109,7 @@ static NSString *kItemSizeSliderPositionKey;
         self.itemSizeSlider.integerValue = [defaults integerForKey:kItemSizeSliderPositionKey];
     }
     self.gridView.dropInBlock = ^(NSArray<NSString *> *files) {
-        BMIconGroupModel * group = [[[BMIconManager sharedInstance] allGroups] objectAtIndex:self.selectedGroupIndex];
+        BMIconGroupModel * group = [self.groups objectAtIndex:self.selectedGroupIndex];
         NSArray *copyIcons = [group copyFilesFromPaths:files];
         if (copyIcons.count > 0) {
             [self.items addObjectsFromArray:copyIcons];
@@ -102,22 +138,6 @@ static NSString *kItemSizeSliderPositionKey;
     [nc addObserver:self selector:@selector(detectedNotification:) name:CNGridViewRightMouseButtonClickedOnItemNotification object:nil];
 }
 
-
-- (void)initData {
-    
-    self.items = [NSMutableArray array];
-    self.groups = [NSMutableArray array];
-    self.selectedGroupIndex = 0;    //默认当前选中group
-    self.selectedFilteredImageType = BMImageTypeAll;//当前选中要已过滤的图片类型,即要显示的类型
-
-    NSArray *groups = [[[BMIconManager sharedInstance] allGroups] copy];
-    [self.groups addObjectsFromArray:groups];
-    BMIconGroupModel * group = [self.groups objectAtIndex:self.selectedGroupIndex];
-    if (group && groups.count > 0) {
-        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
-        self.items =[NSMutableArray arrayWithArray:[[group objectsWithType:self.selectedFilteredImageType] copy]];
-    }
-}
 
 
 #pragma mark - 按钮事件
@@ -265,13 +285,9 @@ static NSString *kItemSizeSliderPositionKey;
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     //根据ID取视图
 
-    
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
-
-    if (cell==nil) {
-   
-    }
-
+    BMIconGroupModel * group = [self.groups objectAtIndex:row];
+    cell.nameLabel.stringValue = group.groupName;
     return cell;
 }
 

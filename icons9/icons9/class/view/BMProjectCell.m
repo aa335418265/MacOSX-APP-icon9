@@ -7,7 +7,9 @@
 //
 
 #import "BMProjectCell.h"
+@interface BMProjectCell()
 
+@end;
 @implementation BMProjectCell
 
 - (void)drawRect:(NSRect)dirtyRect {
@@ -21,8 +23,16 @@
 //    [imageView setImage:[NSImage imageNamed:@@property (nonatomic, assign) <#类型#> <#变量#>; ///< <#注释#>]]
 //}
 
+- (void)awakeFromNib {
+    self.badgeLabel.wantsLayer = YES;
+    self.badgeLabel.layer.cornerRadius  = 2.f;
+    self.badgeLabel.layer.masksToBounds = YES;
+
+}
 
 
 - (IBAction)label:(id)sender {
+}
+- (IBAction)nameLabel:(id)sender {
 }
 @end

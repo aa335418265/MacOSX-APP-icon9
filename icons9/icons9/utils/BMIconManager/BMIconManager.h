@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "BMIconGroupModel.h"
 
+
+typedef void(^CompledBlock)(BOOL success,NSArray <BMIconGroupModel *> *projects);
 @interface BMIconManager : NSObject
 
 + (instancetype)sharedInstance;
@@ -16,5 +18,10 @@
 - (NSArray <BMIconGroupModel *> *)allGroups;
 - (BOOL)createGroupWithName:(NSString *)name;
 - (BOOL)checkUpdate;
+
+- (void)updateProjects:(CompledBlock)complete;
+- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId;
+
+
 
 @end

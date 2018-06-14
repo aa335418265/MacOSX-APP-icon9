@@ -10,11 +10,18 @@
 #import <AppKit/AppKit.h>
 #import "BMAPIRequest.h"
 #import "BMAPIRequestURL.h"
-
+#import <sqlite3.h>
+#import "BMSQLProjectModel.h"
+#define TABLE_PROJECTS @"projects"
 
 @interface BMIconManager ()
+{
+    sqlite3 *database;
+}
 @property (nonatomic, strong) NSString *homePath;
+@property (nonatomic, strong) NSString *sqliteFile;
 @property (nonatomic, strong) NSString *baseUrl;
+
 
 @end
 @implementation BMIconManager
@@ -26,74 +33,167 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[BMIconManager alloc] init];
-        [sharedInstance createDefaultGroup];
-        [sharedInstance getProjects];
     });
     return sharedInstance;
 }
 
-- (BOOL)createGroupWithName:(NSString *)name {
 
-    return FALSE;
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        NSFileManager *fileMgr = [NSFileManager defaultManager];
+        NSArray * searchResult =  [fileMgr URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
+        NSURL * appSupportPath = [searchResult firstObject];
+        self.homePath = [appSupportPath.path stringByAppendingPathComponent:@"icon9"];
+        if ([fileMgr fileExistsAtPath:self.homePath] == false) {
+            [fileMgr createDirectoryAtPath:self.homePath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        self.sqliteFile = [NSString stringWithFormat:@"%@/projects.db",self.homePath];
+        //创建数据库
+        [self openDatabase];
+        [self createTable];
+    }
+    return self;
 }
 
+
+- (void)openDatabase {
+    int databaseResult = sqlite3_open([self.sqliteFile UTF8String], &database);
+    if (databaseResult == SQLITE_OK) {
+        NSLog(@"打开数据库成功");
+    }else{
+        NSLog(@"创建／打开数据库失败,%d",databaseResult);
+    }
+}
+
+- (void)createTable {
+    char *error;
+    NSString *sqlString = [NSString stringWithFormat:@"create table if not exists %@(id integer primary key autoincrement,projectid char unique, name char unique ,hash char unique)", TABLE_PROJECTS];
+    const char *sql = [sqlString cStringUsingEncoding:NSUTF8StringEncoding];
+    int tableResult = sqlite3_exec(database, sql, NULL, NULL, &error);
+    if (tableResult == SQLITE_OK) {
+        NSLog(@"创建表成功");
+    }else{
+        NSLog(@"创建表失败:%s",error);
+    }
+}
+
+- (void)insert:(NSArray <NSDictionary *> *)list {
+    
+    for (NSDictionary *param in list) {
+        NSString *projectId = [param objectForKey:@"id"];
+        NSString *name = [param objectForKey:@"name"];
+        NSString *hash = [param objectForKey:@"hash"];
+        if (name == nil || hash == nil ) {
+            continue;
+        }
+        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(projectid,name,hash) VALUES ('%@','%@','%@');",TABLE_PROJECTS, projectId,name, hash];
+        char *error;
+        const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
+        int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
+        if (ret==SQLITE_OK) {
+            NSLog(@"插入成功");
+        }else{
+            NSLog(@"插入失败:%s", error);
+        }
+    }
+
+}
+
+- (NSArray *)queryProjects
+{
+    sqlite3_stmt *statement = nil;
+    NSString *sqlString = [NSString stringWithFormat:@"select * from %@;", TABLE_PROJECTS];
+    int resutl = sqlite3_prepare_v2(database, sqlString.UTF8String, -1, &statement, NULL);
+    NSMutableArray *results = [NSMutableArray array];
+    if (resutl == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            BMSQLProjectModel *model = [[BMSQLProjectModel alloc] init];
+
+            int projectId =sqlite3_column_int(statement, 1);
+            const char *name = (const char *)sqlite3_column_text(statement, 2);
+            const char *hash = (const char *)sqlite3_column_text(statement, 3);
+            model.projectId = projectId;
+            model.projectName = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
+            model.projectHash = [NSString stringWithCString:hash encoding:NSUTF8StringEncoding];
+            [results addObject:model];
+        }
+    }else{
+        NSLog(@"查询数据库失败");
+    }
+    return results;
+}
+
+- (BOOL)createGroupWithName:(NSString *)name {
+
+    return NO;
+}
 
 - (BOOL)checkUpdate {
     
     return YES;
 }
 
-- (void)getProjects {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_PROJECTS];
+- (void)updateProjects:(CompledBlock)complete {
     
-    NSUInteger requestId = [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:^(NSProgress *progress, NSInteger requestId) {
-        NSLog(@"进度。。");
-    } success:^(BMURLResponse *response) {
-        NSLog(@"请求成功");
-
-    } failure:^(BMURLResponse *response) {
-        NSLog(@"请求失败");
-    }];
-    
+    dispatch_queue_t queue = dispatch_queue_create(0, DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_PROJECTS];
+        NSUInteger requestId = [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
+            id data = [response.content objectForKey:@"data"];
+            [self insert:data];
+            complete(YES,[self allGroups]);
+        } failure:^(BMURLResponse *response) {
+            complete(NO,[self allGroups]);
+            NSLog(@"请求失败");
+        }];
+    });
 }
+
+- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId{
+    dispatch_queue_t queue = dispatch_queue_create(0, DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setObject:projectHash forKey:@"hash"];
+        [params setObject:projectId forKey:@"projectId"];
+        NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_CHECK_UPDATE];
+        NSUInteger requestId = [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
+            id data = [response.content objectForKey:@"data"];
+            NSLog(@"data=%@",data);
+
+
+        } failure:^(BMURLResponse *response) {
+            NSLog(@"请求失败");
+        }];
+    });
+}
+
+
+
 
 - (NSArray <BMIconGroupModel *> *)allGroups {
-
-    
+    NSArray *projects = [self queryProjects];
+    NSMutableArray *allProjects = [NSMutableArray array];
     NSFileManager *manager=[NSFileManager defaultManager];
-    
-    NSArray *dirs =  [manager contentsOfDirectoryAtPath:self.homePath error:nil];
-    NSMutableArray *groupDirs = [NSMutableArray array];
-    if (dirs == nil) {
-        return groupDirs;
-    }
-    [groupDirs addObjectsFromArray:dirs];
-    [groupDirs removeObject:@".DS_Store"];
-    
-    
-    NSMutableArray *allGroups = [NSMutableArray arrayWithCapacity:dirs.count];
-    
-    for (NSString *group in groupDirs) {
+    for (BMSQLProjectModel *project in projects) {
         BMIconGroupModel *model = [[BMIconGroupModel alloc] init];
-        model.groupPath = [self.homePath stringByAppendingPathComponent:group];
-        model.groupName = group;
-        [allGroups addObject:model];
+        model.groupPath = [self.homePath stringByAppendingPathComponent:project.projectName];
+        model.groupName = project.projectName;
+        [allProjects addObject:model];
+        if (! [manager fileExistsAtPath:model.groupPath]) {
+            NSError *error;
+            BOOL ok= [manager createDirectoryAtPath:model.groupPath withIntermediateDirectories:YES attributes:nil error:&error];
+            if (!ok) {
+                NSLog(@"创建文件夹失败:%@", error);
+            }
+        }
     }
-
-    return allGroups;
+    return allProjects;
 }
 
 
 
-
-- (void)createDefaultGroup {
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
-    NSString *defaultPath = [self.homePath stringByAppendingPathComponent:@"default"];
-    if ([fileMgr fileExistsAtPath:defaultPath] == false) {
-        [fileMgr createDirectoryAtPath:defaultPath withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-}
 
 #pragma mark - Getter and Setter
 
@@ -102,16 +202,5 @@
 }
 
 
-- (NSString *)homePath {
-    if (_homePath == nil) {
-        NSFileManager *fileMgr = [NSFileManager defaultManager];
-        NSArray * searchResult =  [fileMgr URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
-        NSURL * appSupportPath = [searchResult firstObject];
-        _homePath = [appSupportPath.path stringByAppendingPathComponent:@"icon9"];
-        if ([fileMgr fileExistsAtPath:_homePath] == false) {
-            [fileMgr createDirectoryAtPath:_homePath withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-    }
-    return _homePath;
-}
+
 @end

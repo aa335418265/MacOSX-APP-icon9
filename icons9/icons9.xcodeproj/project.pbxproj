@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3623B1A320D0F82700C90FD0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3623B1A220D0F82700C90FD0 /* libsqlite3.tbd */; };
+		3623B1A620D1F80800C90FD0 /* BMSQLProjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */; };
+		3623B1A820D2065F00C90FD0 /* BMProjectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3623B1A720D2065F00C90FD0 /* BMProjectCell.xib */; };
+		3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */ = {isa = PBXBuildFile; fileRef = 3623B1AC20D20EA200C90FD0 /* sucai.png */; };
 		3668497D2094048B00D9640F /* BMProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3668497C2094048B00D9640F /* BMProjectCell.m */; };
 		366849832094101200D9640F /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; };
 		366849842094101200D9640F /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; };
@@ -70,6 +74,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3623B1A220D0F82700C90FD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		3623B1A420D1F80800C90FD0 /* BMSQLProjectModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMSQLProjectModel.h; sourceTree = "<group>"; };
+		3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMSQLProjectModel.m; sourceTree = "<group>"; };
+		3623B1A720D2065F00C90FD0 /* BMProjectCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BMProjectCell.xib; sourceTree = "<group>"; };
+		3623B1AC20D20EA200C90FD0 /* sucai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sucai.png; sourceTree = "<group>"; };
 		3668495D2092CFBA00D9640F /* BMGlobal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMGlobal.h; sourceTree = "<group>"; };
 		3668495E2092D0A900D9640F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		3668497B2094048B00D9640F /* BMProjectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMProjectCell.h; sourceTree = "<group>"; };
@@ -153,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3623B1A320D0F82700C90FD0 /* libsqlite3.tbd in Frameworks */,
 				366849842094101200D9640F /* SVGKit.framework in Frameworks */,
 				366849832094101200D9640F /* CocoaLumberjack.framework in Frameworks */,
 				D6F4C7FE88F2714EC9F519C9 /* libPods-icons9.a in Frameworks */,
@@ -171,6 +181,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		3623B1AE20D20EAD00C90FD0 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				3623B1AC20D20EA200C90FD0 /* sucai.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		3668495F2092D10F00D9640F /* global */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +202,7 @@
 			children = (
 				3668497B2094048B00D9640F /* BMProjectCell.h */,
 				3668497C2094048B00D9640F /* BMProjectCell.m */,
+				3623B1A720D2065F00C90FD0 /* BMProjectCell.xib */,
 			);
 			name = TableViewCell;
 			sourceTree = "<group>";
@@ -319,6 +338,7 @@
 		DB5775E6204C2CF8003F9164 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3623B1A220D0F82700C90FD0 /* libsqlite3.tbd */,
 				DB5775ED204C2D2E003F9164 /* CoreData.framework */,
 				DB5775EB204C2D11003F9164 /* Cocoa.framework */,
 				DB5775E9204C2D05003F9164 /* AppKit.framework */,
@@ -398,6 +418,7 @@
 		DB577630204D9F85003F9164 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				3623B1AE20D20EAD00C90FD0 /* images */,
 				DB577639204D9F85003F9164 /* MainMenu.xib */,
 			);
 			path = resources;
@@ -423,6 +444,8 @@
 				DB577653204E8D29003F9164 /* BMIconModel.m */,
 				DB577655204E8F0D003F9164 /* BMIconGroupModel.h */,
 				DB577656204E8F0D003F9164 /* BMIconGroupModel.m */,
+				3623B1A420D1F80800C90FD0 /* BMSQLProjectModel.h */,
+				3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */,
 			);
 			path = BMIconManager;
 			sourceTree = "<group>";
@@ -505,8 +528,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB577649204D9F85003F9164 /* MainMenu.xib in Resources */,
+				3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */,
 				DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */,
 				366849862094109A00D9640F /* Podfile in Resources */,
+				3623B1A820D2065F00C90FD0 /* BMProjectCell.xib in Resources */,
 				DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -574,6 +599,7 @@
 				DB57764C204DA046003F9164 /* BMFileModel.m in Sources */,
 				DB57763F204D9F85003F9164 /* CNGridViewItemLayout.m in Sources */,
 				368AE6E020CE6D1C005FF0E7 /* NSURLRequest+AIFNetworkingMethods.m in Sources */,
+				3623B1A620D1F80800C90FD0 /* BMSQLProjectModel.m in Sources */,
 				368AE6DA20CE6D1C005FF0E7 /* NSArray+AXNetworkingMethods.m in Sources */,
 				3668498F2094563200D9640F /* SVGViewItem.m in Sources */,
 				DB577654204E8D29003F9164 /* BMIconModel.m in Sources */,
