@@ -7,10 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BMIconModel.h"
 
 @interface BMSQLProjectModel : NSObject
 @property (nonatomic, assign) NSInteger projectId; ///< id
 @property (nonatomic, strong) NSString *projectName; ///< 项目名称
 @property (nonatomic, strong) NSString *projectHash; ///< 项目哈希
 @property (nonatomic, strong) NSString *projectLocalPath;  //项目本地路径
+
+
+- (NSArray <BMIconModel *> *)allObjects ;
+- (NSArray <BMIconModel *> *)objectsWithType:(BMImageType)type;
+- (NSArray <BMIconModel *> *)copyFilesFromPaths:(NSArray <NSString *> *)paths;
+
 @end

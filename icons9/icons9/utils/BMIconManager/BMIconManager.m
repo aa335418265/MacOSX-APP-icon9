@@ -68,7 +68,7 @@
 
 - (void)createTable {
     char *error;
-    NSString *sqlString = [NSString stringWithFormat:@"create table if not exists %@(id integer primary key autoincrement,projectid char unique, name char unique ,hash char unique)", TABLE_PROJECTS];
+    NSString *sqlString = [NSString stringWithFormat:@"create table if not exists %@(id integer primary key autoincrement,projectid char unique, name char unique ,hash char unique, projectpath char)", TABLE_PROJECTS];
     const char *sql = [sqlString cStringUsingEncoding:NSUTF8StringEncoding];
     int tableResult = sqlite3_exec(database, sql, NULL, NULL, &error);
     if (tableResult == SQLITE_OK) {
@@ -84,10 +84,11 @@
         NSString *projectId = [param objectForKey:@"id"];
         NSString *name = [param objectForKey:@"name"];
         NSString *hash = [param objectForKey:@"hash"];
+        NSString *projectPath=[self.homePath stringByAppendingPathComponent:name];
         if (name == nil || hash == nil ) {
             continue;
         }
-        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(projectid,name,hash) VALUES ('%@','%@','%@');",TABLE_PROJECTS, projectId,name, hash];
+        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(projectid,name,hash, projectpath) VALUES ('%@','%@','%@', '%@');",TABLE_PROJECTS, projectId,name, hash,projectPath];
         char *error;
         const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
         int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
@@ -113,9 +114,12 @@
             int projectId =sqlite3_column_int(statement, 1);
             const char *name = (const char *)sqlite3_column_text(statement, 2);
             const char *hash = (const char *)sqlite3_column_text(statement, 3);
+            const char *path = (const char *)sqlite3_column_text(statement, 4);
             model.projectId = projectId;
             model.projectName = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
             model.projectHash = [NSString stringWithCString:hash encoding:NSUTF8StringEncoding];
+            model.projectLocalPath = [NSString stringWithCString:path encoding:NSUTF8StringEncoding];
+
             [results addObject:model];
         }
     }else{
@@ -172,24 +176,9 @@
 
 
 
-- (NSArray <BMIconGroupModel *> *)allGroups {
+- (NSArray <BMSQLProjectModel *> *)allGroups {
     NSArray *projects = [self queryProjects];
-    NSMutableArray *allProjects = [NSMutableArray array];
-    NSFileManager *manager=[NSFileManager defaultManager];
-    for (BMSQLProjectModel *project in projects) {
-        BMIconGroupModel *model = [[BMIconGroupModel alloc] init];
-        model.groupPath = [self.homePath stringByAppendingPathComponent:project.projectName];
-        model.groupName = project.projectName;
-        [allProjects addObject:model];
-        if (! [manager fileExistsAtPath:model.groupPath]) {
-            NSError *error;
-            BOOL ok= [manager createDirectoryAtPath:model.groupPath withIntermediateDirectories:YES attributes:nil error:&error];
-            if (!ok) {
-                NSLog(@"创建文件夹失败:%@", error);
-            }
-        }
-    }
-    return allProjects;
+    return projects;
 }
 
 

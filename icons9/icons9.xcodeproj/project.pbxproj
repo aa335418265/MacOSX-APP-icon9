@@ -45,7 +45,6 @@
 		DB57764C204DA046003F9164 /* BMFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57764B204DA046003F9164 /* BMFileModel.m */; };
 		DB577651204E8A2A003F9164 /* BMIconManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577650204E8A2A003F9164 /* BMIconManager.m */; };
 		DB577654204E8D29003F9164 /* BMIconModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577653204E8D29003F9164 /* BMIconModel.m */; };
-		DB577657204E8F0D003F9164 /* BMIconGroupModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577656204E8F0D003F9164 /* BMIconGroupModel.m */; };
 		DB577FBA204FAFDB003F9164 /* SKSVGObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577FB8204FAFDB003F9164 /* SKSVGObject.m */; };
 /* End PBXBuildFile section */
 
@@ -149,8 +148,6 @@
 		DB577650204E8A2A003F9164 /* BMIconManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMIconManager.m; sourceTree = "<group>"; };
 		DB577652204E8D29003F9164 /* BMIconModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMIconModel.h; sourceTree = "<group>"; };
 		DB577653204E8D29003F9164 /* BMIconModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMIconModel.m; sourceTree = "<group>"; };
-		DB577655204E8F0D003F9164 /* BMIconGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMIconGroupModel.h; sourceTree = "<group>"; };
-		DB577656204E8F0D003F9164 /* BMIconGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMIconGroupModel.m; sourceTree = "<group>"; };
 		DB577FB8204FAFDB003F9164 /* SKSVGObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSVGObject.m; sourceTree = "<group>"; };
 		DB577FB9204FAFDB003F9164 /* SKSVGObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSVGObject.h; sourceTree = "<group>"; };
 		E2C92935553B0D65B1D8260A /* Pods-icons9.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icons9.release.xcconfig"; path = "Pods/Target Support Files/Pods-icons9/Pods-icons9.release.xcconfig"; sourceTree = "<group>"; };
@@ -442,8 +439,6 @@
 				DB577650204E8A2A003F9164 /* BMIconManager.m */,
 				DB577652204E8D29003F9164 /* BMIconModel.h */,
 				DB577653204E8D29003F9164 /* BMIconModel.m */,
-				DB577655204E8F0D003F9164 /* BMIconGroupModel.h */,
-				DB577656204E8F0D003F9164 /* BMIconGroupModel.m */,
 				3623B1A420D1F80800C90FD0 /* BMSQLProjectModel.h */,
 				3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */,
 			);
@@ -620,7 +615,6 @@
 				DB577640204D9F85003F9164 /* NSColor+CNGridViewPalette.m in Sources */,
 				368AE6DC20CE6D1C005FF0E7 /* NSDictionary+AXNetworkingMethods.m in Sources */,
 				DB577641204D9F85003F9164 /* NSView+CNGridView.m in Sources */,
-				DB577657204E8F0D003F9164 /* BMIconGroupModel.m in Sources */,
 				368AE6DD20CE6D1C005FF0E7 /* NSMutableString+AXNetworkingMethods.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

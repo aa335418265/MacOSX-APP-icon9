@@ -7,15 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BMIconGroupModel.h"
+#import "BMSQLProjectModel.h"
 
 
-typedef void(^CompledBlock)(BOOL success,NSArray <BMIconGroupModel *> *projects);
+typedef void(^CompledBlock)(BOOL success,NSArray <BMSQLProjectModel *> *projects);
 @interface BMIconManager : NSObject
 
 + (instancetype)sharedInstance;
 
-- (NSArray <BMIconGroupModel *> *)allGroups;
+- (NSArray <BMSQLProjectModel *> *)allGroups;
 - (BOOL)createGroupWithName:(NSString *)name;
 - (BOOL)checkUpdate;
 

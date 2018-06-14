@@ -24,7 +24,7 @@ static NSString *kItemSizeSliderPositionKey;
 @property (weak) IBOutlet CNGridView *gridView;
 @property (weak) IBOutlet NSSlider *itemSizeSlider;
 @property (strong) NSMutableArray<BMIconModel *> *items;
-@property (strong) NSMutableArray <BMIconGroupModel *>*groups;
+@property (strong) NSMutableArray <BMSQLProjectModel *>*projects;
 @property (weak) IBOutlet NSTableView *tableView;
 
 
@@ -52,11 +52,11 @@ static NSString *kItemSizeSliderPositionKey;
     [self addNotification];
     
     //更新项目组
-    [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMIconGroupModel *> *projects) {
+    [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMSQLProjectModel *> *projects) {
         if (success && projects.count >0) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.groups removeAllObjects];
-                self.groups = [projects mutableCopy];
+                [self.projects removeAllObjects];
+                self.projects = [projects mutableCopy];
                 [self.tableView reloadData];
             });
         }
@@ -73,7 +73,7 @@ static NSString *kItemSizeSliderPositionKey;
 - (void)initLocalData {
     
     self.items = [NSMutableArray array];
-    self.groups = [NSMutableArray array];
+    self.projects = [NSMutableArray array];
     self.selectedGroupIndex = 0;    //默认当前选中group
     self.selectedFilteredImageType = BMImageTypeAll;//当前选中要已过滤的图片类型,即要显示的类型
     
@@ -81,8 +81,8 @@ static NSString *kItemSizeSliderPositionKey;
     if (groups.count <=0) {
         return;
     }
-    [self.groups addObjectsFromArray:groups];
-    BMIconGroupModel * group = [self.groups objectAtIndex:self.selectedGroupIndex];
+    [self.projects addObjectsFromArray:groups];
+    BMSQLProjectModel * group = [self.projects objectAtIndex:self.selectedGroupIndex];
     if (group && groups.count > 0) {
         //选中
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
@@ -109,7 +109,7 @@ static NSString *kItemSizeSliderPositionKey;
         self.itemSizeSlider.integerValue = [defaults integerForKey:kItemSizeSliderPositionKey];
     }
     self.gridView.dropInBlock = ^(NSArray<NSString *> *files) {
-        BMIconGroupModel * group = [self.groups objectAtIndex:self.selectedGroupIndex];
+        BMSQLProjectModel * group = [self.projects objectAtIndex:self.selectedGroupIndex];
         NSArray *copyIcons = [group copyFilesFromPaths:files];
         if (copyIcons.count > 0) {
             [self.items addObjectsFromArray:copyIcons];
@@ -156,7 +156,7 @@ static NSString *kItemSizeSliderPositionKey;
     [self.items removeAllObjects];
     [self.gridView reloadDataAnimated:YES];
     //后更新
-    BMIconGroupModel *group = self.groups[self.selectedGroupIndex];
+    BMSQLProjectModel *group = self.projects[self.selectedGroupIndex];
     NSArray *objects = [[group objectsWithType:imageType] copy];
     if (objects.count > 0) {
         [self.items addObjectsFromArray:objects];
@@ -267,7 +267,7 @@ static NSString *kItemSizeSliderPositionKey;
     [self.items removeAllObjects];
     [self.gridView reloadDataAnimated:YES];
     //后更新
-    BMIconGroupModel *group = self.groups[selectedRow];
+    BMSQLProjectModel *group = self.projects[selectedRow];
     NSArray *objects = [[group allObjects] copy];
     if (objects.count > 0) {
         [self.items addObjectsFromArray:objects];
@@ -279,15 +279,15 @@ static NSString *kItemSizeSliderPositionKey;
 
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return self.groups.count;
+    return self.projects.count;
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     //根据ID取视图
 
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
-    BMIconGroupModel * group = [self.groups objectAtIndex:row];
-    cell.nameLabel.stringValue = group.groupName;
+    BMSQLProjectModel * group = [self.projects objectAtIndex:row];
+    cell.nameLabel.stringValue = group.projectName;
     return cell;
 }
 
