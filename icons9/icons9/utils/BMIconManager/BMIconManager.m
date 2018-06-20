@@ -68,7 +68,7 @@
 
 - (void)createTable {
     char *error;
-    NSString *sqlString = [NSString stringWithFormat:@"create table if not exists %@(id integer primary key autoincrement,projectid char unique, name char unique ,hash char unique, projectpath char)", TABLE_PROJECTS];
+    NSString *sqlString = [NSString stringWithFormat:@"create table if not exists %@(id integer primary key autoincrement,projectid char unique, name char unique ,hash char ,picUrl char, projectpath char)", TABLE_PROJECTS];
     const char *sql = [sqlString cStringUsingEncoding:NSUTF8StringEncoding];
     int tableResult = sqlite3_exec(database, sql, NULL, NULL, &error);
     if (tableResult == SQLITE_OK) {
@@ -79,16 +79,19 @@
 }
 
 - (void)insert:(NSArray <NSDictionary *> *)list {
-    
+    if (list.count <= 0) {
+        return;
+    }
     for (NSDictionary *param in list) {
         NSString *projectId = [param objectForKey:@"id"];
         NSString *name = [param objectForKey:@"name"];
-        NSString *hash = [param objectForKey:@"hash"];
+        NSString *hash = [param objectForKey:@"iconsHash"];
+        NSString *picUrl = [param objectForKey:@"picUrl"];
         NSString *projectPath=[self.homePath stringByAppendingPathComponent:name];
         if (name == nil || hash == nil ) {
             continue;
         }
-        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(projectid,name,hash, projectpath) VALUES ('%@','%@','%@', '%@');",TABLE_PROJECTS, projectId,name, hash,projectPath];
+        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(projectid,name,hash, picUrl, projectpath) VALUES ('%@','%@','%@', '%@','%@');",TABLE_PROJECTS, projectId,name, hash,picUrl,projectPath];
         char *error;
         const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
         int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
@@ -98,7 +101,6 @@
             NSLog(@"插入失败:%s", error);
         }
     }
-
 }
 
 - (NSArray *)queryProjects
@@ -111,13 +113,15 @@
         while (sqlite3_step(statement) == SQLITE_ROW) {
             BMSQLProjectModel *model = [[BMSQLProjectModel alloc] init];
 
-            int projectId =sqlite3_column_int(statement, 1);
+            const char *projectId = (const char *)sqlite3_column_text(statement, 1);
             const char *name = (const char *)sqlite3_column_text(statement, 2);
             const char *hash = (const char *)sqlite3_column_text(statement, 3);
-            const char *path = (const char *)sqlite3_column_text(statement, 4);
-            model.projectId = projectId;
+            const char *picUrl = (const char *)sqlite3_column_text(statement, 4);
+            const char *path = (const char *)sqlite3_column_text(statement, 5);
+            model.projectId = [NSString stringWithCString:projectId encoding:NSUTF8StringEncoding];;
             model.projectName = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
             model.projectHash = [NSString stringWithCString:hash encoding:NSUTF8StringEncoding];
+            model.projectPicUrl = [NSString stringWithCString:picUrl encoding:NSUTF8StringEncoding];
             model.projectLocalPath = [NSString stringWithCString:path encoding:NSUTF8StringEncoding];
 
             [results addObject:model];
@@ -144,30 +148,39 @@
     dispatch_async(queue, ^{
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_PROJECTS];
-        NSUInteger requestId = [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
+        [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
             id data = [response.content objectForKey:@"data"];
-            [self insert:data];
-            complete(YES,[self allGroups]);
+            if ([data isKindOfClass:[NSNull class]]) {
+                complete?complete(NO,[self allGroups]):nil;
+            }else{
+                [self insert:data];
+                complete?complete(YES,[self allGroups]):nil;
+            }
+
         } failure:^(BMURLResponse *response) {
-            complete(NO,[self allGroups]);
+            complete?complete(NO,[self allGroups]):nil;
             NSLog(@"请求失败");
         }];
     });
 }
 
-- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId{
+- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure
+{
     dispatch_queue_t queue = dispatch_queue_create(0, DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(queue, ^{
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setObject:projectHash forKey:@"hash"];
         [params setObject:projectId forKey:@"projectId"];
         NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_CHECK_UPDATE];
-        NSUInteger requestId = [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
+        [[BMAPIRequest sharedInstance] callGETWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
             id data = [response.content objectForKey:@"data"];
-            NSLog(@"data=%@",data);
-
+            if ([data isKindOfClass:[NSNull class]]) {
+                failure?failure(nil):nil;
+            }
+            success?success(data):nil;
 
         } failure:^(BMURLResponse *response) {
+            failure?failure(nil):nil;
             NSLog(@"请求失败");
         }];
     });

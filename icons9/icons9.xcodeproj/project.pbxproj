@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,7 @@
 		368AE6E020CE6D1C005FF0E7 /* NSURLRequest+AIFNetworkingMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 368AE6D720CE6D1C005FF0E7 /* NSURLRequest+AIFNetworkingMethods.m */; };
 		368AE6EB20CE6F24005FF0E7 /* BMLoger.m in Sources */ = {isa = PBXBuildFile; fileRef = 368AE6EA20CE6F24005FF0E7 /* BMLoger.m */; };
 		368AE70D20CE7627005FF0E7 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 368AE70B20CE7627005FF0E7 /* EXTScope.m */; };
+		36E8C38F20D9E5EE00B9C0A7 /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 36E8C38E20D9E5ED00B9C0A7 /* NullSafe.m */; };
 		D6F4C7FE88F2714EC9F519C9 /* libPods-icons9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F558BBF91B271CF87838957A /* libPods-icons9.a */; };
 		DB577536204AA0C4003F9164 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577535204AA0C4003F9164 /* main.m */; };
 		DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB57753A204AA0C4003F9164 /* Assets.xcassets */; };
@@ -114,6 +115,7 @@
 		368AE70C20CE7627005FF0E7 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
 		368AE70E20CE7653005FF0E7 /* BMEnumType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMEnumType.h; sourceTree = "<group>"; };
 		368AE70F20CF68C4005FF0E7 /* BMAPIRequestURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMAPIRequestURL.h; sourceTree = "<group>"; };
+		36E8C38E20D9E5ED00B9C0A7 /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
 		C909A730617FE4581A59F389 /* Pods-icons9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icons9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-icons9/Pods-icons9.debug.xcconfig"; sourceTree = "<group>"; };
 		DB57752E204AA0C4003F9164 /* icons9.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = icons9.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB577535204AA0C4003F9164 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -287,6 +289,22 @@
 			path = libextobjc;
 			sourceTree = "<group>";
 		};
+		36E8C38920D9E4EA00B9C0A7 /* category */ = {
+			isa = PBXGroup;
+			children = (
+				36E8C38D20D9E5ED00B9C0A7 /* NullSafe */,
+			);
+			name = category;
+			sourceTree = "<group>";
+		};
+		36E8C38D20D9E5ED00B9C0A7 /* NullSafe */ = {
+			isa = PBXGroup;
+			children = (
+				36E8C38E20D9E5ED00B9C0A7 /* NullSafe.m */,
+			);
+			path = NullSafe;
+			sourceTree = "<group>";
+		};
 		DB577525204AA0C4003F9164 = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +327,7 @@
 		DB577530204AA0C4003F9164 /* icons9 */ = {
 			isa = PBXGroup;
 			children = (
+				36E8C38920D9E4EA00B9C0A7 /* category */,
 				366849802094101200D9640F /* lib */,
 				3668495F2092D10F00D9640F /* global */,
 				DB57764D204E89C6003F9164 /* utils */,
@@ -500,7 +519,7 @@
 				};
 			};
 			buildConfigurationList = DB577529204AA0C4003F9164 /* Build configuration list for PBXProject "icons9" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -589,6 +608,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36E8C38F20D9E5EE00B9C0A7 /* NullSafe.m in Sources */,
 				DB577FBA204FAFDB003F9164 /* SKSVGObject.m in Sources */,
 				368AE6D820CE6D1C005FF0E7 /* AFHTTPRequestSerializer+addHeaders.m in Sources */,
 				DB57764C204DA046003F9164 /* BMFileModel.m in Sources */,
@@ -748,11 +768,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/icons9/PrefixHeader.pch";
 				INFOPLIST_FILE = icons9/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@loader_path/../Frameworks",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = fenglh.icons9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -779,11 +795,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/icons9/PrefixHeader.pch";
 				INFOPLIST_FILE = icons9/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@loader_path/../Frameworks",
-					"@executable_path/../Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = fenglh.icons9;
 				PRODUCT_NAME = "$(TARGET_NAME)";

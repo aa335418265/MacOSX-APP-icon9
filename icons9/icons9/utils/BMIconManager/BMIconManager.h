@@ -11,6 +11,8 @@
 
 
 typedef void(^CompledBlock)(BOOL success,NSArray <BMSQLProjectModel *> *projects);
+typedef void(^CheckSuccess)(NSArray *list);
+typedef void(^CheckFailure)(NSError *error);
 @interface BMIconManager : NSObject
 
 + (instancetype)sharedInstance;
@@ -20,7 +22,7 @@ typedef void(^CompledBlock)(BOOL success,NSArray <BMSQLProjectModel *> *projects
 - (BOOL)checkUpdate;
 
 - (void)updateProjects:(CompledBlock)complete;
-- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId;
+- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure;
 
 
 

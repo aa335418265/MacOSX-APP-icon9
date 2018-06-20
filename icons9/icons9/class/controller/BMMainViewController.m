@@ -14,7 +14,7 @@
 #import "BMIconManager.h"
 #import "BMProjectCell.h"
 #import <SVGKit/SVGKit.h>
-//#import "BMFileModel.h"
+#import <UIImageView+WebCache.h>
 
 
 static NSString *kItemSizeSliderPositionKey;
@@ -58,12 +58,23 @@ static NSString *kItemSizeSliderPositionKey;
                 [self.projects removeAllObjects];
                 self.projects = [projects mutableCopy];
                 [self.tableView reloadData];
+                for (BMSQLProjectModel *model in projects) {
+                    [[BMIconManager sharedInstance] checkProjectIconsUpdate:model.projectHash projectId:model.projectId success:^(NSArray *list) {
+                        if (list.count >0) {
+                            //接口待完善
+                            NSLog(@"有更新");
+                        }
+                    } failure:^(NSError *error) {
+                        //
+                        NSLog(@"检查更新接口失败");
+                    }];
+                }
+
             });
         }
     }];
     
-    //检查iocn更新
-//    [[BMIconManager sharedInstance] checkProjectIconsUpdate:<#(NSString *)#> projectId:<#(NSString *)#>];
+
     
 }
 
@@ -288,6 +299,7 @@ static NSString *kItemSizeSliderPositionKey;
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
     BMSQLProjectModel * group = [self.projects objectAtIndex:row];
     cell.nameLabel.stringValue = group.projectName;
+    [cell.folderImageView sd_setImageWithURL:[NSURL URLWithString:group.projectPicUrl] placeholderImage:[NSImage imageNamed:@"sucai"]];
     return cell;
 }
 
