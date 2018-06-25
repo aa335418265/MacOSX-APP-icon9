@@ -19,11 +19,17 @@ typedef void(^CheckFailure)(NSError *error);
 
 - (NSArray <BMSQLProjectModel *> *)allGroups;
 - (BOOL)createGroupWithName:(NSString *)name;
-- (BOOL)checkUpdate;
 
+
+
+//本地数据校验
+- (NSArray *)getLocalIconsMD5ListInProject:(NSString *)projectId;
+- (NSString *)caculateLocalUpdateMD5InProject:(NSString *)projectId;
+
+//同步远程数据
 - (void)updateProjects:(CompledBlock)complete;
-- (void)checkProjectIconsUpdate:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure;
-
+- (void)getIconsUpdateList:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure;
+- (void)updateIcons:(NSArray *)iconHashList;
 
 
 @end

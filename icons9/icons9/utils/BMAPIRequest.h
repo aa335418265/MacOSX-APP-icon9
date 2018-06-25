@@ -26,4 +26,13 @@ typedef void(^BMAPIRequestCallback)(BMURLResponse *response);
                        success:(BMAPIRequestCallback)success
                        failure:(BMAPIRequestCallback)failure;
 
+- (NSInteger)callPOSTWithParams:(NSDictionary *)params
+                        headers:(NSDictionary *)headers
+                            url:(NSString *)url
+                    queryString:(NSString *)queryString
+                        apiName:(NSString *)apiName
+                       progress:(void(^)(NSProgress * progress,NSInteger requestId))progress
+                        success:(BMAPIRequestCallback)success
+                        failure:(BMAPIRequestCallback)failure;
+
 @end

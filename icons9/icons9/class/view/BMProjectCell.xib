@@ -31,6 +31,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="updateBtnOnClick:" target="aUm-pQ-3Ht" id="9sC-p9-WAU"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UQw-N6-iJh">
                     <rect key="frame" x="44" y="12" width="203" height="21"/>
@@ -44,11 +47,11 @@
                     </connections>
                 </textField>
                 <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5JL-Rv-ch5">
-                    <rect key="frame" x="279" y="25" width="14" height="11"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="0" drawsBackground="YES" id="RdH-TE-nHq">
-                        <font key="font" metaFont="system" size="9"/>
+                    <rect key="frame" x="275" y="25" width="14" height="11"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" drawsBackground="YES" id="RdH-TE-nHq">
+                        <font key="font" metaFont="miniSystem"/>
                         <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="systemPinkColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
             </subviews>
@@ -57,11 +60,12 @@
                 <constraint firstItem="UQw-N6-iJh" firstAttribute="leading" secondItem="kaw-jh-4TE" secondAttribute="trailing" constant="8" id="74s-vR-zMq"/>
                 <constraint firstItem="Rzp-UX-6HQ" firstAttribute="centerY" secondItem="aUm-pQ-3Ht" secondAttribute="centerY" id="81R-ip-2sP"/>
                 <constraint firstItem="kaw-jh-4TE" firstAttribute="leading" secondItem="aUm-pQ-3Ht" secondAttribute="leading" constant="8" id="HSS-3f-BIf"/>
+                <constraint firstItem="5JL-Rv-ch5" firstAttribute="leading" secondItem="UQw-N6-iJh" secondAttribute="trailing" constant="30" id="LS9-1Z-v9N"/>
                 <constraint firstItem="kaw-jh-4TE" firstAttribute="centerY" secondItem="aUm-pQ-3Ht" secondAttribute="centerY" id="SFG-Bu-aMe"/>
                 <constraint firstAttribute="trailing" secondItem="Rzp-UX-6HQ" secondAttribute="trailing" constant="12" id="X7B-YF-biE"/>
-                <constraint firstItem="5JL-Rv-ch5" firstAttribute="top" secondItem="aUm-pQ-3Ht" secondAttribute="top" constant="8" id="anI-Qc-LIB"/>
                 <constraint firstItem="UQw-N6-iJh" firstAttribute="centerY" secondItem="aUm-pQ-3Ht" secondAttribute="centerY" id="bK1-h1-TX2"/>
-                <constraint firstAttribute="trailing" secondItem="5JL-Rv-ch5" secondAttribute="trailing" constant="8" id="bq3-p3-7jr"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5JL-Rv-ch5" secondAttribute="trailing" id="shp-H2-BAg"/>
+                <constraint firstItem="5JL-Rv-ch5" firstAttribute="top" secondItem="aUm-pQ-3Ht" secondAttribute="top" constant="8" id="tWS-qm-eGT"/>
             </constraints>
             <connections>
                 <outlet property="badgeLabel" destination="5JL-Rv-ch5" id="Mh9-fy-Tti"/>

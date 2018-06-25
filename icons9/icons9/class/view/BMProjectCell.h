@@ -8,10 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef void(^OnClickBlock)();
 @interface BMProjectCell : NSView
 @property (weak) IBOutlet NSTextField *nameLabel;
 @property (weak) IBOutlet NSImageView *folderImageView;
-@property (weak) IBOutlet NSButton *updateBtn;
-@property (weak) IBOutlet NSTextField *badgeLabel;
+@property (nonatomic, assign) NSInteger badgeValue; ///< 更新角标
 
+@property (nonatomic, strong) OnClickBlock clickBlock; ///< 点击
 @end

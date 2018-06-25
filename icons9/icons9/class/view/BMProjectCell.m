@@ -8,7 +8,8 @@
 
 #import "BMProjectCell.h"
 @interface BMProjectCell()
-
+@property (weak) IBOutlet NSTextField *badgeLabel;
+@property (weak) IBOutlet NSButton *updateBtn;
 @end;
 @implementation BMProjectCell
 
@@ -17,11 +18,7 @@
     
 }
 
-//+ (instancetype)view {
-//    BMProjectCell *cell = [[BMProjectCell alloc] init];
-//    NSImageView *imageView = [[NSImageView alloc] init];
-//    [imageView setImage:[NSImage imageNamed:@@property (nonatomic, assign) <#类型#> <#变量#>; ///< <#注释#>]]
-//}
+
 
 - (void)awakeFromNib {
     self.badgeLabel.wantsLayer = YES;
@@ -30,9 +27,22 @@
 
 }
 
-
-- (IBAction)label:(id)sender {
+- (IBAction)updateBtnOnClick:(id)sender {
+    if (self.clickBlock) {
+        self.clickBlock();
+    }
 }
-- (IBAction)nameLabel:(id)sender {
+
+
+- (void)setBadgeValue:(NSInteger)badgeValue {
+
+    if (badgeValue > 0) {
+        self.badgeLabel.hidden = NO;
+        self.updateBtn.hidden = NO;
+    }else{
+        self.badgeLabel.hidden = YES;
+        self.updateBtn.hidden = YES;
+    }
+    self.badgeLabel.integerValue = badgeValue;
 }
 @end

@@ -11,6 +11,7 @@
 		3623B1A620D1F80800C90FD0 /* BMSQLProjectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */; };
 		3623B1A820D2065F00C90FD0 /* BMProjectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3623B1A720D2065F00C90FD0 /* BMProjectCell.xib */; };
 		3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */ = {isa = PBXBuildFile; fileRef = 3623B1AC20D20EA200C90FD0 /* sucai.png */; };
+		36302B4020DB58A20003B5FA /* BMSQLIconModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */; };
 		3668497D2094048B00D9640F /* BMProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3668497C2094048B00D9640F /* BMProjectCell.m */; };
 		366849832094101200D9640F /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; };
 		366849842094101200D9640F /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; };
@@ -79,6 +80,8 @@
 		3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMSQLProjectModel.m; sourceTree = "<group>"; };
 		3623B1A720D2065F00C90FD0 /* BMProjectCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BMProjectCell.xib; sourceTree = "<group>"; };
 		3623B1AC20D20EA200C90FD0 /* sucai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sucai.png; sourceTree = "<group>"; };
+		36302B3E20DB58A20003B5FA /* BMSQLIconModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMSQLIconModel.h; sourceTree = "<group>"; };
+		36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMSQLIconModel.m; sourceTree = "<group>"; };
 		3668495D2092CFBA00D9640F /* BMGlobal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMGlobal.h; sourceTree = "<group>"; };
 		3668495E2092D0A900D9640F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		3668497B2094048B00D9640F /* BMProjectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMProjectCell.h; sourceTree = "<group>"; };
@@ -460,6 +463,8 @@
 				DB577653204E8D29003F9164 /* BMIconModel.m */,
 				3623B1A420D1F80800C90FD0 /* BMSQLProjectModel.h */,
 				3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */,
+				36302B3E20DB58A20003B5FA /* BMSQLIconModel.h */,
+				36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */,
 			);
 			path = BMIconManager;
 			sourceTree = "<group>";
@@ -620,6 +625,7 @@
 				DB577654204E8D29003F9164 /* BMIconModel.m in Sources */,
 				DB57763B204D9F85003F9164 /* BMMainViewController.m in Sources */,
 				DB57763E204D9F85003F9164 /* CNGridViewItem.m in Sources */,
+				36302B4020DB58A20003B5FA /* BMSQLIconModel.m in Sources */,
 				368AE6DE20CE6D1C005FF0E7 /* NSObject+AXNetworkingMethods.m in Sources */,
 				DB57763D204D9F85003F9164 /* CNGridView.m in Sources */,
 				DB57763A204D9F85003F9164 /* AppDelegate.m in Sources */,

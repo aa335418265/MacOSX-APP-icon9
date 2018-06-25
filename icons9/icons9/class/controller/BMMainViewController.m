@@ -34,6 +34,7 @@ static NSString *kItemSizeSliderPositionKey;
 
 @property (nonatomic, assign) BMImageType selectedFilteredImageType; ///< 选中已过滤的图片类型
 @property (nonatomic, assign) NSInteger selectedGroupIndex; //选中的组别
+@property (nonatomic, strong) NSMutableDictionary *iconsUpdateList; ///< 更新列表
 
 @end
 
@@ -58,18 +59,35 @@ static NSString *kItemSizeSliderPositionKey;
                 [self.projects removeAllObjects];
                 self.projects = [projects mutableCopy];
                 [self.tableView reloadData];
+                //检查项目下的素材是否有更新
                 for (BMSQLProjectModel *model in projects) {
-                    [[BMIconManager sharedInstance] checkProjectIconsUpdate:model.projectHash projectId:model.projectId success:^(NSArray *list) {
+                    
+                    NSString *updateMD5 = [[BMIconManager sharedInstance] caculateLocalUpdateMD5InProject:model.projectId];
+                    //1. 计算每个项目中的素材的总hash
+                    [[BMIconManager sharedInstance] getIconsUpdateList:updateMD5 projectId:model.projectId success:^(NSArray *list) {
+                        //本地与远程iconsMd5列表差异比较
+                        NSArray *localIconsMd5List = [[BMIconManager sharedInstance] getLocalIconsMD5ListInProject:model.projectId];
+                        
+                        NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",localIconsMd5List];
+                        NSArray * addList = [list filteredArrayUsingPredicate:filterPredicate1];
+                        NSLog(@"有%lu个素材需要更新", (unsigned long)addList.count);
+                        [self.iconsUpdateList setObject:addList forKey:model.projectId];
+                        [self.tableView reloadData];
+                        
+
+                        NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",list];
+                        NSArray * delList = [localIconsMd5List filteredArrayUsingPredicate:filterPredicate2];
+                        NSLog(@"有%lu个素材需要删除", (unsigned long)delList.count);
+
                         if (list.count >0) {
                             //接口待完善
-                            NSLog(@"有更新");
+                            NSLog(@"projectHash:%@, projectId:%@,有更新",model.projectHash, model.projectId);
                         }
                     } failure:^(NSError *error) {
                         //
                         NSLog(@"检查更新接口失败");
                     }];
                 }
-
             });
         }
     }];
@@ -228,8 +246,6 @@ static NSString *kItemSizeSliderPositionKey;
 
 - (CNGridViewItem *)gridView:(CNGridView *)gridView itemAtIndex:(NSInteger)index inSection:(NSInteger)section  {
     static NSString *reuseIdentifier = @"CNGridViewItem";
-    
-    
     CNGridViewItem *item = [gridView dequeueReusableItemWithIdentifier:reuseIdentifier];
     if (item == nil) {
         item = [[CNGridViewItem alloc] initWithLayout:self.defaultLayout reuseIdentifier:reuseIdentifier];
@@ -299,7 +315,15 @@ static NSString *kItemSizeSliderPositionKey;
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
     BMSQLProjectModel * group = [self.projects objectAtIndex:row];
     cell.nameLabel.stringValue = group.projectName;
-    [cell.folderImageView sd_setImageWithURL:[NSURL URLWithString:group.projectPicUrl] placeholderImage:[NSImage imageNamed:@"sucai"]];
+    cell.clickBlock = ^{
+        NSLog(@"项目%@点击了更新按钮", group.projectId);
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId]];
+    };
+    NSArray *updateList = self.iconsUpdateList[group.projectId];
+    cell.badgeValue = updateList.count;
+    [cell.folderImageView sd_setImageWithURL:[NSURL URLWithString:group.projectPicUrl] placeholderImage:[NSImage imageNamed:@"sucai"] completed:^(NSImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        NSLog(@"完成");
+    }];
     return cell;
 }
 
@@ -349,5 +373,13 @@ static NSString *kItemSizeSliderPositionKey;
     return imageType;
 }
 
+
+#pragma mark - getters
+- (NSMutableDictionary *)iconsUpdateList {
+    if (_iconsUpdateList == nil) {
+        _iconsUpdateList = [NSMutableDictionary dictionary];
+    }
+    return _iconsUpdateList;
+}
 
 @end

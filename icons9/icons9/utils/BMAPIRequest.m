@@ -72,26 +72,27 @@ return [requestId integerValue];\
     
     NSMutableURLRequest *request = [manager.requestSerializer requestWithMethod:@"GET" URLString:urlString parameters:params error:NULL];
     [BMLoger logDebugInfoWithRequest:request apiName:apiName url:url requestParams:params httpMethod:@"GET"];
-//    callHttpRequest(manager, GET, urlString, params, progress, success, failure);
-    
-    NSNumber *requestId = [self generateRequestId];
-    @weakify(self);
-    NSURLSessionTask *task = [manager GET:urlString parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-        @strongify(self);
-        [self callAPIPogress:uploadProgress requestId:[requestId integerValue] progressCallback:progress];
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        @strongify(self);
-        [self callAPISuccess:task responseObject:responseObject requestId:requestId successCallback:success];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        @strongify(self);
-        [self callAPIFailure:task error:error requestId:requestId failureCallback:failure];
-    }];
-    task.originalRequest.requestParams = params;
-    self.httpRequestTaskTable[requestId] = task;
-    return [requestId integerValue];
-    
+    callHttpRequest(manager, GET, urlString, params, progress, success, failure);
+}
 
+- (NSInteger)callPOSTWithParams:(NSDictionary *)params
+                       headers:(NSDictionary *)headers
+                           url:(NSString *)url
+                   queryString:(NSString *)queryString
+                       apiName:(NSString *)apiName
+                      progress:(void(^)(NSProgress * progress,NSInteger requestId))progress
+                       success:(BMAPIRequestCallback)success
+                       failure:(BMAPIRequestCallback)failure
+{
     
+    NSString *urlString = [self urlString:url queryString:queryString];
+    AFHTTPSessionManager *manager = [self sharedSessionManager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html",@"application/json", @"text/json" ,@"text/javascript",@"video/mp4", nil]; // 设置相应的 http header Content-Type
+    [manager.requestSerializer addHeaders:headers];
+    
+    NSMutableURLRequest *request = [manager.requestSerializer requestWithMethod:@"POST" URLString:urlString parameters:params error:NULL];
+    [BMLoger logDebugInfoWithRequest:request apiName:apiName url:url requestParams:params httpMethod:@"POST"];
+    callHttpRequest(manager, POST, urlString, params, progress, success, failure);
 }
 
 
