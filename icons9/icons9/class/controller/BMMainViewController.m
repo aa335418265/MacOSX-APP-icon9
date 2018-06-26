@@ -104,7 +104,7 @@ static NSString *kItemSizeSliderPositionKey;
     self.items = [NSMutableArray array];
     self.projects = [NSMutableArray array];
     self.selectedGroupIndex = 0;    //默认当前选中group
-    self.selectedFilteredImageType = BMImageTypeAll;//当前选中要已过滤的图片类型,即要显示的类型
+    self.selectedFilteredImageType = BMImageTypeSVG;//当前选中要已过滤的图片类型,即要显示的类型
     
     NSArray *groups = [[[BMIconManager sharedInstance] allGroups] copy];
     if (groups.count <=0) {
@@ -295,7 +295,7 @@ static NSString *kItemSizeSliderPositionKey;
     [self.gridView reloadDataAnimated:YES];
     //后更新
     BMSQLProjectModel *group = self.projects[selectedRow];
-    NSArray *objects = [[group allObjects] copy];
+    NSArray *objects = [[group objectsWithType:self.selectedFilteredImageType] copy];
     if (objects.count > 0) {
         [self.items addObjectsFromArray:objects];
         [self.gridView reloadDataAnimated:YES];
@@ -317,11 +317,11 @@ static NSString *kItemSizeSliderPositionKey;
     cell.nameLabel.stringValue = group.projectName;
     cell.clickBlock = ^{
         NSLog(@"项目%@点击了更新按钮", group.projectId);
-        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId]];
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName];
     };
     NSArray *updateList = self.iconsUpdateList[group.projectId];
     cell.badgeValue = updateList.count;
-    [cell.folderImageView sd_setImageWithURL:[NSURL URLWithString:group.projectPicUrl] placeholderImage:[NSImage imageNamed:@"sucai"] completed:^(NSImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [cell.folderImageView sd_setImageWithURL:[NSURL URLWithString:group.projectPicUrl] placeholderImage:[NSImage imageNamed:@"sucai2"] completed:^(NSImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         NSLog(@"完成");
     }];
     return cell;
@@ -356,16 +356,16 @@ static NSString *kItemSizeSliderPositionKey;
     BMImageType imageType = BMImageTypeUnknown;
     switch (index) {
         case 0:
-            imageType =  BMImageTypeAll;
-            break;
-        case 1:
             imageType =  BMImageTypeSVG;
             break;
-        case 2:
+        case 1:
             imageType =  BMImageTypePNG;
             break;
+        case 2:
+            imageType =  BMImageTypeJPG;
+            break;
         case 3:
-            imageType = BMImageTypeJPG;
+            imageType =  BMImageTypeAll;
             break;
         default:
             break;

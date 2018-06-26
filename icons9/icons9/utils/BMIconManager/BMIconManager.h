@@ -29,7 +29,7 @@ typedef void(^CheckFailure)(NSError *error);
 //同步远程数据
 - (void)updateProjects:(CompledBlock)complete;
 - (void)getIconsUpdateList:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure;
-- (void)updateIcons:(NSArray *)iconHashList;
+- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName;
 
 
 @end

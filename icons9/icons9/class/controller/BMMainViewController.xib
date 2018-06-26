@@ -27,18 +27,18 @@
                             <rect key="frame" x="0.0" y="0.0" width="304" height="356"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="46" horizontalPageScroll="10" verticalLineScroll="46" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Skz-cI-Azo">
+                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" verticalScrollElasticity="allowed" translatesAutoresizingMaskIntoConstraints="NO" id="Skz-cI-Azo">
                                     <rect key="frame" x="0.0" y="33" width="304" height="323"/>
                                     <clipView key="contentView" id="Faa-jZ-wvR">
                                         <rect key="frame" x="0.0" y="0.0" width="304" height="323"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="44" rowSizeStyle="automatic" viewBased="YES" id="uM3-HL-TUB">
+                                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="uM3-HL-TUB">
                                                 <rect key="frame" x="0.0" y="0.0" width="304" height="323"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <size key="intercellSpacing" width="3" height="2"/>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="gridColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                                 <tableColumns>
                                                     <tableColumn identifier="" width="301" minWidth="40" maxWidth="1000" id="xnP-go-7V0">
                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
@@ -51,6 +51,7 @@
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
+                                                        <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="key"/>
                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     </tableColumn>
                                                 </tableColumns>
@@ -62,11 +63,11 @@
                                         </subviews>
                                     </clipView>
                                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="t83-Ca-rig">
-                                        <rect key="frame" x="0.0" y="306" width="304" height="16"/>
+                                        <rect key="frame" x="-100" y="-100" width="304" height="16"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="0c0-H5-chi">
-                                        <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                        <rect key="frame" x="-100" y="-100" width="15" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                     </scroller>
                                 </scrollView>
@@ -135,15 +136,15 @@
                                 </scrollView>
                                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="V7J-B0-FV4">
                                     <rect key="frame" x="209" y="5" width="55" height="22"/>
-                                    <popUpButtonCell key="cell" type="push" title="All" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="DFd-wI-jwS" id="g80-go-izC">
+                                    <popUpButtonCell key="cell" type="push" title="svg" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" borderStyle="border" inset="2" selectedItem="MQe-ed-twQ" id="g80-go-izC">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="smallSystem"/>
                                         <menu key="menu" id="i5h-ef-Wb5">
                                             <items>
-                                                <menuItem title="All" state="on" id="DFd-wI-jwS"/>
                                                 <menuItem title="svg" id="MQe-ed-twQ"/>
                                                 <menuItem title="png" id="Sa7-XP-v1P"/>
                                                 <menuItem title="jpg" id="N0d-7d-0sx"/>
+                                                <menuItem title="All" state="on" id="DFd-wI-jwS"/>
                                             </items>
                                         </menu>
                                     </popUpButtonCell>

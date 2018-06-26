@@ -7,7 +7,18 @@
 //
 
 #import "BMSQLIconModel.h"
-
+#import <MJExtension.h>
 @implementation BMSQLIconModel
 
+- (instancetype)init {
+    if (self = [super init]) {
+        [BMSQLIconModel mj_setupReplacedKeyFromPropertyName:^NSDictionary *{
+            return @{
+                     @"totalMd5":@"hash",
+                     @"iconId":@"id"
+                     };
+        }];
+    }
+    return self;
+}
 @end

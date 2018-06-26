@@ -39,7 +39,7 @@
                     <rect key="frame" x="44" y="12" width="203" height="21"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="项目名称" id="Y2e-N7-BcD">
                         <font key="font" metaFont="system" size="17"/>
-                        <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.91941352739726023" colorSpace="custom" customColorSpace="displayP3"/>
                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>

@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSString *iconId; ///< 素材id
 @property (nonatomic, strong) NSString *iconName; ///< 素材名字
 @property (nonatomic, strong) NSString *projectId; ///< 项目id
-
+@property (nonatomic, strong) NSString *projectName; ///< 项目名字
 
 @property (nonatomic, strong) NSString *svgUrl; ///< 素材 svg url
 @property (nonatomic, strong) NSString *pngExtraUrl; ///< 素材 png url
@@ -40,8 +40,14 @@
 @property (nonatomic, strong) NSString *pngDoubleFileMd5; ///< 素材文件的md5
 @property (nonatomic, strong) NSString *pngTripleFileMd5; ///< 素材文件的md5
 
+@property (nonatomic, strong) NSString *createName; ///< 创建者
+@property (nonatomic, strong) NSString *lastUpdateName; ///< 最后修改者
+@property (nonatomic, strong) NSString *remark; ///< 备注
+@property (nonatomic, assign) NSTimeInterval lastUpdateTime; ///< 最后创建时间
+@property (nonatomic, assign) NSTimeInterval createTime; ///< 创建时间
 
-@property (nonatomic, strong) NSString *totalMD5; ///< 总md5
+
+@property (nonatomic, strong) NSString *totalMd5; ///< 总md5
 
 
 @end

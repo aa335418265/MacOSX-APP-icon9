@@ -16,12 +16,20 @@
 #include <CommonCrypto/CommonDigest.h>
 #import "NSString+Networking.h"
 #import <AFNetworking.h>
+#import "BMIconsDownloader.h"
+#import <MJExtension.h>
+
 
 #define DATABASE @"icons9.db"
 #define TABLE_PROJECTS @"projects"
 #define TABLE_ICONS @"icons"
 
 #define FileHashDefaultChunkSizeForReadingData 1024*8
+
+
+#define isStrEmpty(_ref)    (((_ref) == nil) || ([(_ref) isEqual:[NSNull null]]) ||([(_ref)isEqualToString:@""]))
+
+#define emptySafeStr(_ref)    (_ref?_ref:@"")
 
 @interface NSDictionary (emptySafe)
 
@@ -44,7 +52,7 @@
 @property (nonatomic, strong) NSString *homePath;
 @property (nonatomic, strong) NSString *sqliteFile;
 @property (nonatomic, strong) NSString *baseUrl;
-@property (nonatomic, strong) NSOperationQueue *downQueue; ///< 下载队列
+
 //@property (nonatomic, strong) NSMutableDictionary *iconsHashList; ///< 项目icon hash列表
 
 @end
@@ -168,10 +176,6 @@
     return results;
 }
 
-- (BOOL)createGroupWithName:(NSString *)name {
-
-    return NO;
-}
 
 
 - (void)updateProjects:(CompledBlock)complete {
@@ -219,7 +223,7 @@
     }];
 }
 
-- (void)updateIcons:(NSArray *)iconHashList
+- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName
 {
     NSString *str=@"";
     for (NSString *hash in iconHashList) {
@@ -230,9 +234,32 @@
     [params setValue:str forKey:@"iconHash"];
     NSString *url = [NSString stringWithFormat:@"%@%@", self.baseUrl, URI_ICONS];
     [[BMAPIRequest sharedInstance] callPOSTWithParams:params headers:nil url:url queryString:nil apiName:NSStringFromSelector(_cmd)  progress:nil success:^(BMURLResponse *response) {
-        id data = [response.content objectForKey:@"data"];
-        NSLog(@"params=%@, data=%@", params,data);
         
+        id data = [response.content objectForKey:@"data"];
+        NSArray *models = [BMSQLIconModel mj_objectArrayWithKeyValuesArray:data];
+        for (BMSQLIconModel *model in models) {
+            if (model.projectName == nil) {
+                model.projectName = projectName;
+            }
+            if (!isStrEmpty(model.svgUrl)) {
+                model.svgLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.svg", model.projectName, model.iconName]];
+                [[BMIconsDownloader sharedInstance] download:model.svgUrl savePath:model.svgLocalPath];
+            }
+            if (!isStrEmpty(model.pngExtraUrl)) {
+                model.pngExtraLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.png", model.projectName, model.iconName]];
+                [[BMIconsDownloader sharedInstance] download:model.pngExtraUrl savePath:model.pngExtraLocalPath];
+            }
+            if (!isStrEmpty(model.pngDoubleUrl)) {
+                model.pngDoubleLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@@2x.png", model.projectName, model.iconName]];
+                [[BMIconsDownloader sharedInstance] download:model.pngDoubleUrl savePath:model.pngDoubleLocalPath];
+            }
+            if (!isStrEmpty(model.pngTripleUrl)) {
+                model.pngTripleLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@@3x.png", model.projectName, model.iconName]];
+                [[BMIconsDownloader sharedInstance] download:model.pngTripleUrl savePath:model.pngTripleLocalPath];
+            }
+        }
+        [self insertIcons:models];
+
     } failure:^(BMURLResponse *response) {
         NSLog(@"请求失败");
     }];
@@ -275,34 +302,67 @@
     }
 }
 
-- (void)insertIcons:(NSArray <NSDictionary *> *) list projectName:(NSString *)projectName projectId:(NSString *)projectId {
+- (void)insertIcons:(NSArray <BMSQLIconModel *> *) list {
     if (list.count <= 0) {
         return;
     }
-    for (NSDictionary *param in list) {
-        
-        NSString *iconId =[param stringNotNilForKey:@"id"];
-        NSString *iconName =[param stringNotNilForKey:@"iconName"];
-        NSString *iconUrl = [param stringNotNilForKey:@"iconUrl"];
-        NSString *totalHash = [param stringNotNilForKey:@"hash"];
-        NSString *fileMD5 = [param stringNotNilForKey:@"fileMD5"];
-        
-        NSString *sqlString = [NSString stringWithFormat:@"REPLACE INTO %@(\
-                               iconId ,\
-                               iconName ,\
-                               projectId ,\
-                               iconUrl ,\
-                               totalMD5 ,\
-                               fileMD5 \
-                               ) VALUES ('%@','%@','%@', '%@','%@','%@');"
-                               ,TABLE_PROJECTS, iconId, iconName, projectId,iconUrl,totalHash,fileMD5];
-        char *error;
-        const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
-        int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
-        if (ret==SQLITE_OK) {
-            NSLog(@"插入成功");
-        }
+    NSLog(@"开始更新(插入)%lu条icon记录", (unsigned long)list.count);
+    NSString *sqlString = @"";
+    for (BMSQLIconModel *model in list) {
+        NSString *str = [NSString stringWithFormat:@"REPLACE INTO %@(\
+                               iconId,\
+                               iconName,\
+                               projectId,\
+                               svgUrl,\
+                               pngExtraUrl,\
+                               pngDoubleUrl,\
+                               pngTripleUrl,\
+                               svgLocalPath,\
+                               pngExtraLocalPath,\
+                               pngDoubleLocalPath,\
+                               pngTripleLocalPath,\
+                               pngExtraSize,\
+                               pngDoubleSize,\
+                               pngTripleSize,\
+                               svgFileMd5,\
+                               pngExtraFileMd5,\
+                               pngDoubleFileMd5,\
+                               pngTripleFileMd5,\
+                               totalMD5 \
+                               ) VALUES ('%@','%@','%@', '%@','%@','%@','%@','%@', '%@','%@','%@','%@','%@', '%@','%@','%@','%@','%@','%@');"
+                               ,TABLE_ICONS,
+                               emptySafeStr(model.iconId),
+                               emptySafeStr(model.iconName),
+                               emptySafeStr(model.projectId),
+                               emptySafeStr(model.svgUrl),
+                               emptySafeStr(model.pngExtraUrl),
+                               emptySafeStr(model.pngDoubleUrl),
+                               emptySafeStr(model.pngTripleUrl),
+                               emptySafeStr(model.svgLocalPath),
+                               emptySafeStr(model.pngExtraLocalPath),
+                               emptySafeStr(model.pngDoubleLocalPath),
+                               emptySafeStr(model.pngTripleLocalPath),
+                               emptySafeStr(model.pngExtraSize),
+                               emptySafeStr(model.pngDoubleSize),
+                               emptySafeStr(model.pngTripleSize),
+                               emptySafeStr(model.svgFileMd5),
+                               emptySafeStr(model.pngExtraFileMd5),
+                               emptySafeStr(model.pngDoubleFileMd5),
+                               emptySafeStr(model.pngTripleFileMd5),
+                               emptySafeStr(model.totalMd5)
+                               ];
+        sqlString = [sqlString stringByAppendingString:str];
     }
+    
+    char *error;
+    const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
+    int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
+    if (ret==SQLITE_OK) {
+         NSLog(@"成功更新(插入)%lud icons记录", list.count);
+    }else{
+        NSLog(@"插入或更新icon失败:%s", error);
+    }
+
 }
 
 
@@ -472,7 +532,7 @@
             model.pngExtraFileMd5 = [NSString stringWithCString:pngExtraFileMd5 encoding:NSUTF8StringEncoding];
             model.pngDoubleFileMd5 = [NSString stringWithCString:pngDoubleFileMd5 encoding:NSUTF8StringEncoding];
             model.pngTripleFileMd5 = [NSString stringWithCString:pngTripleFileMd5 encoding:NSUTF8StringEncoding];
-            model.totalMD5 = [NSString stringWithCString:totalMD5 encoding:NSUTF8StringEncoding];
+            model.totalMd5 = [NSString stringWithCString:totalMD5 encoding:NSUTF8StringEncoding];
             [results addObject:model];
         }
     }else{
@@ -567,14 +627,8 @@ done:
 #pragma mark - Getter and Setter
 
 
-- (NSOperationQueue *)downQueue {
-    if (_downQueue == nil) {
-        _downQueue = [[NSOperationQueue alloc] init];
-        //设置最大并发操作数
-        _downQueue.maxConcurrentOperationCount = 8;
-    }
-    return _downQueue;
-}
+
+
 - (NSString *)baseUrl {
     return kBMIsTestEnvironment ? BASE_URL_TEST : BASE_URL;
 }

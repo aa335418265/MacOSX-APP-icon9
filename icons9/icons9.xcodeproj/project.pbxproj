@@ -12,6 +12,8 @@
 		3623B1A820D2065F00C90FD0 /* BMProjectCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3623B1A720D2065F00C90FD0 /* BMProjectCell.xib */; };
 		3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */ = {isa = PBXBuildFile; fileRef = 3623B1AC20D20EA200C90FD0 /* sucai.png */; };
 		36302B4020DB58A20003B5FA /* BMSQLIconModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */; };
+		36302B5A20E0CD600003B5FA /* BMIconsDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 36302B5920E0CD600003B5FA /* BMIconsDownloader.m */; };
+		36302B5C20E20AC60003B5FA /* sucai2.png in Resources */ = {isa = PBXBuildFile; fileRef = 36302B5B20E20AC50003B5FA /* sucai2.png */; };
 		3668497D2094048B00D9640F /* BMProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3668497C2094048B00D9640F /* BMProjectCell.m */; };
 		366849832094101200D9640F /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; };
 		366849842094101200D9640F /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; };
@@ -82,6 +84,9 @@
 		3623B1AC20D20EA200C90FD0 /* sucai.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sucai.png; sourceTree = "<group>"; };
 		36302B3E20DB58A20003B5FA /* BMSQLIconModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMSQLIconModel.h; sourceTree = "<group>"; };
 		36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMSQLIconModel.m; sourceTree = "<group>"; };
+		36302B5820E0CD600003B5FA /* BMIconsDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMIconsDownloader.h; sourceTree = "<group>"; };
+		36302B5920E0CD600003B5FA /* BMIconsDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMIconsDownloader.m; sourceTree = "<group>"; };
+		36302B5B20E20AC50003B5FA /* sucai2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sucai2.png; sourceTree = "<group>"; };
 		3668495D2092CFBA00D9640F /* BMGlobal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMGlobal.h; sourceTree = "<group>"; };
 		3668495E2092D0A900D9640F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		3668497B2094048B00D9640F /* BMProjectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMProjectCell.h; sourceTree = "<group>"; };
@@ -186,6 +191,7 @@
 		3623B1AE20D20EAD00C90FD0 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				36302B5B20E20AC50003B5FA /* sucai2.png */,
 				3623B1AC20D20EA200C90FD0 /* sucai.png */,
 			);
 			path = images;
@@ -465,6 +471,8 @@
 				3623B1A520D1F80800C90FD0 /* BMSQLProjectModel.m */,
 				36302B3E20DB58A20003B5FA /* BMSQLIconModel.h */,
 				36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */,
+				36302B5820E0CD600003B5FA /* BMIconsDownloader.h */,
+				36302B5920E0CD600003B5FA /* BMIconsDownloader.m */,
 			);
 			path = BMIconManager;
 			sourceTree = "<group>";
@@ -550,6 +558,7 @@
 				3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */,
 				DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */,
 				366849862094109A00D9640F /* Podfile in Resources */,
+				36302B5C20E20AC60003B5FA /* sucai2.png in Resources */,
 				3623B1A820D2065F00C90FD0 /* BMProjectCell.xib in Resources */,
 				DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */,
 			);
@@ -637,6 +646,7 @@
 				368AE6BF20CE6BC3005FF0E7 /* BMAPIRequest.m in Sources */,
 				DB577651204E8A2A003F9164 /* BMIconManager.m in Sources */,
 				368AE6EB20CE6F24005FF0E7 /* BMLoger.m in Sources */,
+				36302B5A20E0CD600003B5FA /* BMIconsDownloader.m in Sources */,
 				368AE70D20CE7627005FF0E7 /* EXTScope.m in Sources */,
 				DB577640204D9F85003F9164 /* NSColor+CNGridViewPalette.m in Sources */,
 				368AE6DC20CE6D1C005FF0E7 /* NSDictionary+AXNetworkingMethods.m in Sources */,

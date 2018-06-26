@@ -304,7 +304,10 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 //图片缩放
 - (NSImage*) resizeImage:(NSImage*)sourceImage targetSize:(CGSize)targetSize
 {
-    
+ 
+    if (sourceImage == nil) {
+        return nil;
+    }
     CFAbsoluteTime startTime =CFAbsoluteTimeGetCurrent();
     
     CGSize imageSize = sourceImage.size;
