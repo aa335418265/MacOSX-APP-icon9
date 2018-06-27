@@ -223,7 +223,7 @@
     }];
 }
 
-- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName
+- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName projectId:(NSString *)projectId
 {
     NSString *str=@"";
     for (NSString *hash in iconHashList) {
@@ -238,9 +238,8 @@
         id data = [response.content objectForKey:@"data"];
         NSArray *models = [BMSQLIconModel mj_objectArrayWithKeyValuesArray:data];
         for (BMSQLIconModel *model in models) {
-            if (model.projectName == nil) {
-                model.projectName = projectName;
-            }
+             model.projectName = projectName;
+            model.projectId = projectId;
             if (!isStrEmpty(model.svgUrl)) {
                 model.svgLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.svg", model.projectName, model.iconName]];
                 [[BMIconsDownloader sharedInstance] download:model.svgUrl savePath:model.svgLocalPath];
@@ -306,62 +305,65 @@
     if (list.count <= 0) {
         return;
     }
-    NSLog(@"开始更新(插入)%lu条icon记录", (unsigned long)list.count);
-    NSString *sqlString = @"";
-    for (BMSQLIconModel *model in list) {
-        NSString *str = [NSString stringWithFormat:@"REPLACE INTO %@(\
-                               iconId,\
-                               iconName,\
-                               projectId,\
-                               svgUrl,\
-                               pngExtraUrl,\
-                               pngDoubleUrl,\
-                               pngTripleUrl,\
-                               svgLocalPath,\
-                               pngExtraLocalPath,\
-                               pngDoubleLocalPath,\
-                               pngTripleLocalPath,\
-                               pngExtraSize,\
-                               pngDoubleSize,\
-                               pngTripleSize,\
-                               svgFileMd5,\
-                               pngExtraFileMd5,\
-                               pngDoubleFileMd5,\
-                               pngTripleFileMd5,\
-                               totalMD5 \
-                               ) VALUES ('%@','%@','%@', '%@','%@','%@','%@','%@', '%@','%@','%@','%@','%@', '%@','%@','%@','%@','%@','%@');"
-                               ,TABLE_ICONS,
-                               emptySafeStr(model.iconId),
-                               emptySafeStr(model.iconName),
-                               emptySafeStr(model.projectId),
-                               emptySafeStr(model.svgUrl),
-                               emptySafeStr(model.pngExtraUrl),
-                               emptySafeStr(model.pngDoubleUrl),
-                               emptySafeStr(model.pngTripleUrl),
-                               emptySafeStr(model.svgLocalPath),
-                               emptySafeStr(model.pngExtraLocalPath),
-                               emptySafeStr(model.pngDoubleLocalPath),
-                               emptySafeStr(model.pngTripleLocalPath),
-                               emptySafeStr(model.pngExtraSize),
-                               emptySafeStr(model.pngDoubleSize),
-                               emptySafeStr(model.pngTripleSize),
-                               emptySafeStr(model.svgFileMd5),
-                               emptySafeStr(model.pngExtraFileMd5),
-                               emptySafeStr(model.pngDoubleFileMd5),
-                               emptySafeStr(model.pngTripleFileMd5),
-                               emptySafeStr(model.totalMd5)
-                               ];
-        sqlString = [sqlString stringByAppendingString:str];
+    @synchronized(self){
+        NSLog(@"开始更新(插入)%lu条icon记录", (unsigned long)list.count);
+        NSString *sqlString = @"";
+        for (BMSQLIconModel *model in list) {
+            NSString *str = [NSString stringWithFormat:@"REPLACE INTO %@(\
+                             iconId,\
+                             iconName,\
+                             projectId,\
+                             svgUrl,\
+                             pngExtraUrl,\
+                             pngDoubleUrl,\
+                             pngTripleUrl,\
+                             svgLocalPath,\
+                             pngExtraLocalPath,\
+                             pngDoubleLocalPath,\
+                             pngTripleLocalPath,\
+                             pngExtraSize,\
+                             pngDoubleSize,\
+                             pngTripleSize,\
+                             svgFileMd5,\
+                             pngExtraFileMd5,\
+                             pngDoubleFileMd5,\
+                             pngTripleFileMd5,\
+                             totalMD5 \
+                             ) VALUES ('%@','%@','%@', '%@','%@','%@','%@','%@', '%@','%@','%@','%@','%@', '%@','%@','%@','%@','%@','%@');"
+                             ,TABLE_ICONS,
+                             emptySafeStr(model.iconId),
+                             emptySafeStr(model.iconName),
+                             emptySafeStr(model.projectId),
+                             emptySafeStr(model.svgUrl),
+                             emptySafeStr(model.pngExtraUrl),
+                             emptySafeStr(model.pngDoubleUrl),
+                             emptySafeStr(model.pngTripleUrl),
+                             emptySafeStr(model.svgLocalPath),
+                             emptySafeStr(model.pngExtraLocalPath),
+                             emptySafeStr(model.pngDoubleLocalPath),
+                             emptySafeStr(model.pngTripleLocalPath),
+                             emptySafeStr(model.pngExtraSize),
+                             emptySafeStr(model.pngDoubleSize),
+                             emptySafeStr(model.pngTripleSize),
+                             emptySafeStr(model.svgFileMd5),
+                             emptySafeStr(model.pngExtraFileMd5),
+                             emptySafeStr(model.pngDoubleFileMd5),
+                             emptySafeStr(model.pngTripleFileMd5),
+                             emptySafeStr(model.totalMd5)
+                             ];
+            sqlString = [sqlString stringByAppendingString:str];
+        }
+        
+        char *error;
+        const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
+        int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
+        if (ret==SQLITE_OK) {
+            NSLog(@"成功更新(插入)%lu条icon记录", list.count);
+        }else{
+            NSLog(@"插入或更新icon失败:%s", error);
+        }
     }
     
-    char *error;
-    const char * sql = [sqlString cStringUsingEncoding:(NSUTF8StringEncoding)];
-    int ret = sqlite3_exec(database, sql, NULL, NULL, &error);
-    if (ret==SQLITE_OK) {
-         NSLog(@"成功更新(插入)%lud icons记录", list.count);
-    }else{
-        NSLog(@"插入或更新icon失败:%s", error);
-    }
 
 }
 
@@ -373,38 +375,32 @@
     if (projectId == nil) {
         return nil;
     }
-    NSArray *iconsMD5List = [self getLocalIconsMD5ListInProject:projectId];
+    NSArray *iconsMD5List = [self getProjectHashList:projectId];
     //计算更新md5
     NSString *str =nil;
-    for (BMSQLIconModel *model in iconsMD5List) {
-        str = [str stringByAppendingString:[self calculateLocalIconMD5:model]];
+    for (NSString *md5 in iconsMD5List) {
+        str = [str stringByAppendingString:md5];
     }
     return str.md5String;
 }
 
 //获取project 的iconMD5列表
-- (NSArray *)getLocalIconsMD5ListInProject:(NSString *)projectId
-{    if (projectId == nil) {
-    return nil;
-}
-    
-    NSArray *list = [self queryProjects];
-    NSMutableDictionary *allProjectLocalIconMD5List = [NSMutableDictionary dictionary];
-    
-    for (BMSQLProjectModel *projectModel in list) {
-        NSString *projectId = projectModel.projectId;
-        NSArray *iconsList = [self queryIconsInProject:projectId];
-        NSSortDescriptor *iconIDSortDesc = [NSSortDescriptor sortDescriptorWithKey:@"iconId" ascending:YES];
-        NSArray *sortIconsList = [iconsList sortedArrayUsingDescriptors:@[iconIDSortDesc]];
-        
-        NSMutableArray *iconsMD5 = [NSMutableArray array];
-        for (BMSQLIconModel *iconModel in sortIconsList) {
-            NSString *iconMD5 = [self calculateLocalIconMD5:iconModel];
-            [iconsMD5 addObject:iconMD5];
-        }
-        [allProjectLocalIconMD5List setValue:iconsMD5 forKey:projectModel.projectId];
+- (NSArray *)getProjectHashList:(NSString *)projectId
+{
+    if (projectId == nil) {
+        return nil;
     }
-    return allProjectLocalIconMD5List[projectId];
+    
+    NSArray *iconsList = [self queryIconsInProject:projectId];
+    NSSortDescriptor *iconIDSortDesc = [NSSortDescriptor sortDescriptorWithKey:@"iconId" ascending:YES];
+    NSArray *sortIconsList = [iconsList sortedArrayUsingDescriptors:@[iconIDSortDesc]];
+        
+    NSMutableArray *iconMD5List = [NSMutableArray array];
+    for (BMSQLIconModel *iconModel in sortIconsList) {
+        NSString *iconMD5 = [self calculateLocalIconMD5:iconModel];
+        iconMD5 ? [iconMD5List addObject:iconMD5] :nil;
+    }
+    return iconMD5List;
 }
 
 
@@ -412,29 +408,28 @@
 - (NSString *)calculateLocalIconMD5:(BMSQLIconModel *)model {
 
     //计算iconMD5 = name+svgMD5 + pngDoubleMD5+pngTriplemd5 +pngExtralMD5
-    NSString *iconMD5 = nil;
-    iconMD5 = [iconMD5 stringByAppendingString:model.iconName];
+    NSString *content = @"";
+    content = [content stringByAppendingString:model.iconName];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:model.svgLocalPath]) {
          NSString *fileMD5 = [self getFileMD5WithPath:model.svgLocalPath];
-        iconMD5 = [iconMD5 stringByAppendingString:fileMD5];
+        content = [content stringByAppendingString:fileMD5];
     }
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:model.pngDoubleLocalPath]) {
         NSString *fileMD5 = [self getFileMD5WithPath:model.pngDoubleLocalPath];
-        iconMD5 = [iconMD5 stringByAppendingString:fileMD5];
+        content = [content stringByAppendingString:fileMD5];
     }
     if ([[NSFileManager defaultManager] fileExistsAtPath:model.pngTripleLocalPath]) {
         NSString *fileMD5 = [self getFileMD5WithPath:model.pngTripleLocalPath];
-        iconMD5 = [iconMD5 stringByAppendingString:fileMD5];
+        content = [content stringByAppendingString:fileMD5];
     }
     if ([[NSFileManager defaultManager] fileExistsAtPath:model.pngExtraLocalPath]) {
         NSString *fileMD5 = [self getFileMD5WithPath:model.pngExtraLocalPath];
-        iconMD5 = [iconMD5 stringByAppendingString:fileMD5];
+        content = [content stringByAppendingString:fileMD5];
     }
     
-
-    return iconMD5;
+    return content.md5String;
 }
 
 
@@ -503,11 +498,11 @@
             const char *pngExtraSize = (const char *)sqlite3_column_text(statement, 12);
             const char *pngDoubleSize = (const char *)sqlite3_column_text(statement, 13);
             const char *pngTripleSize = (const char *)sqlite3_column_text(statement, 14);
-            const char *svgFileMd5 = (const char *)sqlite3_column_text(statement, 12);
-            const char *pngExtraFileMd5 = (const char *)sqlite3_column_text(statement, 13);
-            const char *pngDoubleFileMd5 = (const char *)sqlite3_column_text(statement, 14);
-            const char *pngTripleFileMd5 = (const char *)sqlite3_column_text(statement, 12);
-            const char *totalMD5 = (const char *)sqlite3_column_text(statement, 13);
+            const char *svgFileMd5 = (const char *)sqlite3_column_text(statement, 15);
+            const char *pngExtraFileMd5 = (const char *)sqlite3_column_text(statement, 16);
+            const char *pngDoubleFileMd5 = (const char *)sqlite3_column_text(statement, 17);
+            const char *pngTripleFileMd5 = (const char *)sqlite3_column_text(statement, 18);
+            const char *totalMD5 = (const char *)sqlite3_column_text(statement, 19);
             
             
             model.iconId = [NSString stringWithCString:iconId encoding:NSUTF8StringEncoding];

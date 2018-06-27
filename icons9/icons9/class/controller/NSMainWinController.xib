@@ -241,8 +241,8 @@
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="jig-Ff-TRP"/>
-                    <toolbarItem reference="NOA-N5-mTR"/>
                     <toolbarItem reference="Cmi-63-26f"/>
+                    <toolbarItem reference="NOA-N5-mTR"/>
                     <toolbarItem reference="IhD-T3-WCD"/>
                     <toolbarItem reference="cz2-f6-Eie"/>
                 </defaultToolbarItems>

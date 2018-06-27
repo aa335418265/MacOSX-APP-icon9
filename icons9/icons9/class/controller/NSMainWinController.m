@@ -73,7 +73,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
                     //1. 计算每个项目中的素材的总hash
                     [[BMIconManager sharedInstance] getIconsUpdateList:updateMD5 projectId:model.projectId success:^(NSArray *list) {
                         //本地与远程iconsMd5列表差异比较
-                        NSArray *localIconsMd5List = [[BMIconManager sharedInstance] getLocalIconsMD5ListInProject:model.projectId];
+                        NSArray *localIconsMd5List = [[BMIconManager sharedInstance] getProjectHashList:model.projectId];
                         
                         NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",localIconsMd5List];
                         NSArray * addList = [list filteredArrayUsingPredicate:filterPredicate1];
@@ -307,7 +307,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     cell.nameLabel.stringValue = group.projectName;
     cell.clickBlock = ^{
         NSLog(@"项目%@点击了更新按钮", group.projectId);
-        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName];
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName projectId:group.projectId];
     };
     NSArray *updateList = self.iconsUpdateList[group.projectId];
     cell.badgeValue = updateList.count;

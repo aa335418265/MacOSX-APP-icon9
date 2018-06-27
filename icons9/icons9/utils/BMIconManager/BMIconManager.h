@@ -23,13 +23,13 @@ typedef void(^CheckFailure)(NSError *error);
 
 
 //本地数据校验
-- (NSArray *)getLocalIconsMD5ListInProject:(NSString *)projectId;
+- (NSArray *)getProjectHashList:(NSString *)projectId;
 - (NSString *)caculateLocalUpdateMD5InProject:(NSString *)projectId;
 
 //同步远程数据
 - (void)updateProjects:(CompledBlock)complete;
 - (void)getIconsUpdateList:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure;
-- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName;
+- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName projectId:(NSString *)projectId;
 
 
 @end
