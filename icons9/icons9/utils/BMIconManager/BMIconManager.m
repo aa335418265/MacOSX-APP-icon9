@@ -242,19 +242,45 @@
             model.projectId = projectId;
             if (!isStrEmpty(model.svgUrl)) {
                 model.svgLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.svg", model.projectName, model.iconName]];
-                [[BMIconsDownloader sharedInstance] download:model.svgUrl savePath:model.svgLocalPath];
+                NSString *fileMD5 = [self getFileMD5WithPath:model.svgLocalPath];
+                if (![fileMD5 isEqualToString:model.svgFileMd5]) {
+                    [[BMIconsDownloader sharedInstance] download:model.svgUrl savePath:model.svgLocalPath];
+                }else{
+                    NSLog(@"文件:%@已存在",model.svgLocalPath);
+                }
+                
             }
             if (!isStrEmpty(model.pngExtraUrl)) {
                 model.pngExtraLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.png", model.projectName, model.iconName]];
-                [[BMIconsDownloader sharedInstance] download:model.pngExtraUrl savePath:model.pngExtraLocalPath];
+                NSString *fileMD5 = [self getFileMD5WithPath:model.pngExtraLocalPath];
+                if (![fileMD5 isEqualToString:model.pngExtraFileMd5]) {
+                    [[BMIconsDownloader sharedInstance] download:model.pngExtraUrl savePath:model.pngExtraLocalPath];
+                }else{
+                    NSLog(@"文件:%@已存在",model.pngExtraLocalPath);
+                }
+  
             }
             if (!isStrEmpty(model.pngDoubleUrl)) {
                 model.pngDoubleLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@@2x.png", model.projectName, model.iconName]];
-                [[BMIconsDownloader sharedInstance] download:model.pngDoubleUrl savePath:model.pngDoubleLocalPath];
+
+                NSString *fileMD5 = [self getFileMD5WithPath:model.pngDoubleLocalPath];
+                if (![fileMD5 isEqualToString:model.pngDoubleFileMd5]) {
+                    [[BMIconsDownloader sharedInstance] download:model.pngDoubleUrl savePath:model.pngDoubleLocalPath];
+                }else{
+                    NSLog(@"文件:%@已存在",model.pngDoubleLocalPath);
+                }
+  
             }
             if (!isStrEmpty(model.pngTripleUrl)) {
                 model.pngTripleLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@@3x.png", model.projectName, model.iconName]];
-                [[BMIconsDownloader sharedInstance] download:model.pngTripleUrl savePath:model.pngTripleLocalPath];
+                NSString *fileMD5 = [self getFileMD5WithPath:model.pngDoubleLocalPath];
+                if (![fileMD5 isEqualToString:model.pngTripleFileMd5]) {
+                    [[BMIconsDownloader sharedInstance] download:model.pngTripleUrl savePath:model.pngTripleLocalPath];
+                }else{
+                    NSLog(@"文件:%@已存在",model.pngTripleLocalPath);
+                }
+                
+            
             }
         }
         [self insertIcons:models];

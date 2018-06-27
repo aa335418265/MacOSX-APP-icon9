@@ -58,7 +58,12 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     [self initLocalData];
     [self initUI];
     [self addNotification];
+    [self checkProjectUpdate];
+
     
+}
+
+- (void)checkProjectUpdate {
     //更新项目组
     [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMSQLProjectModel *> *projects) {
         if (success && projects.count >0) {
@@ -98,9 +103,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
             });
         }
     }];
-    
 }
-
 
 
 #pragma mark - UI初始化
@@ -360,6 +363,28 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     
 }
 #pragma mark - 私有方法
+
+//颜色选择action事件
+- (void)changeColor:(id)sender {
+    NSColorPanel *colorPanel = sender ;
+    NSLog(@"---");
+    NSArray *selectedItems = [self.gridView selectedItems];
+    for (CNGridViewItem *viewItem in selectedItems) {
+        [viewItem.imageModel changeSVGFillColor:colorPanel.color];
+        [viewItem setNeedsDisplay:YES];
+    }
+}
+
+
+#pragma mark - 私有方法
+- (void)openColorPanel{
+    
+    NSColorPanel *colorpanel = [NSColorPanel sharedColorPanel];
+    colorpanel.mode = NSColorPanelModeRGB; //调出时，默认色盘
+    [colorpanel setAction:@selector(changeColor:)];
+    [colorpanel setTarget:self];
+    [colorpanel orderFront:nil];
+}
 
 - (BMImageType)imageTypeWithIndexOfSelectedItem:(NSInteger)index {
     BMImageType imageType = BMImageTypeUnknown;

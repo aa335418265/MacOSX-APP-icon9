@@ -51,7 +51,11 @@ static NSString *kItemSizeSliderPositionKey;
     [self initLocalData];
     [self initUI];
     [self addNotification];
-    
+    [self checkProjectUpdate];
+}
+
+
+- (void)checkProjectUpdate {
     //更新项目组
     [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMSQLProjectModel *> *projects) {
         if (success && projects.count >0) {
@@ -74,15 +78,11 @@ static NSString *kItemSizeSliderPositionKey;
                         [self.iconsUpdateList setObject:addList forKey:model.projectId];
                         [self.tableView reloadData];
                         
-
-                        NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",list];
-                        NSArray * delList = [localIconsMd5List filteredArrayUsingPredicate:filterPredicate2];
-                        NSLog(@"有%lu个素材需要删除", (unsigned long)delList.count);
-
-                        if (list.count >0) {
-                            //接口待完善
-                            NSLog(@"projectHash:%@, projectId:%@,有更新",model.projectHash, model.projectId);
-                        }
+                        
+                        //                        NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",list];
+                        //                        NSArray * delList = [localIconsMd5List filteredArrayUsingPredicate:filterPredicate2];
+                        //                        NSLog(@"有%lu个素材需要删除", (unsigned long)delList.count);
+                        
                     } failure:^(NSError *error) {
                         //
                         NSLog(@"检查更新接口失败");
@@ -91,12 +91,7 @@ static NSString *kItemSizeSliderPositionKey;
             });
         }
     }];
-    
-
-    
 }
-
-
 #pragma mark - 设置UI
 
 - (void)initLocalData {
