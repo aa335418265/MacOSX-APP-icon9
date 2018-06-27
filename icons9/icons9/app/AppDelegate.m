@@ -8,10 +8,12 @@
 
 #import "AppDelegate.h"
 #import "BMMainViewController.h"
+#import "NSMainWinController.h"
 
 @interface AppDelegate ()
-@property (weak) IBOutlet NSWindow *window;
-@property (nonatomic, strong) BMMainViewController *mainViewController;
+{
+        NSMainWinController *mainWindow;
+}
 
 
 @end
@@ -20,19 +22,20 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-    self.mainViewController = [[BMMainViewController alloc] initWithNibName:@"BMMainViewController" bundle:nil];
-    [self.window.contentView addSubview:self.mainViewController.view];
-    self.mainViewController.view.frame = self.window.contentView.bounds;
-    
-
-    
+    if (!mainWindow) {
+        mainWindow = [[NSMainWinController alloc] initWithWindowNibName:@"NSMainWinController"];
+    }
+    [mainWindow showWindow:self];
+ 
 }
 
 
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification {
-    // Insert code here to tear down your application
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+{
+    return YES;
 }
+
 
 
 @end

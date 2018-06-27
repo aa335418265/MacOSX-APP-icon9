@@ -14,6 +14,8 @@
 		36302B4020DB58A20003B5FA /* BMSQLIconModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 36302B3F20DB58A20003B5FA /* BMSQLIconModel.m */; };
 		36302B5A20E0CD600003B5FA /* BMIconsDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 36302B5920E0CD600003B5FA /* BMIconsDownloader.m */; };
 		36302B5C20E20AC60003B5FA /* sucai2.png in Resources */ = {isa = PBXBuildFile; fileRef = 36302B5B20E20AC50003B5FA /* sucai2.png */; };
+		36302B6020E2128F0003B5FA /* NSMainWinController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36302B5E20E2128F0003B5FA /* NSMainWinController.m */; };
+		36302B6120E2128F0003B5FA /* NSMainWinController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36302B5F20E2128F0003B5FA /* NSMainWinController.xib */; };
 		3668497D2094048B00D9640F /* BMProjectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3668497C2094048B00D9640F /* BMProjectCell.m */; };
 		366849832094101200D9640F /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849812094101200D9640F /* CocoaLumberjack.framework */; };
 		366849842094101200D9640F /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 366849822094101200D9640F /* SVGKit.framework */; };
@@ -34,6 +36,13 @@
 		368AE6EB20CE6F24005FF0E7 /* BMLoger.m in Sources */ = {isa = PBXBuildFile; fileRef = 368AE6EA20CE6F24005FF0E7 /* BMLoger.m */; };
 		368AE70D20CE7627005FF0E7 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 368AE70B20CE7627005FF0E7 /* EXTScope.m */; };
 		36E8C38F20D9E5EE00B9C0A7 /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = 36E8C38E20D9E5ED00B9C0A7 /* NullSafe.m */; };
+		36FCCCCB20E218220010AC19 /* menu_view_middle.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FCCCC820E218220010AC19 /* menu_view_middle.png */; };
+		36FCCCCC20E218220010AC19 /* menu_view_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FCCCC920E218220010AC19 /* menu_view_right.png */; };
+		36FCCCCD20E218220010AC19 /* menu_view_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FCCCCA20E218220010AC19 /* menu_view_left.png */; };
+		36FCCCD020E21CD20010AC19 /* BackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36FCCCCF20E21CD20010AC19 /* BackgroundView.m */; };
+		36FCCCD220E21D940010AC19 /* projectpanel_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FCCCD120E21D940010AC19 /* projectpanel_shadow.png */; };
+		36FCCCD520E227D50010AC19 /* detail_sepline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FCCCD320E227D50010AC19 /* detail_sepline@2x.png */; };
+		36FCCCD620E227D50010AC19 /* detail_sepline.png in Resources */ = {isa = PBXBuildFile; fileRef = 36FCCCD420E227D50010AC19 /* detail_sepline.png */; };
 		D6F4C7FE88F2714EC9F519C9 /* libPods-icons9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F558BBF91B271CF87838957A /* libPods-icons9.a */; };
 		DB577536204AA0C4003F9164 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577535204AA0C4003F9164 /* main.m */; };
 		DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB57753A204AA0C4003F9164 /* Assets.xcassets */; };
@@ -87,6 +96,9 @@
 		36302B5820E0CD600003B5FA /* BMIconsDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMIconsDownloader.h; sourceTree = "<group>"; };
 		36302B5920E0CD600003B5FA /* BMIconsDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BMIconsDownloader.m; sourceTree = "<group>"; };
 		36302B5B20E20AC50003B5FA /* sucai2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sucai2.png; sourceTree = "<group>"; };
+		36302B5D20E2128F0003B5FA /* NSMainWinController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSMainWinController.h; sourceTree = "<group>"; };
+		36302B5E20E2128F0003B5FA /* NSMainWinController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSMainWinController.m; sourceTree = "<group>"; };
+		36302B5F20E2128F0003B5FA /* NSMainWinController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NSMainWinController.xib; sourceTree = "<group>"; };
 		3668495D2092CFBA00D9640F /* BMGlobal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMGlobal.h; sourceTree = "<group>"; };
 		3668495E2092D0A900D9640F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		3668497B2094048B00D9640F /* BMProjectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMProjectCell.h; sourceTree = "<group>"; };
@@ -124,6 +136,14 @@
 		368AE70E20CE7653005FF0E7 /* BMEnumType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMEnumType.h; sourceTree = "<group>"; };
 		368AE70F20CF68C4005FF0E7 /* BMAPIRequestURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BMAPIRequestURL.h; sourceTree = "<group>"; };
 		36E8C38E20D9E5ED00B9C0A7 /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
+		36FCCCC820E218220010AC19 /* menu_view_middle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_view_middle.png; sourceTree = "<group>"; };
+		36FCCCC920E218220010AC19 /* menu_view_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_view_right.png; sourceTree = "<group>"; };
+		36FCCCCA20E218220010AC19 /* menu_view_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_view_left.png; sourceTree = "<group>"; };
+		36FCCCCE20E21CD20010AC19 /* BackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundView.h; sourceTree = "<group>"; };
+		36FCCCCF20E21CD20010AC19 /* BackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundView.m; sourceTree = "<group>"; };
+		36FCCCD120E21D940010AC19 /* projectpanel_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = projectpanel_shadow.png; sourceTree = "<group>"; };
+		36FCCCD320E227D50010AC19 /* detail_sepline@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_sepline@2x.png"; sourceTree = "<group>"; };
+		36FCCCD420E227D50010AC19 /* detail_sepline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = detail_sepline.png; sourceTree = "<group>"; };
 		C909A730617FE4581A59F389 /* Pods-icons9.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icons9.debug.xcconfig"; path = "Pods/Target Support Files/Pods-icons9/Pods-icons9.debug.xcconfig"; sourceTree = "<group>"; };
 		DB57752E204AA0C4003F9164 /* icons9.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = icons9.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB577535204AA0C4003F9164 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -191,6 +211,12 @@
 		3623B1AE20D20EAD00C90FD0 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				36FCCCD420E227D50010AC19 /* detail_sepline.png */,
+				36FCCCD320E227D50010AC19 /* detail_sepline@2x.png */,
+				36FCCCD120E21D940010AC19 /* projectpanel_shadow.png */,
+				36FCCCCA20E218220010AC19 /* menu_view_left.png */,
+				36FCCCC820E218220010AC19 /* menu_view_middle.png */,
+				36FCCCC920E218220010AC19 /* menu_view_right.png */,
 				36302B5B20E20AC50003B5FA /* sucai2.png */,
 				3623B1AC20D20EA200C90FD0 /* sucai.png */,
 			);
@@ -398,6 +424,9 @@
 				DB57761E204D9F85003F9164 /* BMMainViewController.h */,
 				DB57761F204D9F85003F9164 /* BMMainViewController.m */,
 				DB577620204D9F85003F9164 /* BMMainViewController.xib */,
+				36302B5D20E2128F0003B5FA /* NSMainWinController.h */,
+				36302B5E20E2128F0003B5FA /* NSMainWinController.m */,
+				36302B5F20E2128F0003B5FA /* NSMainWinController.xib */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -414,6 +443,8 @@
 		DB577622204D9F85003F9164 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				36FCCCCE20E21CD20010AC19 /* BackgroundView.h */,
+				36FCCCCF20E21CD20010AC19 /* BackgroundView.m */,
 				3668498C2094560B00D9640F /* SVGViewItem */,
 				3668497A2094046400D9640F /* TableViewCell */,
 				DB577623204D9F85003F9164 /* CNGridView */,
@@ -554,13 +585,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36FCCCD520E227D50010AC19 /* detail_sepline@2x.png in Resources */,
+				36FCCCD620E227D50010AC19 /* detail_sepline.png in Resources */,
+				36302B6120E2128F0003B5FA /* NSMainWinController.xib in Resources */,
 				DB577649204D9F85003F9164 /* MainMenu.xib in Resources */,
 				3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */,
 				DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */,
 				366849862094109A00D9640F /* Podfile in Resources */,
 				36302B5C20E20AC60003B5FA /* sucai2.png in Resources */,
+				36FCCCCC20E218220010AC19 /* menu_view_right.png in Resources */,
 				3623B1A820D2065F00C90FD0 /* BMProjectCell.xib in Resources */,
 				DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */,
+				36FCCCCB20E218220010AC19 /* menu_view_middle.png in Resources */,
+				36FCCCD220E21D940010AC19 /* projectpanel_shadow.png in Resources */,
+				36FCCCCD20E218220010AC19 /* menu_view_left.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +666,7 @@
 				DB57764C204DA046003F9164 /* BMFileModel.m in Sources */,
 				DB57763F204D9F85003F9164 /* CNGridViewItemLayout.m in Sources */,
 				368AE6E020CE6D1C005FF0E7 /* NSURLRequest+AIFNetworkingMethods.m in Sources */,
+				36FCCCD020E21CD20010AC19 /* BackgroundView.m in Sources */,
 				3623B1A620D1F80800C90FD0 /* BMSQLProjectModel.m in Sources */,
 				368AE6DA20CE6D1C005FF0E7 /* NSArray+AXNetworkingMethods.m in Sources */,
 				3668498F2094563200D9640F /* SVGViewItem.m in Sources */,
@@ -651,6 +690,7 @@
 				DB577640204D9F85003F9164 /* NSColor+CNGridViewPalette.m in Sources */,
 				368AE6DC20CE6D1C005FF0E7 /* NSDictionary+AXNetworkingMethods.m in Sources */,
 				DB577641204D9F85003F9164 /* NSView+CNGridView.m in Sources */,
+				36302B6020E2128F0003B5FA /* NSMainWinController.m in Sources */,
 				368AE6DD20CE6D1C005FF0E7 /* NSMutableString+AXNetworkingMethods.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -771,6 +811,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = icons9/icons9.entitlements;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -798,6 +839,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = icons9/icons9.entitlements;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
