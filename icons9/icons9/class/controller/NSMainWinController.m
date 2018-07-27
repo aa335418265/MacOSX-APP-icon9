@@ -310,7 +310,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     cell.nameLabel.stringValue = group.projectName;
     cell.clickBlock = ^{
         NSLog(@"项目%@点击了更新按钮", group.projectId);
-        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName projectId:group.projectId];
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName];
     };
     NSArray *updateList = self.iconsUpdateList[group.projectId];
     cell.badgeValue = updateList.count;

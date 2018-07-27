@@ -189,28 +189,7 @@ static NSString *kItemSizeSliderPositionKey;
 
 }
 
-- (IBAction)addFilesButtonAction:(id)sender {
-    
-    NSAlert *alert = [[NSAlert alloc]init];
-    //可以设置产品的icon
-    alert.icon = [NSImage imageNamed:@"(Lion_Head)_SFont.CN.png"];
-    //添加两个按钮吧
-    [alert addButtonWithTitle:@"OK"];
-    //正文
-    alert.messageText = @"提示";
-    //描述文字
-    alert.informativeText = @"暂不允许新建分组";
-    //弹窗类型 默认类型 NSAlertStyleWarning
-    [alert setAlertStyle:NSAlertStyleWarning];
-    //回调Block
-    [alert beginSheetModalForWindow:[self.view window] completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == NSAlertFirstButtonReturn ) {
-            NSLog(@"this is OK Button tap");
-        }
-    }];
-    
 
-}
 //slider 滑动
 - (IBAction)itemSizeSliderAction:(id)sender {
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
@@ -312,7 +291,7 @@ static NSString *kItemSizeSliderPositionKey;
     cell.nameLabel.stringValue = group.projectName;
     cell.clickBlock = ^{
         NSLog(@"项目%@点击了更新按钮", group.projectId);
-        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName projectId:group.projectId];
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName ];
     };
     NSArray *updateList = self.iconsUpdateList[group.projectId];
     cell.badgeValue = updateList.count;

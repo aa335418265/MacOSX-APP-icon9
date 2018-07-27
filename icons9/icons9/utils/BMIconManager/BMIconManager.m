@@ -50,6 +50,7 @@
     sqlite3 *database;
 }
 @property (nonatomic, strong) NSString *homePath;
+@property (nonatomic, strong) NSString *imagesPath;
 @property (nonatomic, strong) NSString *sqliteFile;
 @property (nonatomic, strong) NSString *baseUrl;
 
@@ -77,6 +78,7 @@
         NSArray * searchResult =  [fileMgr URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask];
         NSURL * appSupportPath = [searchResult firstObject];
         self.homePath = [appSupportPath.path stringByAppendingPathComponent:@"icon9"];
+        self.imagesPath = [NSString stringWithFormat:@"%@/%@",self.homePath,@"images"];
         if (![fileMgr fileExistsAtPath:self.homePath]) {
             [fileMgr createDirectoryAtPath:self.homePath withIntermediateDirectories:YES attributes:nil error:nil];
         }
@@ -103,6 +105,7 @@
 
 
 #pragma mark - project 数据库操作
+
 
 - (void)createProjectTable {
     char *error;
@@ -223,7 +226,7 @@
     }];
 }
 
-- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName projectId:(NSString *)projectId
+- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName
 {
     NSString *str=@"";
     for (NSString *hash in iconHashList) {
@@ -238,10 +241,8 @@
         id data = [response.content objectForKey:@"data"];
         NSArray *models = [BMSQLIconModel mj_objectArrayWithKeyValuesArray:data];
         for (BMSQLIconModel *model in models) {
-             model.projectName = projectName;
-            model.projectId = projectId;
             if (!isStrEmpty(model.svgUrl)) {
-                model.svgLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.svg", model.projectName, model.iconName]];
+                model.svgLocalPath = [NSString stringWithFormat:@"/%@/%@.svg", self.imagesPath, model.iconName];
                 NSString *fileMD5 = [self getFileMD5WithPath:model.svgLocalPath];
                 if (![fileMD5 isEqualToString:model.svgFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.svgUrl savePath:model.svgLocalPath];
@@ -251,7 +252,7 @@
                 
             }
             if (!isStrEmpty(model.pngExtraUrl)) {
-                model.pngExtraLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@.png", model.projectName, model.iconName]];
+                model.pngExtraLocalPath = [NSString stringWithFormat:@"/%@/%@.png", self.imagesPath, model.iconName];
                 NSString *fileMD5 = [self getFileMD5WithPath:model.pngExtraLocalPath];
                 if (![fileMD5 isEqualToString:model.pngExtraFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.pngExtraUrl savePath:model.pngExtraLocalPath];
@@ -261,7 +262,7 @@
   
             }
             if (!isStrEmpty(model.pngDoubleUrl)) {
-                model.pngDoubleLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@@2x.png", model.projectName, model.iconName]];
+                model.pngDoubleLocalPath =[NSString stringWithFormat:@"/%@/%@@2x.png", self.imagesPath, model.iconName];
 
                 NSString *fileMD5 = [self getFileMD5WithPath:model.pngDoubleLocalPath];
                 if (![fileMD5 isEqualToString:model.pngDoubleFileMd5]) {
@@ -272,7 +273,7 @@
   
             }
             if (!isStrEmpty(model.pngTripleUrl)) {
-                model.pngTripleLocalPath = [self.homePath stringByAppendingString:[NSString stringWithFormat:@"/%@/%@@3x.png", model.projectName, model.iconName]];
+                model.pngTripleLocalPath = [NSString stringWithFormat:@"/%@/%@@3x.png", self.imagesPath, model.iconName];
                 NSString *fileMD5 = [self getFileMD5WithPath:model.pngDoubleLocalPath];
                 if (![fileMD5 isEqualToString:model.pngTripleFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.pngTripleUrl savePath:model.pngTripleLocalPath];
@@ -299,7 +300,7 @@
                            id integer primary key autoincrement,\
                            iconId char unique,\
                            iconName char ,\
-                           projectId char ,\
+                           projectIds char ,\
                            svgUrl char ,\
                            pngExtraUrl char ,\
                            pngDoubleUrl char ,\
@@ -359,7 +360,7 @@
                              ,TABLE_ICONS,
                              emptySafeStr(model.iconId),
                              emptySafeStr(model.iconName),
-                             emptySafeStr(model.projectId),
+                             emptySafeStr(model.projectIds),
                              emptySafeStr(model.svgUrl),
                              emptySafeStr(model.pngExtraUrl),
                              emptySafeStr(model.pngDoubleUrl),
@@ -496,13 +497,8 @@
 
 - (NSArray <BMSQLIconModel *>*)queryIconsInProject:(NSString *)projectId {
     sqlite3_stmt *statement = nil;
-    NSString *sqlString;
-    if (projectId) {
-        sqlString = [NSString stringWithFormat:@"select * from %@ where projectId='%@';", TABLE_ICONS,projectId];
-    }else {
-        sqlString = [NSString stringWithFormat:@"select * from %@;", TABLE_ICONS];
-    }
-    
+    NSString *sqlString = [NSString stringWithFormat:@"select * from %@;", TABLE_ICONS];
+        //查询所有的
     int resutl = sqlite3_prepare_v2(database, sqlString.UTF8String, -1, &statement, NULL);
     NSMutableArray *results = [NSMutableArray array];
     if (resutl == SQLITE_OK) {
@@ -511,7 +507,7 @@
             
             const char *iconId = (const char *)sqlite3_column_text(statement, 1);
             const char *iconName = (const char *)sqlite3_column_text(statement, 2);
-            const char *projectId = (const char *)sqlite3_column_text(statement, 3);
+            const char *projectIds = (const char *)sqlite3_column_text(statement, 3);
             
             const char *svgUrl = (const char *)sqlite3_column_text(statement, 4);
             const char *pngExtraUrl = (const char *)sqlite3_column_text(statement, 5);
@@ -533,7 +529,7 @@
             
             model.iconId = [NSString stringWithCString:iconId encoding:NSUTF8StringEncoding];
             model.iconName = [NSString stringWithCString:iconName encoding:NSUTF8StringEncoding];
-            model.projectId = [NSString stringWithCString:projectId encoding:NSUTF8StringEncoding];
+            model.projectIds = [NSString stringWithCString:projectIds encoding:NSUTF8StringEncoding];
             
             model.svgUrl = [NSString stringWithCString:svgUrl encoding:NSUTF8StringEncoding];
             model.pngExtraUrl = [NSString stringWithCString:pngExtraUrl encoding:NSUTF8StringEncoding];
@@ -554,7 +550,13 @@
             model.pngDoubleFileMd5 = [NSString stringWithCString:pngDoubleFileMd5 encoding:NSUTF8StringEncoding];
             model.pngTripleFileMd5 = [NSString stringWithCString:pngTripleFileMd5 encoding:NSUTF8StringEncoding];
             model.totalMd5 = [NSString stringWithCString:totalMD5 encoding:NSUTF8StringEncoding];
-            [results addObject:model];
+            //过滤
+            NSArray *array = [model.projectIds componentsSeparatedByString:@","];
+            if ([array containsObject:projectId]) {
+                [results addObject:model];
+            }
+
+            
         }
     }else{
         NSLog(@"查询数据库失败");
