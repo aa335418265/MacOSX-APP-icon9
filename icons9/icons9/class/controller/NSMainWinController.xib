@@ -221,15 +221,15 @@
                         <popUpButton key="view" verticalHuggingPriority="750" id="wLE-EJ-XnL">
                             <rect key="frame" x="11" y="14" width="55" height="22"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <popUpButtonCell key="cell" type="push" title="svg" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="br6-pE-8rS" id="E7N-6N-uPQ">
+                            <popUpButtonCell key="cell" type="push" title="All" bezelStyle="rounded" alignment="center" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="w8b-Wb-pyV" id="E7N-6N-uPQ">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
                                 <menu key="menu" id="hMd-eZ-9MB">
                                     <items>
-                                        <menuItem title="svg" state="on" id="br6-pE-8rS"/>
+                                        <menuItem title="svg" id="br6-pE-8rS"/>
                                         <menuItem title="png" id="AKz-BX-yIB"/>
                                         <menuItem title="jpg" id="CGy-Ko-cLD"/>
-                                        <menuItem title="All" id="w8b-Wb-pyV"/>
+                                        <menuItem title="All" state="on" id="w8b-Wb-pyV"/>
                                     </items>
                                 </menu>
                             </popUpButtonCell>

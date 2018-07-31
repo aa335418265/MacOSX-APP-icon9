@@ -47,8 +47,6 @@
 		DB577536204AA0C4003F9164 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577535204AA0C4003F9164 /* main.m */; };
 		DB57753B204AA0C4003F9164 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB57753A204AA0C4003F9164 /* Assets.xcassets */; };
 		DB57763A204D9F85003F9164 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57761B204D9F85003F9164 /* AppDelegate.m */; };
-		DB57763B204D9F85003F9164 /* BMMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57761F204D9F85003F9164 /* BMMainViewController.m */; };
-		DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB577620204D9F85003F9164 /* BMMainViewController.xib */; };
 		DB57763D204D9F85003F9164 /* CNGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577625204D9F85003F9164 /* CNGridView.m */; };
 		DB57763E204D9F85003F9164 /* CNGridViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DB577629204D9F85003F9164 /* CNGridViewItem.m */; };
 		DB57763F204D9F85003F9164 /* CNGridViewItemLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = DB57762B204D9F85003F9164 /* CNGridViewItemLayout.m */; };
@@ -156,9 +154,6 @@
 		DB5775F0204CCDF9003F9164 /* icons9.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = icons9.entitlements; sourceTree = "<group>"; };
 		DB57761A204D9F85003F9164 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DB57761B204D9F85003F9164 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		DB57761E204D9F85003F9164 /* BMMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMMainViewController.h; sourceTree = "<group>"; };
-		DB57761F204D9F85003F9164 /* BMMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMMainViewController.m; sourceTree = "<group>"; };
-		DB577620204D9F85003F9164 /* BMMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BMMainViewController.xib; sourceTree = "<group>"; };
 		DB577624204D9F85003F9164 /* CNGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNGridView.h; sourceTree = "<group>"; };
 		DB577625204D9F85003F9164 /* CNGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CNGridView.m; sourceTree = "<group>"; };
 		DB577626204D9F85003F9164 /* CNGridViewDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNGridViewDefinitions.h; sourceTree = "<group>"; };
@@ -421,9 +416,6 @@
 		DB57761D204D9F85003F9164 /* controller */ = {
 			isa = PBXGroup;
 			children = (
-				DB57761E204D9F85003F9164 /* BMMainViewController.h */,
-				DB57761F204D9F85003F9164 /* BMMainViewController.m */,
-				DB577620204D9F85003F9164 /* BMMainViewController.xib */,
 				36302B5D20E2128F0003B5FA /* NSMainWinController.h */,
 				36302B5E20E2128F0003B5FA /* NSMainWinController.m */,
 				36302B5F20E2128F0003B5FA /* NSMainWinController.xib */,
@@ -590,7 +582,6 @@
 				36302B6120E2128F0003B5FA /* NSMainWinController.xib in Resources */,
 				DB577649204D9F85003F9164 /* MainMenu.xib in Resources */,
 				3623B1AD20D20EA200C90FD0 /* sucai.png in Resources */,
-				DB57763C204D9F85003F9164 /* BMMainViewController.xib in Resources */,
 				366849862094109A00D9640F /* Podfile in Resources */,
 				36302B5C20E20AC60003B5FA /* sucai2.png in Resources */,
 				36FCCCCC20E218220010AC19 /* menu_view_right.png in Resources */,
@@ -671,7 +662,6 @@
 				368AE6DA20CE6D1C005FF0E7 /* NSArray+AXNetworkingMethods.m in Sources */,
 				3668498F2094563200D9640F /* SVGViewItem.m in Sources */,
 				DB577654204E8D29003F9164 /* BMIconModel.m in Sources */,
-				DB57763B204D9F85003F9164 /* BMMainViewController.m in Sources */,
 				DB57763E204D9F85003F9164 /* CNGridViewItem.m in Sources */,
 				36302B4020DB58A20003B5FA /* BMSQLIconModel.m in Sources */,
 				368AE6DE20CE6D1C005FF0E7 /* NSObject+AXNetworkingMethods.m in Sources */,

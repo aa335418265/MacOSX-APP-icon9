@@ -35,7 +35,7 @@
     return _downQueue;
 }
 
-- (void)download:(NSString *)url savePath:(NSString *)path {
+- (void)download:(NSString *)url savePath:(NSString *)path success:(Success)success faild:(Faild)faild {
     if (url == nil || path == nil) {
         NSLog(@"url或者path参数不能为空");
         return;
@@ -51,9 +51,16 @@
             NSURL *filePath = [NSURL fileURLWithPath:path];
             return filePath;
         } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-            NSString *savePath = [NSString stringWithFormat:@"%@",filePath];
-            NSLog(@"下载完成，保存路径:%@", savePath);
-            [self.downloadTaskTable removeObjectForKey:url];
+            if (!error) {
+                NSString *savePath = [NSString stringWithFormat:@"%@",filePath];
+                NSLog(@"下载完成，保存路径:%@", savePath);
+                [self.downloadTaskTable removeObjectForKey:url];
+                success?success():nil;
+
+            }else {
+                NSLog(@"下载失败,url=%@",url);
+                faild?faild():nil;
+            }
         }];
         [task resume];
         self.downloadTaskTable[url] = task;

@@ -34,7 +34,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 
 @property (weak) IBOutlet CNGridView *gridView;
 @property (weak) IBOutlet NSSlider *itemSizeSlider;
-@property (strong) NSMutableArray<BMIconModel *> *items;
+@property (strong) NSMutableArray<BMSQLIconModel *> *items;
 @property (strong) NSMutableArray <BMSQLProjectModel *>*projects;
 @property (weak) IBOutlet NSTableView *tableView;
 
@@ -115,9 +115,9 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     self.items = [NSMutableArray array];
     self.projects = [NSMutableArray array];
     self.selectedGroupIndex = 0;    //默认当前选中group
-    self.selectedFilteredImageType = BMImageTypeSVG;//当前选中要已过滤的图片类型,即要显示的类型
+    self.selectedFilteredImageType = BMImageTypeAll;//当前选中要已过滤的图片类型,即要显示的类型
     
-    NSArray *groups = [[[BMIconManager sharedInstance] allGroups] copy];
+    NSArray *groups = [[[BMIconManager sharedInstance] queryProjects] copy];
     if (groups.count <=0) {
         return;
     }
@@ -126,7 +126,8 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     if (group && groups.count > 0) {
         //选中
         [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
-        self.items =[NSMutableArray arrayWithArray:[[group objectsWithType:self.selectedFilteredImageType] copy]];
+         NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
+        self.items =arr?[arr mutableCopy]:[NSMutableArray array];
     }
 }
 
@@ -149,13 +150,8 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
         self.itemSizeSlider.integerValue = [defaults integerForKey:kItemSizeSliderPositionKey];
     }
     self.gridView.dropInBlock = ^(NSArray<NSString *> *files) {
-        BMSQLProjectModel * group = [self.projects objectAtIndex:self.selectedGroupIndex];
-        NSArray *copyIcons = [group copyFilesFromPaths:files];
-        if (copyIcons.count > 0) {
-            [self.items addObjectsFromArray:copyIcons];
-            NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.items.count, files.count)];
-            [self.gridView insertItemsAtIndexes:indexSet animated:YES];
-        }
+        //不支持拖入
+        NSLog(@"不支持拖入");
     };
     self.gridView.itemSize = NSMakeSize(self.itemSizeSlider.integerValue, self.itemSizeSlider.integerValue);
     self.gridView.backgroundColor = [NSColor whiteColor];
@@ -288,11 +284,9 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     [self.gridView reloadDataAnimated:YES];
     //后更新
     BMSQLProjectModel *group = self.projects[selectedRow];
-    NSArray *objects = [[group objectsWithType:self.selectedFilteredImageType] copy];
-    if (objects.count > 0) {
-        [self.items addObjectsFromArray:objects];
-        [self.gridView reloadDataAnimated:YES];
-    }
+    NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
+    self.items =arr?[arr mutableCopy]:[NSMutableArray array];
+    [self.gridView reloadDataAnimated:YES];
     self.selectedGroupIndex = selectedRow;
     
 }
@@ -341,6 +335,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     [[NSUserDefaults standardUserDefaults] setInteger:self.itemSizeSlider.integerValue forKey:kItemSizeSliderPositionKey];
 }
 
+//过滤类型
 - (IBAction)didPopButtonAction:(id)sender {
     
     NSPopUpButton *popBtn = (NSPopUpButton *)sender;
@@ -355,11 +350,11 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     [self.gridView reloadDataAnimated:YES];
     //后更新
     BMSQLProjectModel *group = self.projects[self.selectedGroupIndex];
-    NSArray *objects = [[group objectsWithType:imageType] copy];
-    if (objects.count > 0) {
-        [self.items addObjectsFromArray:objects];
-        [self.gridView reloadDataAnimated:YES];
-    }
+    
+    NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
+    self.items =arr?[arr mutableCopy]:[NSMutableArray array];
+    [self.gridView reloadDataAnimated:YES];
+
     
 }
 #pragma mark - 私有方法

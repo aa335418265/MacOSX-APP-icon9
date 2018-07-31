@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BMSQLProjectModel.h"
+#import "BMSQLIconModel.h"
 
 
 typedef void(^CompledBlock)(BOOL success,NSArray <BMSQLProjectModel *> *projects);
@@ -17,7 +18,16 @@ typedef void(^CheckFailure)(NSError *error);
 
 + (instancetype)sharedInstance;
 
-- (NSArray <BMSQLProjectModel *> *)allGroups;
+- (NSArray <BMSQLProjectModel *>*)queryProjects;
+- (NSArray <BMSQLIconModel *>*)querySqlIconsWithProjectId:(NSString *)projectId;
+- (NSArray <BMIconModel *>*)allIcons:(NSString *)projectId imageType:(BMImageType)imageType;
+
+
+
+
+
+
+
 - (BOOL)createGroupWithName:(NSString *)name;
 
 

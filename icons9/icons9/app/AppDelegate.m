@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "BMMainViewController.h"
 #import "NSMainWinController.h"
 
 @interface AppDelegate ()

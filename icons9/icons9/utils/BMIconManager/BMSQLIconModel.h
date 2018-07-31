@@ -49,5 +49,7 @@
 
 @property (nonatomic, strong) NSString *totalMd5; ///< 总md5
 
+//自定义数据
+@property (nonatomic,readonly, assign) BMImageType  type;           //图片类型
 
 @end

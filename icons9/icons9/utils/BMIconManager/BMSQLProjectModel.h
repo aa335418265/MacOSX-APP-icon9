@@ -17,8 +17,8 @@
 @property (nonatomic, strong) NSString *projectLocalPath;  //项目本地路径
 
 
-- (NSArray <BMIconModel *> *)allObjects ;
-- (NSArray <BMIconModel *> *)objectsWithType:(BMImageType)type;
-- (NSArray <BMIconModel *> *)copyFilesFromPaths:(NSArray <NSString *> *)paths;
+//- (NSArray <BMIconModel *> *)allObjects ;
+//- (NSArray <BMIconModel *> *)objectsWithType:(BMImageType)type;
+//- (NSArray <BMIconModel *> *)copyFilesFromPaths:(NSArray <NSString *> *)paths;
 
 @end
