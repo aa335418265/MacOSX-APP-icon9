@@ -14,6 +14,8 @@
 typedef void(^CompledBlock)(BOOL success,NSArray <BMSQLProjectModel *> *projects);
 typedef void(^CheckSuccess)(NSArray *list);
 typedef void(^CheckFailure)(NSError *error);
+typedef void(^Success)(void);
+typedef void(^Fail)(void);
 @interface BMIconManager : NSObject
 
 + (instancetype)sharedInstance;
@@ -39,7 +41,8 @@ typedef void(^CheckFailure)(NSError *error);
 //同步远程数据
 - (void)updateProjects:(CompledBlock)complete;
 - (void)getIconsUpdateList:(NSString *)projectHash projectId:(NSString *)projectId success:(CheckSuccess )success failure:(CheckFailure)failure;
-- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName;
+- (void)updateIcons:(NSArray *)iconHashList  projectName:(NSString *)projectName success:(Success)success fail:(Fail)fail;
+
 
 
 @end

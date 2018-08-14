@@ -58,12 +58,12 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     [self initLocalData];
     [self initUI];
     [self addNotification];
-    [self checkProjectUpdate];
+    [self checkProjectsUpdate];
 
     
 }
 
-- (void)checkProjectUpdate {
+- (void)checkProjectsUpdate {
     //更新项目组
     [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMSQLProjectModel *> *projects) {
         if (success && projects.count >0) {
@@ -73,32 +73,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
                 [self.tableView reloadData];
                 //检查项目下的素材是否有更新
                 for (BMSQLProjectModel *model in projects) {
-                    
-                    NSString *updateMD5 = [[BMIconManager sharedInstance] caculateLocalUpdateMD5InProject:model.projectId];
-                    //1. 计算每个项目中的素材的总hash
-                    [[BMIconManager sharedInstance] getIconsUpdateList:updateMD5 projectId:model.projectId success:^(NSArray *list) {
-                        //本地与远程iconsMd5列表差异比较
-                        NSArray *localIconsMd5List = [[BMIconManager sharedInstance] getProjectHashList:model.projectId];
-                        
-                        NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",localIconsMd5List];
-                        NSArray * addList = [list filteredArrayUsingPredicate:filterPredicate1];
-                        NSLog(@"有%lu个素材需要更新", (unsigned long)addList.count);
-                        [self.iconsUpdateList setObject:addList forKey:model.projectId];
-                        [self.tableView reloadData];
-                        
-                        
-                        NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",list];
-                        NSArray * delList = [localIconsMd5List filteredArrayUsingPredicate:filterPredicate2];
-                        NSLog(@"有%lu个素材需要删除", (unsigned long)delList.count);
-                        
-                        if (list.count >0) {
-                            //接口待完善
-                            NSLog(@"projectHash:%@, projectId:%@,有更新",model.projectHash, model.projectId);
-                        }
-                    } failure:^(NSError *error) {
-                        //
-                        NSLog(@"检查更新接口失败");
-                    }];
+                    [self checkIconsUpdateProjectId:model.projectId];
                 }
             });
         }
@@ -106,6 +81,29 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 }
 
 
+- (void)checkIconsUpdateProjectId:(NSString *)projectId {
+    NSString *updateMD5 = [[BMIconManager sharedInstance] caculateLocalUpdateMD5InProject:projectId];
+    //1. 计算每个项目中的素材的总hash
+    [[BMIconManager sharedInstance] getIconsUpdateList:updateMD5 projectId:projectId success:^(NSArray *list) {
+        //本地与远程iconsMd5列表差异比较
+        NSArray *localIconsMd5List = [[BMIconManager sharedInstance] getProjectHashList:projectId];
+        
+        NSPredicate * filterPredicate1 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",localIconsMd5List];
+        NSArray * addList = [list filteredArrayUsingPredicate:filterPredicate1];
+        NSLog(@"model.projectId = %@, 有%lu条iconHash记录需要更新", projectId, (unsigned long)addList.count);
+        [self.iconsUpdateList setObject:addList forKey:projectId];
+        [self.tableView reloadData];
+        
+        
+        NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",list];
+        NSArray * delList = [localIconsMd5List filteredArrayUsingPredicate:filterPredicate2];
+        NSLog(@"有%luu条iconHash记录需要删除", (unsigned long)delList.count);
+        
+    } failure:^(NSError *error) {
+        //
+        NSLog(@"检查更新接口失败");
+    }];
+}
 #pragma mark - UI初始化
 
 #pragma mark - 设置UI
@@ -302,9 +300,21 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
     BMSQLProjectModel * group = [self.projects objectAtIndex:row];
     cell.nameLabel.stringValue = group.projectName;
+    @weakify(self);
     cell.clickBlock = ^{
+        @strongify(self);
         NSLog(@"项目%@点击了更新按钮", group.projectId);
-        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName];
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName success:^{
+            @strongify(self);
+            [self checkIconsUpdateProjectId:group.projectId];
+            NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
+            self.items =arr?[arr mutableCopy]:[NSMutableArray array];
+            [self.gridView reloadData];
+        } fail:^{
+            @strongify(self);
+            //更新失败
+            
+        }];
     };
     NSArray *updateList = self.iconsUpdateList[group.projectId];
     cell.badgeValue = updateList.count;
