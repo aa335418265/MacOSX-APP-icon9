@@ -34,7 +34,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 
 @property (weak) IBOutlet CNGridView *gridView;
 @property (weak) IBOutlet NSSlider *itemSizeSlider;
-@property (strong) NSMutableArray<BMSQLIconModel *> *items;
+@property (strong) NSMutableArray<BMIconModel *> *items;
 @property (strong) NSMutableArray <BMSQLProjectModel *>*projects;
 @property (weak) IBOutlet NSTableView *tableView;
 
@@ -313,7 +313,6 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
             self.items =arr?[arr mutableCopy]:[NSMutableArray array];
             [self.gridView reloadData];
         } fail:^{
-            @strongify(self);
             //更新失败
             
         }];
@@ -376,10 +375,12 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     NSColorPanel *colorPanel = sender ;
     NSLog(@"---");
     NSArray *selectedItems = [self.gridView selectedItems];
+    
     for (CNGridViewItem *viewItem in selectedItems) {
         [viewItem.imageModel changeSVGFillColor:colorPanel.color];
         [viewItem setNeedsDisplay:YES];
     }
+
 }
 
 

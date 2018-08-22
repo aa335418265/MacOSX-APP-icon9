@@ -179,9 +179,9 @@ extern NSString *CNGridViewDeSelectAllItemsNotification;
 
 
 - (void)drawRect:(NSRect)rect {
-
-    CFAbsoluteTime startTime =CFAbsoluteTimeGetCurrent();
+    NSLog(@"===================");
     
+    CFAbsoluteTime startTime =CFAbsoluteTimeGetCurrent();
     NSBezierPath *contentRectPath = [NSBezierPath bezierPathWithRoundedRect:[self contentRect] xRadius:self.currentLayout.itemBorderRadius yRadius:self.currentLayout.itemBorderRadius];
     [self.currentLayout.backgroundColor setFill];
     [contentRectPath fill];

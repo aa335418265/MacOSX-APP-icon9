@@ -15,7 +15,7 @@
 @property (nonatomic,readwrite, strong) NSString *name;       //文件名
 @property (nonatomic,readwrite, strong) NSString *path;       //路径
 @property (nonatomic,readwrite, assign) BMImageType type;     //图片类型
-@property (nonatomic,readwrite, strong) SVGKImage *svgImge;  //当type = BMImageTypeSVG 时
+@property (nonatomic,readwrite, strong) SVGKImage *svgImage;  //当type = BMImageTypeSVG 时
 @property (nonatomic,readwrite, strong) NSImage *image;
 
 @end
@@ -41,7 +41,7 @@
     model.type = type;
     if (type == BMImageTypeSVG) {
         SVGKImage *svgImage = [[SVGKImage alloc] initWithContentsOfFile:path];
-        model.svgImge = svgImage;
+        model.svgImage = svgImage;
         model.image = svgImage.NSImage;
     }else{
         model.image = [[NSImage alloc] initWithContentsOfFile:path] ;
@@ -66,11 +66,13 @@
 
 
 - (void)changeSVGFillColor:(NSColor *)color {
-    if (self.svgImge == nil || [self.svgImge hasCALayerTree] == NO || color == nil) {
+    if (self.svgImage == nil || [self.svgImage hasCALayerTree] == NO || color == nil) {
         return;
     }
-
-    [self changeFillColorRecursively:[self.svgImge CALayerTree] color:color];
+    
+    CALayer *layer = [self.svgImage CALayerTree];
+    [self changeFillColorRecursively:layer color:color];
+    NSLog(@"==");
 }
 
 - (void) changeFillColorRecursively:(CALayer *)targetLayer color:(NSColor *)color {
@@ -78,16 +80,19 @@
         return;
     }
     for (CALayer *layer in targetLayer.sublayers) {
+
         if ([layer isKindOfClass:[CAShapeLayer class]]) {
             CAShapeLayer *shapeLayer = (CAShapeLayer *)layer;
             shapeLayer.strokeColor = color.CGColor;
             shapeLayer.fillColor = color.CGColor;
             self.image = self.svgImage.NSImage;
-            return;
+            break;
         }
+        
         if ([layer isKindOfClass:[CALayer class]]) {
             [self changeFillColorRecursively:layer color:color];
         }
+
     }
 }
 
@@ -99,9 +104,9 @@
 //    }
 //}
 
-- (SVGKImage *)svgImage {
-    return _svgImge;
-}
+//- (SVGKImage *)svgImage {
+//    return _svgImge;
+//}
 
 
 
