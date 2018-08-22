@@ -55,12 +55,12 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 - (void)windowDidLoad {
     [super windowDidLoad];
     
-    [self initLocalData];
+    
     [self initUI];
+    [self initLocalData];
     [self addNotification];
     [self checkProjectsUpdate];
 
-    
 }
 
 - (void)checkProjectsUpdate {
@@ -71,6 +71,8 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
                 [self.projects removeAllObjects];
                 self.projects = [projects mutableCopy];
                 [self.tableView reloadData];
+                self.tableView.refusesFirstResponder = YES;
+                [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
                 //检查项目下的素材是否有更新
                 for (BMSQLProjectModel *model in projects) {
                     [self checkIconsUpdateProjectId:model.projectId];
@@ -93,7 +95,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
         NSLog(@"model.projectId = %@, 有%lu条iconHash记录需要更新", projectId, (unsigned long)addList.count);
         [self.iconsUpdateList setObject:addList forKey:projectId];
         [self.tableView reloadData];
-        
+        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
         
         NSPredicate * filterPredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)",list];
         NSArray * delList = [localIconsMd5List filteredArrayUsingPredicate:filterPredicate2];
@@ -123,7 +125,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     BMSQLProjectModel * group = [self.projects objectAtIndex:self.selectedGroupIndex];
     if (group && groups.count > 0) {
         //选中
-        [self.tableView selectRowIndexes:[NSIndexSet indexSetWithIndex:self.selectedGroupIndex] byExtendingSelection:YES];
+
          NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
         self.items =arr?[arr mutableCopy]:[NSMutableArray array];
     }
@@ -133,7 +135,6 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 - (void)initUI {
     
     self.tableView.rowHeight = 44;
-    
     [self.tableView registerNib:[[NSNib alloc] initWithNibNamed:@"BMProjectCell" bundle:nil] forIdentifier:@"BMProjectCell"];
     self.defaultLayout = [CNGridViewItemLayout defaultLayout];
     self.defaultLayout.itemTitleTextAttributes = @{NSForegroundColorAttributeName : [NSColor colorWithRed:71/255.0 green:88/255.0 blue:96/255.0 alpha:1],NSFontAttributeName:[NSFont systemFontOfSize:12.0f]};
@@ -192,13 +193,13 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMinCoordinate:(CGFloat)proposedMinimumPosition ofSubviewAt:(NSInteger)dividerIndex
 {
     if (dividerIndex == 0) {
-        return 200;
+        return 220;
     }
     else if (dividerIndex == 1)
     {
         return self.window.frame.size.width - 320;
     }
-    return 200;
+    return 220;
 }
 
 - (CGFloat)splitView:(NSSplitView *)splitView constrainMaxCoordinate:(CGFloat)proposedMaximumPosition ofSubviewAt:(NSInteger)dividerIndex
@@ -300,6 +301,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     BMProjectCell *cell = [tableView makeViewWithIdentifier:@"BMProjectCell" owner:self];
     BMSQLProjectModel * group = [self.projects objectAtIndex:row];
     cell.nameLabel.stringValue = group.projectName;
+    
     @weakify(self);
     cell.clickBlock = ^{
         @strongify(self);

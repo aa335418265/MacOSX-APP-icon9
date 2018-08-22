@@ -9,9 +9,9 @@
 #ifndef BMAPIRequestURL_h
 #define BMAPIRequestURL_h
 
+static const BOOL kBMIsTestEnvironment = YES;
 
-
-#define BASE_URL @"http://192.168.241.104:8088"
+#define BASE_URL @"http://mallapi.bluemoon.com.cn/icon"
 #define BASE_URL_TEST @"http://192.168.241.104:8088"
 
 

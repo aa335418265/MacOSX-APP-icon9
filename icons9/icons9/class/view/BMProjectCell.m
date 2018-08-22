@@ -24,8 +24,8 @@
     self.badgeLabel.wantsLayer = YES;
     self.badgeLabel.layer.cornerRadius  = 2.f;
     self.badgeLabel.layer.masksToBounds = YES;
-
 }
+
 
 - (IBAction)updateBtnOnClick:(id)sender {
     if (self.clickBlock) {

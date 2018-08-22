@@ -10,7 +10,7 @@
 #import "BMURLResponse.h"
 
 
-static const BOOL kBMIsTestEnvironment = YES;
+
 
 typedef void(^BMAPIRequestCallback)(BMURLResponse *response);
 @interface BMAPIRequest : NSObject
