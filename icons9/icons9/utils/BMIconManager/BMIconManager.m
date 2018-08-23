@@ -262,14 +262,14 @@
                 if (![fileMD5 isEqualToString:model.svgFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.svgUrl savePath:model.svgLocalPath success:^{
                         NSLog(@"icon下载成功:%@", url);
-                        success?success():nil;
+                        success?success(model.svgLocalPath):nil;
                     } faild:^{
                         NSLog(@"icon下载失败:%@", url);
                         fail?fail():nil;
                     }];
                 }else{
                     NSLog(@"文件已存在:%@",model.svgLocalPath);
-                    success?success():nil;
+                    success?success(model.svgLocalPath):nil;
                 }
 
             }
@@ -280,14 +280,14 @@
                 if (![fileMD5 isEqualToString:model.pngExtraFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.pngExtraUrl savePath:model.pngExtraLocalPath success:^{
                          NSLog(@"icon下载成功:%@", url);
-                         success?success():nil;
+                         success?success(model.pngExtraLocalPath):nil;
                     } faild:^{
                         NSLog(@"icon下载失败:%@", url);
                          fail?fail():nil;
                     }];
                 }else{
                     NSLog(@"文件已存在:%@",model.pngExtraLocalPath);
-                     success?success():nil;
+                     success?success(model.pngExtraLocalPath):nil;
                 }
 
             }
@@ -298,14 +298,14 @@
                 if (![fileMD5 isEqualToString:model.pngDoubleFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.pngDoubleUrl savePath:model.pngDoubleLocalPath success:^{
                          NSLog(@"icon下载成功:%@", url);
-                         success?success():nil;
+                         success?success(model.pngDoubleLocalPath):nil;
                     } faild:^{
                         NSLog(@"icon下载失败:%@", url);
                          fail?fail():nil;
                     }];
                 }else{
                     NSLog(@"文件已存在:%@",model.pngDoubleLocalPath);
-                     success?success():nil;
+                     success?success(model.pngDoubleLocalPath):nil;
                 }
 
             }
@@ -316,14 +316,14 @@
                 if (![fileMD5 isEqualToString:model.pngTripleFileMd5]) {
                     [[BMIconsDownloader sharedInstance] download:model.pngTripleUrl savePath:model.pngTripleLocalPath success:^{
                          NSLog(@"icon下载成功:%@", url);
-                         success?success():nil;
+                         success?success(model.pngTripleLocalPath):nil;
                     } faild:^{
                         NSLog(@"icon下载失败:%@", url);
                          fail?fail():nil;
                     }];
                 }else{
                     NSLog(@"文件已存在:%@",model.pngTripleLocalPath);
-                     success?success():nil;
+                     success?success(model.pngTripleLocalPath):nil;
                 }
             }
             

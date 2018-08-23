@@ -35,7 +35,7 @@
     return _downQueue;
 }
 
-- (void)download:(NSString *)url savePath:(NSString *)path success:(Success)success faild:(Faild)faild {
+- (void)download:(NSString *)url savePath:(NSString *)path success:(DownloadSuccess)success faild:(DownloadFaild)faild {
     if (url == nil || path == nil) {
         NSLog(@"url或者path参数不能为空");
         return;

@@ -14,7 +14,7 @@
 typedef void(^CompledBlock)(BOOL success,NSArray <BMSQLProjectModel *> *projects);
 typedef void(^CheckSuccess)(NSArray *list);
 typedef void(^CheckFailure)(NSError *error);
-typedef void(^Success)(void);
+typedef void(^Success)(NSString *filePath);
 typedef void(^Fail)(void);
 @interface BMIconManager : NSObject
 

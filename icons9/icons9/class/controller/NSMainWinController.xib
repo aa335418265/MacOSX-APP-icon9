@@ -232,11 +232,28 @@
                             <action selector="didPopButtonAction:" target="-2" id="ZuL-mY-BTI"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="E1757031-EF1F-48CD-A129-A1EBEDE99311" label="Refresh Button" paletteLabel="Refresh Button" image="NSRefreshTemplate" id="n1r-4N-Xmy">
+                        <nil key="toolTip"/>
+                        <size key="minSize" width="40" height="40"/>
+                        <size key="maxSize" width="87" height="43"/>
+                        <button key="view" verticalHuggingPriority="750" imageHugsTitle="YES" id="8Na-fb-Xtf">
+                            <rect key="frame" x="15" y="14" width="57" height="43"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="push" bezelStyle="rounded" image="NSRefreshTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Zca-sw-R3S">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="refreshBtn:" target="-2" id="YWs-J8-UTf"/>
+                            </connections>
+                        </button>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="jig-Ff-TRP"/>
                     <toolbarItem reference="Cmi-63-26f"/>
-                    <toolbarItem reference="NOA-N5-mTR"/>
+                    <toolbarItem reference="IhD-T3-WCD"/>
+                    <toolbarItem reference="n1r-4N-Xmy"/>
                 </defaultToolbarItems>
             </toolbar>
             <connections>
@@ -246,6 +263,7 @@
         </window>
     </objects>
     <resources>
+        <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="menu_view_left" width="20" height="16"/>
         <image name="menu_view_middle" width="20" height="16"/>
         <image name="menu_view_right" width="20" height="16"/>

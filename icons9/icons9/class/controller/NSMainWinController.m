@@ -63,6 +63,7 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
 
 }
 
+
 - (void)checkProjectsUpdate {
     //更新项目组
     [[BMIconManager sharedInstance] updateProjects:^(BOOL success, NSArray<BMSQLProjectModel *> *projects) {
@@ -125,9 +126,9 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     BMSQLProjectModel * group = [self.projects objectAtIndex:self.selectedGroupIndex];
     if (group && groups.count > 0) {
         //选中
-
          NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
         self.items =arr?[arr mutableCopy]:[NSMutableArray array];
+        [self.gridView reloadDataAnimated:YES];
     }
 }
 
@@ -290,6 +291,9 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     
 }
 
+- (IBAction)refreshBtn:(id)sender {
+     [self checkProjectsUpdate];
+}
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
     return self.projects.count;
@@ -306,12 +310,14 @@ static NSString *kItemSizeSliderPositionKey = @"ItemSizeSliderPosition";
     cell.clickBlock = ^{
         @strongify(self);
         NSLog(@"项目%@点击了更新按钮", group.projectId);
-        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName success:^{
+        [[BMIconManager sharedInstance] updateIcons:self.iconsUpdateList[group.projectId] projectName:group.projectName success:^(NSString *filePath) {
+            BMIconModel *model = [BMIconModel modelWithPath:filePath];
+            
             @strongify(self);
+            NSUInteger index = self.items.count;
+            [self.items addObject:model];
+            [self.gridView insertItemAtIndex:index animated:YES];
             [self checkIconsUpdateProjectId:group.projectId];
-            NSArray <BMIconModel *> *arr =  [[BMIconManager sharedInstance] allIcons:group.projectId imageType:self.selectedFilteredImageType];
-            self.items =arr?[arr mutableCopy]:[NSMutableArray array];
-            [self.gridView reloadData];
         } fail:^{
             //更新失败
             

@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^Success) (void);
-typedef void (^Faild) (void);
+typedef void (^DownloadSuccess) (void);
+typedef void (^DownloadFaild) (void);
 @interface BMIconsDownloader : NSObject
 + (instancetype)sharedInstance;
 
 
 //下载
-- (void)download:(NSString *)url savePath:(NSString *)path success:(Success)success faild:(Faild)faild;
+- (void)download:(NSString *)url savePath:(NSString *)path success:(DownloadSuccess)success faild:(DownloadFaild)faild;
 
 //取消下载
 - (void)cancelDownloadUrl:(NSString *)url;
